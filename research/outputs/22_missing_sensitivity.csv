@@ -1,0 +1,7 @@
+﻿model,target,fault_cycles,no_splice_detected,no_splice_false_alarms,normal_cycles,faults_only_in_spliced_windows,false_alarms_without_missing_label_cycles,normal_cycles_without_missing_labels
+random_forest,System_Failure,104,102,4,127,2,4,112
+random_forest,ProtectiveStop,76,72,2,127,2,2,112
+random_forest,GripLost,48,42,2,127,2,2,112
+1d_cnn,System_Failure,104,101,23,127,2,19,112
+1d_cnn,ProtectiveStop,76,70,16,127,2,13,112
+1d_cnn,GripLost,48,45,27,127,2,23,112

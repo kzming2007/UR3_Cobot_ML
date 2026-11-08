@@ -1,0 +1,4 @@
+﻿target,fault_cycles,rf_detected,rf_false_alarms,cnn_detected,cnn_false_alarms,cnn_cut_at_rf_false_alarms,cnn_false_alarms_at_cut,cnn_detected_at_cut,rf_cycle_auc,cnn_cycle_auc,rf_only_alarms,cnn_only_alarms,mcnemar_exact_p
+System_Failure,104,104,5,104,23,0.7027885317802429,5,101,0.997615081768625,0.9950787401574803,3,21,0.0002771615982055664
+ProtectiveStop,76,74,2,73,17,0.7465132474899292,2,68,0.998756734355574,0.974720265230004,2,17,0.000728607177734375
+GripLost,48,45,2,48,27,0.7421005368232727,2,37,0.9964730971128609,0.9788385826771653,1,26,4.172325134277344e-07

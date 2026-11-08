@@ -28,8 +28,7 @@ STYLES = {
     "Author EN": (EN, 9, False, AL.CENTER, 12, 0, 0, 0),
     "Abstract Head": (EN, 10, True, AL.CENTER, 12, 0, 6, 0),
     "Abstract": (EN, 10, False, AL.JUSTIFY, 12, 8, 0, 0),
-    "Key Words": (EN, 10, False, AL.JUSTIFY, 12, 0, 0, 0),
-    "Role Note": (EN, 8, False, AL.LEFT, 10, 0, 2, 6),
+    "Key Words": (EN, 10, False, AL.JUSTIFY, 12, 0, 0, 6),
     "Figure": (KO, 9, False, AL.CENTER, None, 0, 4, 2),
     "Caption KO": (KO, 8, False, AL.CENTER, 10, 0, 4, 0),
     "Caption EN": (EN, 8, False, AL.CENTER, 10, 0, 0, 2),
@@ -39,11 +38,14 @@ STYLES = {
 }
 # Column widths in points (each table fills the column) and the number of left-aligned text columns.
 TABLES = {
-    1: ([48, 34, 32, 40, 46, 50], 1),
+    1: ([44, 26, 28, 30, 30, 32, 30, 30], 1),
     2: ([36, 46, 61, 53, 54], 2),
     3: ([36, 54, 52, 54, 54], 2),
     4: ([36, 62, 44, 58, 50], 2),
-    5: ([70, 12, 24, 24, 24, 24, 24, 24, 24], 1),
+    5: ([66, 10, 22, 22, 22, 22, 22, 22, 21, 21], 1),
+    6: ([36, 56, 36, 32, 30, 30, 30], 2),
+    7: ([40, 42, 42, 42, 42, 42], 1),
+    8: ([36, 50, 55, 55, 54], 2),
 }
 
 
@@ -160,6 +162,11 @@ def add_table(doc, block: str, number: int) -> None:
                 border(cell, "top", "bottom")
             if i == len(rows) - 1:
                 border(cell, "bottom")
+            if "Det." in rows[0][j]:  # sets detection columns apart from the alert columns in Table 5
+                shade = OxmlElement("w:shd")
+                for key, value in (("val", "clear"), ("color", "auto"), ("fill", "EDEDED")):
+                    shade.set(qn(f"w:{key}"), value)
+                cell._tc.get_or_add_tcPr().append(shade)
     # A blank first cell continues the group name above, so the name can wrap inside the merged cell.
     for i, row in enumerate(rows):
         below_blank = i + 1 < len(rows) and not rows[i + 1][0]
@@ -191,7 +198,7 @@ def build(source: Path, out: Path) -> None:
     set_columns(section, 1)
     add_page_number(doc, section)
 
-    title_ko, author_ko, affil_ko, title_en, author_en, affil_en, head, abstract, keywords, roles = front
+    title_ko, author_ko, affil_ko, title_en, author_en, affil_en, head, abstract, keywords = front
     add_text(doc, title_ko[2:], "Title KO")
     add_text(doc, author_ko, "Author KO")
     add_text(doc, affil_ko, "Author KO")
@@ -201,7 +208,6 @@ def build(source: Path, out: Path) -> None:
     add_text(doc, head, "Abstract Head")
     add_text(doc, abstract, "Abstract")
     add_text(doc, keywords.replace("Key words:", "**Key words:**", 1), "Key Words")
-    add_text(doc, roles, "Role Note")
     set_columns(doc.add_section(WD_SECTION.CONTINUOUS), 2)
 
     table_number, after_table = 0, False

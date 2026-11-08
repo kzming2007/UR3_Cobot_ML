@@ -51,6 +51,9 @@
 - `2026-08-26_related_work_review.md`: UR3 CobotOps 직접 활용 연구와 방법론 참고 논문의 근거 수준을 구분한 문헌 검토
 - `2026-08-27_research_report_draft.md`: 현재 결과와 한계를 논문 형식으로 정리한 연구보고서 초안
 - `2026-08-27_reproducibility_review_plan.md`: 내부 수치 대조, CPU·GPU 전체 재실행, 문체·출력 검토를 분리한 재현성 점검 계획
+- `21_rf_control_checks.py`: 같은 구간과 라벨에서 입력을 바꾼 Random Forest와 추가 시드를 실행하는 사후 점검 코드
+- `22_posthoc_saved_result_checks.py`: 저장 결과에서 블록 구성, 결측 민감도, 같은 오경보 비교, Autoencoder 기술통계, 고장 전 기준선을 재집계하는 코드
+- `23_window_length_sensitivity.py`: Random Forest와 1D CNN을 5, 20스텝으로 다시 학습하는 사후 민감도 코드
 - `17_report_evidence_validation.py`: 보고서 핵심 수치와 저장된 결과물의 일치 여부를 검사하는 코드
 - `run_report_validation.ps1`: 결과 재집계와 보고서 수치 대조를 한 번에 실행하는 스크립트
 - `requirements.txt`: 연구 스크립트를 실제 실행한 Python 패키지 버전
@@ -59,18 +62,20 @@
 
 ## 11월 12일 제출 현황
 
-2026년 11월 8일 기준으로 기존 연구 근거는 `research/sensor-ablation`의 커밋 `9e9a878`에 있다. 학술연구 결과보고서의 [v0.1 원본](2026-08-27_research_report_draft.md)을 함께 둔다. 이 저장소에서 11월 제출용 최종본이나 제출 완료 기록은 확인되지 않았다. 제출 목표일은 11월 12일이며, 마감 시각과 양식, 필수 첨부는 확인이 필요하다.
+2026년 11월 8일 기준 최신 작업본은 [v0.7](2026-11-08_research_report_v0.7.md)이며 `research/timestamp-quote-fix` 브랜치에 있다. `main`과 `research/sensor-ablation`에는 Timestamp 수정 전 결과(`cycle_run` 202개)가 남아 있고, 수정 전후 차이는 [비교 문서](2026-11-08_timestamp_fix_comparison.md)에 있다. 이 저장소에서 제출 완료 기록은 확인되지 않았다. 마감은 11월 12일 17:00이고 공지에 정해진 양식이나 분량은 없다.
 
 ### 확인된 결과
 
-- 공개 UR3 CobotOps의 `cycle_run` 202개에서 경계를 넘지 않는 10-step window 4,035개를 만들고, 같은 19개 센서로 9개 수집 블록을 하나씩 제외해 평가했다. 주 결과는 이상이 포함된 구간의 탐지 성능이다.
-- Random Forest의 고장 cycle 재현율과 완전 정상 cycle 오경보율은 `System_Failure` 97.70%와 4.35%, `ProtectiveStop` 95.16%와 3.48%, `GripLost` 92.31%와 1.74%였다. 1D CNN은 재현율이 비슷했으나 완전 정상 오경보율이 16.52~20.87%였고, 정상 데이터로만 학습한 LSTM Autoencoder의 q95 재현율은 0~6.45%였다. [주 결과 및 경보 분해](outputs/16_fault_context_alert_analysis.md)
-- 기본 분류 모델 비교와 센서 그룹 제거 실험까지 수행했다. `GripLost`의 고장 전 분석은 평균 재현율 22.48%의 탐색 결과로, 실용적인 조기경고 성능은 확인하지 못했다. [기본 모델 비교](outputs/15_classical_model_comparison.md), [센서 그룹 비교](outputs/14_sensor_group_ablation.md), [고장 전 분석](outputs/04_pre_failure_repeated_split_results.md)
-- 8월 27일에 데이터 식별 정보, 저장 결과의 기준값, v0.1의 구조와 일부 표 및 문구를 점검한 내부 검사 122개가 통과했다. v0.2의 변경 사항은 코드, 실험 기록 및 저장 결과표와 별도로 대조했다. [내부 검사 기록](outputs/17_report_evidence_validation.md)
+- 공개 UR3 CobotOps의 `cycle_run` 231개에서 경계를 넘지 않는 10-step window 4,667개를 만들고, 같은 19개 센서로 9개 수집 블록을 하나씩 제외해 평가했다. 주 결과는 이상이 포함된 구간의 탐지 성능이다.
+- Random Forest의 고장 cycle 재현율과 완전 정상 cycle 오경보율은 `System_Failure` 100.00%와 3.94%, `ProtectiveStop` 97.37%와 1.57%, `GripLost` 93.75%와 1.57%였다. 1D CNN은 재현율이 비슷했으나 완전 정상 오경보율이 13.39~21.26%였고, 정상 데이터로만 학습한 LSTM Autoencoder의 q95 재현율은 0~6.58%였다. [주 결과 및 경보 분해](outputs/16_fault_context_alert_analysis.md)
+- 기본 분류 모델 비교와 센서 그룹 제거 실험까지 수행했다. `GripLost`의 고장 전 분석은 평균 재현율 28.14%의 탐색 결과로, 실용적인 조기경고 성능은 확인하지 못했다. [기본 모델 비교](outputs/15_classical_model_comparison.md), [센서 그룹 비교](outputs/14_sensor_group_ablation.md), [고장 전 분석](outputs/04_pre_failure_repeated_split_results.md)
+- 같은 구간과 라벨에서 입력만 바꾼 사후 비교(`21`)와 저장 결과의 사후 점검(`22`), 구간 길이 민감도(`23`)를 추가했다. 사전 문서에 없던 분석이며 주 결과를 대체하지 않는다. [사후 RF 비교](outputs/21_rf_control_checks.md), [사후 점검](outputs/22_posthoc_saved_results.md), [구간 길이 민감도](outputs/23_window_length_sensitivity.md)
+- `17`은 v0.7 본문과 표의 수치를 저장 결과에서 다시 만들어 대조한다. 검사 항목이 모두 통과했다. [내부 검사 기록](outputs/17_report_evidence_validation.md)
 
 ### 빠진 근거와 초안 수정점
 
 - 원본 CSV부터 별도 작업공간에서 CPU 모델과 GPU 모델을 다시 학습해 예측 및 지표를 대조한 완료 기록은 확인되지 않았다. 최종 초안에는 제출 시점에 실제로 완료한 검증 범위를 적는다. [재현 절차 및 판정 기준](2026-08-27_reproducibility_review_plan.md)
+- v0.7의 커밋 해시는 제출 커밋이 정해진 뒤 적는다.
 - 공정조건별 일반화에는 cycle별 운전조건 대응표가 필요하고, 다른 로봇으로의 일반화에는 별도 데이터가 필요하다. 두 근거 모두 현재 확보된 자료에서는 확인되지 않았다.
 
 ## 실행 순서
@@ -99,6 +104,11 @@ python -X utf8 research\14_sensor_group_ablation_results.py
 python -X utf8 research\15_classical_model_comparison.py
 python -X utf8 research\15_classical_model_comparison_results.py
 python -X utf8 research\16_fault_context_alert_analysis.py
+python -X utf8 research\21_rf_control_checks.py
+python -X utf8 research\22_posthoc_saved_result_checks.py
+python -X utf8 research\23_window_length_sensitivity.py rf
+& "D:\Projects\Cube_Codex\.venvs\sam2_clean\Scripts\python.exe" -X utf8 research\23_window_length_sensitivity.py cnn
+python -X utf8 research\23_window_length_sensitivity.py summary
 python -X utf8 research\17_report_evidence_validation.py
 ```
 
@@ -121,6 +131,8 @@ powershell -ExecutionPolicy Bypass -File research\run_report_validation.ps1
 - 논문의 RTDE 125 Hz 설명은 인터페이스 동작 주파수이며, 공개 CSV의 양수 Timestamp 간격 중앙값은 약 1.005초다. Window 크기는 초가 아니라 step으로 해석한다.
 
 ## 현재 연구상 주의점
+
+이 절의 수치 중 다시 확인하지 않은 값은 Timestamp 수정 전일 수 있다. 최신 수치는 v0.7과 `outputs/`를 기준으로 한다.
 
 - 논문에서 말하는 `workload`, `movement speed`, `gripping force`는 공개 CSV의 직접 컬럼이 아니다.
 - 원본 `cycle` ID 224, 225, 226, 227, 229, 230, 231, 232, 233은 시간상 떨어진 두 시행 구간에 재등장한다. 현재 `02`-`05`는 `cycle_run` 기준으로 수정·재실행됐다.
@@ -146,15 +158,15 @@ powershell -ExecutionPolicy Bypass -File research\run_report_validation.ps1
 - 정상 cycle의 반복 오경보 window는 target별로 낮은 관절 움직임 범위, 특정 전류 수준, Tool current 변화 또는 온도 수준 차이를 보였으나, 겹치는 window의 기술통계이므로 인과적 feature importance로 해석하지 않는다.
 - `12`는 모델 입력을 10-step×19개 원본 센서로 맞췄다. Random Forest만 각 센서의 mean, std, min, max, range, delta, slope를 계산해 133개 feature로 변환하며, 1D CNN과 LSTM Autoencoder는 같은 원본 순서를 직접 입력받는다.
 - `12`의 Autoencoder는 `System_Failure=0`인 완전 정상 cycle만 학습했다. 정상 재구성 오차가 모든 고장 유형을 포괄하는 이상 점수라는 가정은 결과적으로 지지되지 않았다.
-- Autoencoder calibration 정상 cycle은 outer fold별 13~36개로 적다. q90, q95, q97.5 민감도에서도 결론이 바뀌지 않았으며, 더 유리한 threshold를 주 결과로 교체하지 않는다.
-- `12`의 cycle-level 표본 수는 전체 202개다. Wilson 신뢰구간은 비율의 불확실성만 나타내며 block/session 내부 상관이나 동일 데이터 재사용 문제를 해소하지 않는다.
+- Autoencoder calibration 정상 cycle은 outer fold별 13~38개로 적다. q90, q95, q97.5 민감도에서도 결론이 바뀌지 않았으며, 더 유리한 threshold를 주 결과로 교체하지 않는다.
+- `12`의 cycle-level 표본 수는 전체 231개다. Wilson 신뢰구간은 비율의 불확실성만 나타내며 block/session 내부 상관이나 동일 데이터 재사용 문제를 해소하지 않는다.
 - `13`은 저장된 `12` prediction을 최종 표 형식으로 재집계한 결과이며 독립적인 새 실험이 아니다.
 - `14`의 `all_19`는 `12` Random Forest의 score와 prediction에 정확히 일치한다.
 - `14`의 센서 제거·단독 사용은 feature 차원과 SMOTE 공간도 함께 바꾸므로 센서의 인과적 효과를 증명하지 않는다.
 - `Tool_current`는 세 타깃에서 일관되게 유용하지 않았고, 온도 단독 탐지력은 낮지만 온도 제거 후 일부 정상 cycle 오경보가 증가했다.
 - `15`는 Logistic Regression과 RBF SVM에만 학습 fold 내부 표준화를 적용했다. 거리·계수 기반 모델에 필요한 전처리 차이이며 입력 window와 133개 특징, SMOTE, test block은 같다.
-- Logistic Regression의 높은 event recall은 완전 정상 cycle 26.96~53.04% 오경보와 함께 나타났으므로 우수한 탐지기로 단독 해석하지 않는다.
-- RBF SVM은 `ProtectiveStop`에서 Random Forest보다 오경보 cycle이 1개 적었지만 event cycle을 3개 더 놓쳤다. 타깃별 trade-off이며 전체 우위가 아니다.
+- Logistic Regression의 높은 event recall은 완전 정상 cycle 26.77~47.24% 오경보와 함께 나타났으므로 우수한 탐지기로 단독 해석하지 않는다.
+- RBF SVM은 `ProtectiveStop`에서 Random Forest보다 오경보 cycle이 2개 적었지만 event cycle을 1개 더 놓쳤다. 타깃별 trade-off이며 전체 우위가 아니다.
 - `15`는 고정 `C=1`, RBF `gamma=scale`, threshold 0.50의 최소 비교다. 현재 결과를 본 뒤 모델별 tuning을 추가하지 않는다.
 
 ## 근거
@@ -182,6 +194,7 @@ powershell -ExecutionPolicy Bypass -File research\run_report_validation.ps1
 
 ## 갱신 기록
 
+- 2026-11-08: Timestamp 따옴표 수정 후 재실행 결과와 사후 점검(`21`, `22`, `23`)을 반영하고, `17`을 v0.7 기준으로 바꾸었다.
 - 2026-07-10: 프로젝트 기준 문서로 지정하고, `03_pre_failure_window_baseline.py`까지 반영한 현재 상태를 정리했다.
 - 2026-07-22: 반복 split 검증(`04`)과 threshold 민감도 검증(`05`) 결과를 반영했다.
 - 2026-08-10: 공정조건 분리 가능성 진단(`06`)과 raw `cycle` ID 재등장 문제를 반영했다.

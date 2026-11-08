@@ -1,123 +1,126 @@
-﻿check_id,source,expected,observed,tolerance,passed
-dataset_sha256,dataset/ur3_cobotops.csv,C789CDA10ACB354A7C1689F617D94A5F39A93FD8CB6C004AD16D36CEA55A74A3,C789CDA10ACB354A7C1689F617D94A5F39A93FD8CB6C004AD16D36CEA55A74A3,exact,True
-dataset_rows,dataset/ur3_cobotops.csv,7409,7409,exact,True
-dataset_columns,dataset/ur3_cobotops.csv,24,24,exact,True
-02_System_Failure_row_baseline_macro_f1,02_row_vs_window_comparison.csv,0.7901,0.7900651517559193,abs<=5e-05,True
-02_System_Failure_best_window_feature_macro_f1,02_row_vs_window_comparison.csv,0.8166,0.8166096226399576,abs<=5e-05,True
-02_System_Failure_row_baseline_pr_auc,02_row_vs_window_comparison.csv,0.643,0.6430020011244917,abs<=5e-05,True
-02_System_Failure_best_window_feature_pr_auc,02_row_vs_window_comparison.csv,0.8613,0.861331111901753,abs<=5e-05,True
-02_ProtectiveStop_row_baseline_macro_f1,02_row_vs_window_comparison.csv,0.8428,0.8427901157335002,abs<=5e-05,True
-02_ProtectiveStop_best_window_feature_macro_f1,02_row_vs_window_comparison.csv,0.8642,0.8641688770999116,abs<=5e-05,True
-02_ProtectiveStop_row_baseline_pr_auc,02_row_vs_window_comparison.csv,0.7409,0.7409239684776714,abs<=5e-05,True
-02_ProtectiveStop_best_window_feature_pr_auc,02_row_vs_window_comparison.csv,0.9039,0.9039274261183228,abs<=5e-05,True
-02_GripLost_row_baseline_macro_f1,02_row_vs_window_comparison.csv,0.7623,0.7622967697133882,abs<=5e-05,True
-02_GripLost_best_window_feature_macro_f1,02_row_vs_window_comparison.csv,0.8412,0.841212474194102,abs<=5e-05,True
-02_GripLost_row_baseline_pr_auc,02_row_vs_window_comparison.csv,0.5604,0.5604205684649003,abs<=5e-05,True
-02_GripLost_best_window_feature_pr_auc,02_row_vs_window_comparison.csv,0.8493,0.8492560222722033,abs<=5e-05,True
-16_summary_rows,16_fault_context_alert_summary.csv,54,54,exact,True
-16_cycle_rows,16_fault_context_cycle_results.csv,10908,10908,exact,True
-16_unique_cycle_keys,16_fault_context_cycle_results.csv,10908,10908,exact,True
-16_System_Failure_true_normal_cycles,16_fault_context_alert_summary.csv,[115],[115],exact,True
-16_System_Failure_other_fault_cycles,16_fault_context_alert_summary.csv,[0],[0],exact,True
-16_ProtectiveStop_true_normal_cycles,16_fault_context_alert_summary.csv,[115],[115],exact,True
-16_ProtectiveStop_other_fault_cycles,16_fault_context_alert_summary.csv,[25],[25],exact,True
-16_GripLost_true_normal_cycles,16_fault_context_alert_summary.csv,[115],[115],exact,True
-16_GripLost_other_fault_cycles,16_fault_context_alert_summary.csv,[48],[48],exact,True
-16_rf_19_raw_window_System_Failure_event_cycle_recall,16_fault_context_alert_summary.csv,0.977,0.9770114942528736,abs<=5e-05,True
-16_rf_19_raw_window_System_Failure_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.0435,0.0434782608695652,abs<=5e-05,True
-16_rf_19_raw_window_System_Failure_cross_fault_alert_rate,16_fault_context_alert_summary.csv,NaN,,exact,True
-16_rf_19_raw_window_ProtectiveStop_event_cycle_recall,16_fault_context_alert_summary.csv,0.9516,0.9516129032258064,abs<=5e-05,True
-16_rf_19_raw_window_ProtectiveStop_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.0348,0.0347826086956521,abs<=5e-05,True
-16_rf_19_raw_window_ProtectiveStop_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.0,0.0,abs<=5e-05,True
-16_rf_19_raw_window_GripLost_event_cycle_recall,16_fault_context_alert_summary.csv,0.9231,0.9230769230769232,abs<=5e-05,True
-16_rf_19_raw_window_GripLost_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.0174,0.017391304347826,abs<=5e-05,True
-16_rf_19_raw_window_GripLost_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.0833,0.0833333333333333,abs<=5e-05,True
-16_1d_cnn_19_raw_System_Failure_event_cycle_recall,16_fault_context_alert_summary.csv,0.977,0.9770114942528736,abs<=5e-05,True
-16_1d_cnn_19_raw_System_Failure_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.1913,0.1913043478260869,abs<=5e-05,True
-16_1d_cnn_19_raw_System_Failure_cross_fault_alert_rate,16_fault_context_alert_summary.csv,NaN,,exact,True
-16_1d_cnn_19_raw_ProtectiveStop_event_cycle_recall,16_fault_context_alert_summary.csv,0.9355,0.935483870967742,abs<=5e-05,True
-16_1d_cnn_19_raw_ProtectiveStop_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.2087,0.208695652173913,abs<=5e-05,True
-16_1d_cnn_19_raw_ProtectiveStop_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.12,0.12,abs<=5e-05,True
-16_1d_cnn_19_raw_GripLost_event_cycle_recall,16_fault_context_alert_summary.csv,0.9231,0.9230769230769232,abs<=5e-05,True
-16_1d_cnn_19_raw_GripLost_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.1652,0.1652173913043478,abs<=5e-05,True
-16_1d_cnn_19_raw_GripLost_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.4375,0.4375,abs<=5e-05,True
-16_lstm_autoencoder_19_raw_q95_System_Failure_event_cycle_recall,16_fault_context_alert_summary.csv,0.046,0.0459770114942528,abs<=5e-05,True
-16_lstm_autoencoder_19_raw_q95_System_Failure_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.1304,0.1304347826086956,abs<=5e-05,True
-16_lstm_autoencoder_19_raw_q95_System_Failure_cross_fault_alert_rate,16_fault_context_alert_summary.csv,NaN,,exact,True
-16_lstm_autoencoder_19_raw_q95_ProtectiveStop_event_cycle_recall,16_fault_context_alert_summary.csv,0.0645,0.064516129032258,abs<=5e-05,True
-16_lstm_autoencoder_19_raw_q95_ProtectiveStop_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.1304,0.1304347826086956,abs<=5e-05,True
-16_lstm_autoencoder_19_raw_q95_ProtectiveStop_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.0,0.0,abs<=5e-05,True
-16_lstm_autoencoder_19_raw_q95_GripLost_event_cycle_recall,16_fault_context_alert_summary.csv,0.0,0.0,abs<=5e-05,True
-16_lstm_autoencoder_19_raw_q95_GripLost_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.1304,0.1304347826086956,abs<=5e-05,True
-16_lstm_autoencoder_19_raw_q95_GripLost_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.1042,0.1041666666666666,abs<=5e-05,True
-16_logistic_regression_System_Failure_event_cycle_recall,16_fault_context_alert_summary.csv,0.9885,0.9885057471264368,abs<=5e-05,True
-16_logistic_regression_System_Failure_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.5304,0.5304347826086957,abs<=5e-05,True
-16_logistic_regression_System_Failure_cross_fault_alert_rate,16_fault_context_alert_summary.csv,NaN,,exact,True
-16_logistic_regression_ProtectiveStop_event_cycle_recall,16_fault_context_alert_summary.csv,0.9677,0.967741935483871,abs<=5e-05,True
-16_logistic_regression_ProtectiveStop_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.2696,0.2695652173913043,abs<=5e-05,True
-16_logistic_regression_ProtectiveStop_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.28,0.28,abs<=5e-05,True
-16_logistic_regression_GripLost_event_cycle_recall,16_fault_context_alert_summary.csv,1.0,1.0,abs<=5e-05,True
-16_logistic_regression_GripLost_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.4522,0.4521739130434782,abs<=5e-05,True
-16_logistic_regression_GripLost_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.5833,0.5833333333333334,abs<=5e-05,True
-16_rbf_svm_System_Failure_event_cycle_recall,16_fault_context_alert_summary.csv,0.954,0.9540229885057472,abs<=5e-05,True
-16_rbf_svm_System_Failure_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.0957,0.0956521739130434,abs<=5e-05,True
-16_rbf_svm_System_Failure_cross_fault_alert_rate,16_fault_context_alert_summary.csv,NaN,,exact,True
-16_rbf_svm_ProtectiveStop_event_cycle_recall,16_fault_context_alert_summary.csv,0.9032,0.9032258064516128,abs<=5e-05,True
-16_rbf_svm_ProtectiveStop_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.0174,0.017391304347826,abs<=5e-05,True
-16_rbf_svm_ProtectiveStop_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.04,0.04,abs<=5e-05,True
-16_rbf_svm_GripLost_event_cycle_recall,16_fault_context_alert_summary.csv,0.9487,0.9487179487179488,abs<=5e-05,True
-16_rbf_svm_GripLost_true_normal_false_alarm_rate,16_fault_context_alert_summary.csv,0.0957,0.0956521739130434,abs<=5e-05,True
-16_rbf_svm_GripLost_cross_fault_alert_rate,16_fault_context_alert_summary.csv,0.375,0.375,abs<=5e-05,True
-13_rf_19_raw_window_System_Failure_pr_auc,13_window_model_summary.csv,0.8137,0.8137324214976762,abs<=5e-05,True
-13_rf_19_raw_window_ProtectiveStop_pr_auc,13_window_model_summary.csv,0.8557,0.8556536325151582,abs<=5e-05,True
-13_rf_19_raw_window_GripLost_pr_auc,13_window_model_summary.csv,0.7267,0.7266515659536292,abs<=5e-05,True
-13_1d_cnn_19_raw_System_Failure_pr_auc,13_window_model_summary.csv,0.6879,0.6879115508107566,abs<=5e-05,True
-13_1d_cnn_19_raw_ProtectiveStop_pr_auc,13_window_model_summary.csv,0.7659,0.7659464013366039,abs<=5e-05,True
-13_1d_cnn_19_raw_GripLost_pr_auc,13_window_model_summary.csv,0.5888,0.5887646427493451,abs<=5e-05,True
-13_lstm_autoencoder_19_raw_q95_System_Failure_pr_auc,13_window_model_summary.csv,0.2228,0.2227721792846986,abs<=5e-05,True
-13_lstm_autoencoder_19_raw_q95_ProtectiveStop_pr_auc,13_window_model_summary.csv,0.1629,0.1628993280776595,abs<=5e-05,True
-13_lstm_autoencoder_19_raw_q95_GripLost_pr_auc,13_window_model_summary.csv,0.0834,0.0834420582503029,abs<=5e-05,True
-04_System_Failure_positive_f1,04_pre_failure_repeated_split_summary.csv,0.092,0.0920468290823026,abs<=5e-05,True
-04_System_Failure_positive_recall,04_pre_failure_repeated_split_summary.csv,0.0644,0.0643694785512187,abs<=5e-05,True
-04_System_Failure_runs_with_tp,04_pre_failure_repeated_split_summary.csv,0.8333,0.8333333333333334,abs<=5e-05,True
-04_ProtectiveStop_positive_f1,04_pre_failure_repeated_split_summary.csv,0.0867,0.0866666666666666,abs<=5e-05,True
-04_ProtectiveStop_positive_recall,04_pre_failure_repeated_split_summary.csv,0.0667,0.0666666666666666,abs<=5e-05,True
-04_ProtectiveStop_runs_with_tp,04_pre_failure_repeated_split_summary.csv,0.1333,0.1333333333333333,abs<=5e-05,True
-04_GripLost_positive_f1,04_pre_failure_repeated_split_summary.csv,0.3058,0.3057888233052709,abs<=5e-05,True
-04_GripLost_positive_recall,04_pre_failure_repeated_split_summary.csv,0.2248,0.2247793945820261,abs<=5e-05,True
-04_GripLost_runs_with_tp,04_pre_failure_repeated_split_summary.csv,0.9667,0.9666666666666668,abs<=5e-05,True
-report_heading_## 초록,2026-08-27_research_report_draft.md,True,True,exact,True
-report_heading_## 1. 서론,2026-08-27_research_report_draft.md,True,True,exact,True
-report_heading_## 2. 관련 연구,2026-08-27_research_report_draft.md,True,True,exact,True
-report_heading_## 3. 연구 방법,2026-08-27_research_report_draft.md,True,True,exact,True
-report_heading_## 4. 연구 결과,2026-08-27_research_report_draft.md,True,True,exact,True
-report_heading_## 5. 논의,2026-08-27_research_report_draft.md,True,True,exact,True
-report_heading_## 6. 연구의 한계,2026-08-27_research_report_draft.md,True,True,exact,True
-report_heading_## 7. 결론,2026-08-27_research_report_draft.md,True,True,exact,True
-report_heading_## 8. 재현성 및 검증 계획,2026-08-27_research_report_draft.md,True,True,exact,True
-report_heading_## 참고문헌,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_dataset_shape,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_sensor_count,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_cycle_run_count,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_window_count,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_event_cycle_counts,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_rf_feature_count,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_rf_tree_count,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_row_window_system,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_row_window_protective,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_row_window_grip,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_rf_system,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_rf_protective,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_rf_grip,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_cnn_system,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_cnn_protective,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_cnn_grip,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_autoencoder_system,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_autoencoder_protective,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_autoencoder_grip,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_window_pr_auc_rf,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_window_pr_auc_cnn,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_window_pr_auc_autoencoder,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_pre_failure_f1,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_pre_failure_grip_recall,2026-08-27_research_report_draft.md,True,True,exact,True
-report_claim_dataset_hash,2026-08-27_research_report_draft.md,True,True,exact,True
+﻿check_id,source,expected,passed
+dataset_csv_sha256,dataset,C789CDA10ACB354A7C1689F617D94A5F39A93FD8CB6C004AD16D36CEA55A74A3,True
+dataset_xlsx_sha256,dataset,F0F10917DE9056908A82CEC1AA459DDF9DA2D2DB70D269B128F99241C8796091,True
+dataset_shape,dataset,7409x24,True
+report_csv_hash,dataset,C789CDA10ACB354A,True
+report_xlsx_hash,dataset,F0F10917DE905690,True
+table2_rf_19_raw_window_System_Failure,16,| System Failure | Random Forest | 104/104 (100.00%) | 5/127 (3.94%) | n/a |,True
+table2_1d_cnn_19_raw_System_Failure,16,|  | 1D CNN | 104/104 (100.00%) | 23/127 (18.11%) | n/a |,True
+table2_lstm_autoencoder_19_raw_q95_System_Failure,16,|  | LSTM AE q95 | 5/104 (4.81%) | 13/127 (10.24%) | n/a |,True
+table4_random_forest_System_Failure,16,| System Failure | Random Forest | 100.00% | 3.94% | n/a |,True
+table4_logistic_regression_System_Failure,16,|  | Logistic Regression | 99.04% | 45.67% | n/a |,True
+table4_rbf_svm_System_Failure,16,|  | RBF SVM | 99.04% | 7.87% | n/a |,True
+table2_rf_19_raw_window_ProtectiveStop,16,| Protective Stop | Random Forest | 74/76 (97.37%) | 2/127 (1.57%) | 0/28 (0.00%) |,True
+table2_1d_cnn_19_raw_ProtectiveStop,16,|  | 1D CNN | 73/76 (96.05%) | 17/127 (13.39%) | 4/28 (14.29%) |,True
+table2_lstm_autoencoder_19_raw_q95_ProtectiveStop,16,|  | LSTM AE q95 | 5/76 (6.58%) | 13/127 (10.24%) | 0/28 (0.00%) |,True
+table4_random_forest_ProtectiveStop,16,| Protective Stop | Random Forest | 97.37% | 1.57% | 0.00% |,True
+table4_logistic_regression_ProtectiveStop,16,|  | Logistic Regression | 97.37% | 26.77% | 28.57% |,True
+table4_rbf_svm_ProtectiveStop,16,|  | RBF SVM | 96.05% | 0.00% | 3.57% |,True
+table2_rf_19_raw_window_GripLost,16,| Grip Lost | Random Forest | 45/48 (93.75%) | 2/127 (1.57%) | 3/56 (5.36%) |,True
+table2_1d_cnn_19_raw_GripLost,16,|  | 1D CNN | 48/48 (100.00%) | 27/127 (21.26%) | 22/56 (39.29%) |,True
+table2_lstm_autoencoder_19_raw_q95_GripLost,16,|  | LSTM AE q95 | 0/48 (0.00%) | 13/127 (10.24%) | 6/56 (10.71%) |,True
+table4_random_forest_GripLost,16,| Grip Lost | Random Forest | 93.75% | 1.57% | 5.36% |,True
+table4_logistic_regression_GripLost,16,|  | Logistic Regression | 100.00% | 47.24% | 69.64% |,True
+table4_rbf_svm_GripLost,16,|  | RBF SVM | 95.83% | 9.45% | 30.36% |,True
+table3_rf_19_raw_window_System_Failure,13,| System Failure | Random Forest | 0.8482 | 0.8515 | 0.9288 |,True
+table3_1d_cnn_19_raw_System_Failure,13,|  | 1D CNN | 0.7888 | 0.7334 | 0.8827 |,True
+table3_lstm_autoencoder_19_raw_q95_System_Failure,13,|  | LSTM AE q95 | 0.4391 | 0.2237 | 0.4202 |,True
+table3_rf_19_raw_window_ProtectiveStop,13,| Protective Stop | Random Forest | 0.8871 | 0.8706 | 0.9651 |,True
+table3_1d_cnn_19_raw_ProtectiveStop,13,|  | 1D CNN | 0.8021 | 0.7877 | 0.9261 |,True
+table3_lstm_autoencoder_19_raw_q95_ProtectiveStop,13,|  | LSTM AE q95 | 0.4821 | 0.1592 | 0.4599 |,True
+table3_rf_19_raw_window_GripLost,13,| Grip Lost | Random Forest | 0.8159 | 0.7742 | 0.9267 |,True
+table3_1d_cnn_19_raw_GripLost,13,|  | 1D CNN | 0.7580 | 0.6675 | 0.9089 |,True
+table3_lstm_autoencoder_19_raw_q95_GripLost,13,|  | LSTM AE q95 | 0.4658 | 0.0866 | 0.3934 |,True
+table1_System_Failure,02,| System Failure | 0.7901 | 20-step | 0.8860 | 0.6430 | 0.8927 | 7.0 | 44.9 |,True
+text_pr_auc_System_Failure,02,통합 고장 0.6430에서 0.8927,True
+table1_ProtectiveStop,02,| Protective Stop | 0.8428 | 5-step | 0.8776 | 0.7409 | 0.8796 | 3.8 | 10.2 |,True
+text_pr_auc_ProtectiveStop,02,보호 정지 0.7409에서 0.8796,True
+table1_GripLost,02,| Grip Lost | 0.7623 | 10-step | 0.8244 | 0.5604 | 0.7831 | 3.3 | 11.2 |,True
+text_pr_auc_GripLost,02,파지 상실 0.5604에서 0.7831,True
+table5_all_19,16,| All sensors (baseline) | 19 | 104 | 5 | 74 | 2 | 0 | 45 | 2 | 3 |,True
+table5_current_family_only,16,| Current family only | 7 | 102 | 6 | 73 | 7 | 2 | 45 | 5 | 14 |,True
+table5_joint_current_only,16,| Joint current only | 6 | 103 | 7 | 73 | 7 | 2 | 45 | 10 | 14 |,True
+table5_tool_current_only,16,| Tool current only | 1 | 80 | 111 | 58 | 88 | 21 | 31 | 93 | 47 |,True
+table5_speed_only,16,| Joint speed only | 6 | 102 | 30 | 75 | 9 | 8 | 46 | 28 | 23 |,True
+table5_temperature_only,16,| Joint temperature only | 6 | 24 | 14 | 10 | 7 | 2 | 1 | 0 | 1 |,True
+table5_drop_current_family,16,| Drop current family | 12 | 101 | 11 | 75 | 5 | 4 | 26 | 1 | 3 |,True
+table5_drop_speed,16,| Drop joint speed | 13 | 102 | 5 | 72 | 3 | 0 | 44 | 3 | 6 |,True
+table5_drop_temperature,16,| Drop joint temperature | 13 | 104 | 8 | 74 | 7 | 5 | 45 | 4 | 6 |,True
+table5_drop_tool_current,16,| Drop tool current | 18 | 104 | 6 | 74 | 3 | 2 | 45 | 1 | 5 |,True
+table6_rf_last_step_19_System_Failure,21,| System Failure | Last step | 92/104 | 21/127 | n/a | 0.7132 | 0.5889 |,True
+table6_rf_row_max_19_System_Failure,21,|  | Row maximum | 98/104 | 11/127 | n/a | 0.8317 | 0.8053 |,True
+table6_rf_19_raw_window_System_Failure,21,|  | Window statistics | 104/104 | 5/127 | n/a | 0.8482 | 0.8515 |,True
+table6_rf_last_step_19_ProtectiveStop,21,| Protective Stop | Last step | 70/76 | 15/127 | 4/28 | 0.7939 | 0.6560 |,True
+table6_rf_row_max_19_ProtectiveStop,21,|  | Row maximum | 69/76 | 1/127 | 2/28 | 0.8856 | 0.8380 |,True
+table6_rf_19_raw_window_ProtectiveStop,21,|  | Window statistics | 74/76 | 2/127 | 0/28 | 0.8871 | 0.8706 |,True
+table6_rf_last_step_19_GripLost,21,| Grip Lost | Last step | 32/48 | 24/127 | 12/56 | 0.6124 | 0.3708 |,True
+table6_rf_row_max_19_GripLost,21,|  | Row maximum | 39/48 | 6/127 | 2/56 | 0.7699 | 0.6473 |,True
+table6_rf_19_raw_window_GripLost,21,|  | Window statistics | 45/48 | 2/127 | 3/56 | 0.8159 | 0.7742 |,True
+text_consensus_detected,21,"탐지는 104/104, 74/76, 45/48로 같았다",True
+text_consensus_false_alarms,21,"완전 정상 오경보는 4/127, 2/127, 1/127",True
+text_consensus_cross,21,"교차 경보는 보호 정지 1/28, 파지 상실 3/56",True
+text_last_step_share,22,"통합 고장 23.0%, 보호 정지 11.3%, 파지 상실 36.6%뿐",True
+text_spliced,22,"4,667개 중 307개 구간",True
+text_gap,22,60초 이상 간격을 포함한 구간도 3개,True
+text_missing_rows,22,함께 빠진 45행,True
+text_same_fa,22,"1D CNN의 탐지는 101/104, 68/76, 37/48로 랜덤 포레스트의 104/104, 74/76, 45/48",True
+text_cycle_auc,22,"랜덤 포레스트 0.9976, 0.9988, 0.9965, 1D CNN 0.9951, 0.9747, 0.9788",True
+text_mcnemar,22,"수는 3과 21, 2와 17, 1과 26",True
+text_without_missing_rf,22,"랜덤 포레스트 4/112, 2/112, 2/112",True
+text_without_missing_cnn,22,"1D CNN 19/112, 13/112, 23/112",True
+text_no_splice_random_forest,22,"랜덤 포레스트는 102/104와 4/127, 72/76과 2/127, 42/48과 2/127",True
+text_no_splice_1d_cnn,22,"1D CNN은 101/104와 23/127, 70/76과 16/127, 45/48과 27/127",True
+text_ae_spearman,22,"Spearman 상관은 전류 0.79, 속도 0.48",True
+text_ae_scores,22,"점수 중앙값은 0.21, 나머지는 0.65",True
+text_ae_ps,22,속도 변동 중앙값이 0.10(음성 0.29)으로 거의 멈춘 상태에 가까웠고 63%,True
+text_ae_gl,22,속도 변동이 음성과 같았지만(0.26) 전류 변동이 0.29로 음성(0.47),True
+text_pre_f1,22,"통합 고장 0.1178, 보호 정지 0.1344, 파지 상실 0.3758",True
+text_pre_rates,22,"양성 비율은 7.62%, 1.06%, 1.86%",True
+text_pre_baseline,22,"F1은 0.1416, 0.0209, 0.0365",True
+text_pre_sf_ranks,22,"PR-AUC 0.2389, ROC-AUC 0.7998",True
+text_pre_ps_runs,22,30회 중 6회,True
+text_gl_recall,04,평균 재현율은 0.2814,True
+text_ps_positive_counts,04,회당 3~12개,True
+table8_rf_19_raw_window_System_Failure,23,"| System Failure | Random Forest | 103/104, 5/127 | 104/104, 5/127 | 102/104, 9/126 |",True
+table8_1d_cnn_19_raw_System_Failure,23,"|  | 1D CNN | 103/104, 56/127 | 104/104, 23/127 | 82/104, 7/126 |",True
+table8_rf_19_raw_window_ProtectiveStop,23,"| Protective Stop | Random Forest | 72/76, 7/127 | 74/76, 2/127 | 70/76, 5/126 |",True
+table8_1d_cnn_19_raw_ProtectiveStop,23,"|  | 1D CNN | 74/76, 25/127 | 73/76, 17/127 | 65/76, 12/126 |",True
+table8_rf_19_raw_window_GripLost,23,"| Grip Lost | Random Forest | 46/48, 2/127 | 45/48, 2/127 | 43/48, 1/126 |",True
+table8_1d_cnn_19_raw_GripLost,23,"|  | 1D CNN | 48/48, 88/127 | 48/48, 27/127 | 46/48, 6/126 |",True
+text_rf_detect_range,23,"탐지가 102~104건, 70~74건, 43~46건",True
+text_rf_fa_range,23,"오경보가 5~9건, 2~7건, 1~2건",True
+text_cnn_fa_chain,23,"오경보가 56→23→7건, 25→17→12건, 88→27→6건",True
+text_cnn_detect_chain,23,"탐지도 103→104→82건, 74→73→65건, 48→48→46건",True
+text_gl_cross,23,"교차 경보는 랜덤 포레스트 1, 3, 11건, 1D CNN 44, 22, 16건",True
+text_5_to_10,23,탐지 변화는 2건 이내였고 오경보는 같거나 줄었다,True
+text_10_to_20,23,여섯 경우 모두 탐지가 2~22건 줄었다,True
+text_windows_per_cycle,23,"평균 25.2, 20.2, 10.3개",True
+text_cycle_rows,23,행 수 중앙값은 24개이고 30행 이상인 사이클은 20.3%,True
+table7_block_1,22,| 1 | 25 | 18 | 7 | 2 | 5 |,True
+table7_block_2,22,| 2 | 25 | 20 | 5 | 2 | 3 |,True
+table7_block_3,22,| 3 | 24 | 18 | 6 | 3 | 5 |,True
+table7_block_4,22,| 4 | 25 | 12 | 13 | 5 | 9 |,True
+table7_block_5,22,| 5 | 25 | 19 | 6 | 5 | 1 |,True
+table7_block_7,22,| 7 | 25 | 16 | 9 | 8 | 4 |,True
+table7_block_8,22,| 8 | 24 | 11 | 13 | 10 | 9 |,True
+table7_block_9,22,| 9 | 27 | 6 | 21 | 18 | 6 |,True
+table7_block_10,22,| 10 | 31 | 7 | 24 | 23 | 6 |,True
+table7_total,22,| Total | 231 | 127 | 104 | 76 | 48 |,True
+text_excluded_blocks,22,6번(4개)과 11번(14개),True
+text_rf_max_block_fa,12,"최댓값은 랜덤 포레스트 11.1%, 9.5%, 9.5%",True
+text_cnn_max_block_fa,12,"1D CNN 71.4%, 50.0%, 66.7%",True
+text_cycles,10,최종 비교에 들어간 231개,True
+text_windows,10,"구간은 모두 4,667개",True
+text_fault_cycles,16,"통합 고장 104개, 보호 정지 76개, 파지 상실 48개",True
+text_normal_cycles,16,정의하였고 127개,True
+text_ae_q90,16,"통합 고장 0.0577, 보호 정지 0.0789, 파지 상실 0",True
+text_calibration_normals,12,13~38개,True
+text_ae_recall_range,16,0~6.58%,True
+text_wilson_recall,16,"랜덤 포레스트 83.2~97.9%, 1D CNN 92.6~100.0%",True
+text_wilson_fa,16,0.4~5.6%와 15.0~29.2%,True
+text_split_System_Failure,01,통합 고장 0.8013→0.7901,True
+text_split_ProtectiveStop,01,보호 정지는 0.7921→0.8428,True
+text_split_GripLost,01,파지 상실 0.7988→0.7623,True
+text_ae_roc,13,ROC-AUC는 0.39~0.46,True
+text_tool_only,16,69~87%,True
+references_in_citation_order,report,"[1, 2, 3, 4, 5, 6, 7, 8, 9]",True

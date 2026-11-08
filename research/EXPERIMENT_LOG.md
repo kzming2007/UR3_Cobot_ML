@@ -175,6 +175,12 @@
 - 다음 판단: 새 architecture나 threshold 탐색을 추가하지 않는다. 최종 보고서는 supervised 구간 탐지를 주 결과로 두고, Autoencoder는 사전 고정한 부정적 비교 결과, pre-failure는 `GripLost` 중심의 제한적 부가 분석으로 구성할지 공동연구자와 합의한다.
 - 관련 파일: `research/2026-08-23_lstm_autoencoder_preregistration.md`, `research/12_matched_rf_baseline.py`, `research/12_matched_torch_models.py`, `research/12_matched_results.py`, `research/outputs/12_matched_lstm_autoencoder_comparison.md`, `research/outputs/12_matched_consensus_summary.csv`, `research/outputs/12_matched_pairwise_cycle_errors.csv`
 
+### 2026-08-23 - 13 최종 평가표 재집계
+
+- 질문: 저장된 `12` 예측을 최종 보고에 쓸 confusion matrix와 ROC-AUC·PR-AUC 표로 정리하면 어떤 값이 되는가?
+- 방법: `12`의 window 예측을 재집계했다. 새 모델을 학습하지 않았다.
+- 관련 파일: `research/13_final_evaluation_tables.py`, `research/outputs/13_final_evaluation_tables.md`, `research/outputs/13_window_model_summary.csv`
+
 ### 2026-08-23 - 14 센서 그룹 ablation
 
 - 질문: 기존 프로젝트에서 반복적으로 중요하게 해석한 전류 계열이 동일 19-sensor·9-block 평가에서도 실제 예측에 기여하는가? 전류·속도·온도·`Tool_current`의 기여는 타깃별로 같은가?
@@ -205,6 +211,59 @@
 - 한계: 대표 기본 설정 한 개씩만 비교했으므로 각 모델 계열의 최적 성능이 아니다. SVM과 Random Forest의 probability 산출 방식은 다르다. 동일 데이터 내부 비교이며 조기 고장 예측이나 외부 일반화 결과가 아니다.
 - 다음 판단: 결과를 본 뒤 Grid Search, kernel, `C`, `gamma`, threshold를 추가로 조정하지 않는다. 기본 모델 비교를 최종 보고서 본문의 통제 실험으로 둘지 부록으로 둘지만 공동연구자와 결정한다.
 - 관련 파일: `research/2026-08-23_classical_model_comparison_preregistration.md`, `research/15_classical_model_comparison.py`, `research/15_classical_model_comparison_results.py`, `research/outputs/15_classical_model_comparison.md`, `research/outputs/15_classical_model_summary.csv`, `research/outputs/15_classical_model_paired_errors.csv`
+
+### 2026-08-26 - 16 완전 정상 오경보와 교차 경보 분리
+
+- 질문: 개별 target의 음성 cycle에는 다른 고장만 있는 cycle이 섞여 있는데, 이를 나누면 경보 해석이 달라지는가?
+- 방법: 저장된 `12`, `14`, `15` cycle 결과를 재학습 없이 재집계해 완전 정상 오경보와 교차 고장 경보를 분리했다.
+- 관련 파일: `research/16_fault_context_alert_analysis.py`, `research/outputs/16_fault_context_alert_analysis.md`, `research/outputs/16_fault_context_alert_summary.csv`
+
+### 2026-08-27 - 17 보고서 근거 대조
+
+- 방법: 8월 27일 초안 기준으로 저장 결과와 본문 수치·문장을 대조했고 122개 항목이 통과했다.
+- 이후: 2026-11-08에 v0.7 기준으로 다시 작성했다. 아래 Timestamp 기록과 `21`, `22` 뒤에 실행한 결과가 현재 기록이다.
+
+### 2026-11-08 - Timestamp 따옴표 수정과 재실행
+
+- 문제: 863행의 `Timestamp`가 큰따옴표로 한 번 더 감싸여 있어 `to_datetime(errors="coerce")`에서 결측이 되어 구간 구성에서 빠졌다.
+- 수정: `common.load_raw_data`에서 따옴표를 제거하고 00, 02, 03, 04, 09, 10, 12, 13, 14, 15, 16을 재실행했다. 01과 06은 시각 변환을 쓰지 않아 영향이 없고, 05, 07, 08, 11은 02·03·10의 구간을 쓰지만 재실행하지 않아 수정 전 값이다. 이 값들은 v0.7 본문에 쓰지 않았다.
+- 결과: `cycle_run` 202개에서 231개로, 10-step window 4,035개에서 4,667개로, 완전 정상 cycle 115개에서 127개로 바뀌었다. 전후 비교는 `research/2026-11-08_timestamp_fix_comparison.md`에 있다.
+- 작업 위치: 복제본 `UR3_Cobot_ML_tsfix`의 `research/timestamp-quote-fix` 브랜치. 이 기록 시점에 `main`에는 병합하지 않았다.
+
+### 2026-11-08 - 18~20 보고서 그림과 Word 생성
+
+- 방법: 그림 2(`18`)와 그림 1(`19`)을 저장 결과와 고정 구조로 그리고, `20`이 Markdown 원고를 2단 Word 파일로 만든다. 새 모델을 학습하지 않았다.
+- 관련 파일: `research/18_detection_false_alarm_figure.py`, `research/19_study_design_figure.py`, `research/20_build_report_docx.py`
+
+### 2026-11-08 - 21 입력 통제 비교와 Random Forest 시드 (사후)
+
+- 질문: 행과 구간의 비교(표 1)는 평가 단위와 라벨이 달라 시계열 맥락의 효과로 읽을 수 없다. 같은 구간과 라벨에서 입력만 바꾸면 어떤가? Random Forest 결과는 시드에 얼마나 흔들리는가?
+- 사전 고정: 없다. v0.6 검토 뒤 결과를 알고 추가한 사후 분석이며, 사전등록 문서의 Random Forest 시드 42 주 결과를 바꾸지 않는다.
+- 공통 조건: 4,667개 10-step window와 window 라벨, 9개 block, SMOTE, 300 trees, `score > 0.50`.
+- 입력: `rf_last_step_19`는 window의 마지막 행 19개 값, `rf_row_max_19`는 행 라벨로 학습한 뒤 window의 10개 행 점수 중 최댓값, `rf_19_raw_window`는 기존 133개 통계. 마지막 행은 처음 계획한 조건이었으나 양성 window 중 마지막 행도 양성인 비율이 23.0%, 11.3%, 36.6%라 입력이 고장 행을 보지 못하는 경우가 많아, `rf_row_max_19`를 같은 실행에 추가했다.
+- 실행 범위: 입력 조건별 27회, 시드 43, 44 각 27회. 시드 42 통계 조건 27회는 재현 확인용으로 다시 돌렸고 `12` 저장 점수와 14,001개 window 모두 일치했다.
+- 탐지/완전 정상 오경보(마지막 행, 행 최댓값, 통계): `System_Failure` 92/21, 98/11, 104/5. `ProtectiveStop` 70/15, 69/1, 74/2. `GripLost` 32/24, 39/6, 45/2.
+- 시드: 2/3 합의에서 탐지는 104/104, 74/76, 45/48로 같고 완전 정상 오경보는 4/127, 2/127, 1/127, 교차 경보는 1/28, 3/56이다.
+- 한계: 시드 42 한 번의 사후 비교이고 차이가 몇 건 수준이다. 133개 통계 대부분은 시점 순서를 쓰지 않으므로 순서 정보의 효과로 단정하지 않는다.
+- 관련 파일: `research/21_rf_control_checks.py`, `research/outputs/21_rf_control_checks.md`, `research/outputs/21_rf_control_summary.csv`, `research/outputs/21_rf_control_window_predictions.csv`
+
+### 2026-11-08 - 22 저장 결과 사후 점검
+
+- 방법: 재학습 없이 저장 예측과 원자료에서 블록 구성, 결측·이어 붙인 구간 민감도, 같은 오경보 수준의 CNN 탐지와 사이클 AUC, McNemar, Autoencoder 점수와 움직임의 기술통계, 고장 전 예측의 전부 양성 F1 기준선을 재집계했다.
+- 주의: 같은 오경보 비교는 시험 점수로 그린 곡선 위의 한 점이다. Autoencoder 기술통계는 인과를 확인하지 않는다.
+- 관련 파일: `research/22_posthoc_saved_result_checks.py`, `research/outputs/22_posthoc_saved_results.md`
+
+### 2026-11-08 - 23 구간 길이 민감도 (사후)
+
+- 질문: 구간 길이를 5, 20-step으로 바꾸면 Random Forest와 1D CNN 비교의 결론이 달라지는가?
+- 사전 고정: 없다. 결과를 알고 추가한 사후 분석이며 10-step을 주 결과로 유지한다. Autoencoder는 탐지가 낮아 제외했다.
+- 공통 조건: `12`와 같은 19개 센서, 9개 block, 구간 라벨, `score > 0.50`, Random Forest 시드 42, 1D CNN 시드 42, 43, 44와 2/3 합의.
+- 실행 범위: Random Forest 54회, 1D CNN 162회, 그리고 경로 확인용 10-step CNN 1회. 10-step 구간 재구성은 저장 캐시와 일치했고, 확인용 fold의 점수 차이는 0이었다. 실행 환경은 `12`와 같다.
+- 데이터: 구간은 5-step 5,822개, 20-step 2,365개다. 20-step에서는 행이 부족한 완전 정상 cycle 1개가 빠져 230개 cycle이다.
+- 탐지/완전 정상 오경보(5, 10, 20-step): Random Forest `System_Failure` 103/5, 104/5, 102/9. `ProtectiveStop` 72/7, 74/2, 70/5. `GripLost` 46/2, 45/2, 43/1. 1D CNN `System_Failure` 103/56, 104/23, 82/7. `ProtectiveStop` 74/25, 73/17, 65/12. `GripLost` 48/88, 48/27, 46/6.
+- 해석: Random Forest는 길이에 비교적 안정적이었고, 1D CNN의 오경보와 탐지는 길이에 크게 의존했다. 10-step에서 본 오경보 차이를 1D CNN의 고유한 한계로 일반화하지 않는다. 5에서 10-step으로 늘리면 여섯 경우 모두 탐지 변화가 2건 이내이고 오경보가 같거나 줄었으며, 10에서 20-step으로 늘리면 여섯 경우 모두 탐지가 2~22건 줄었다. 세 길이 중에서는 10-step이 절충점이다.
+- 한계: 같은 시험 block에서 세 길이만 본 사후 비교이므로 최적 길이로 단정하지 않는다. 1D CNN 구조를 길이마다 다시 맞추지 않았다. 길이마다 양성 비율이 달라 구간 지표는 비교하지 않는다. cycle당 구간이 평균 25.2, 20.2, 10.3개로 줄어 경보 기회도 줄어든다. cycle 행 수 중앙값은 24개이고 30행 이상인 cycle은 20.3%다.
+- 관련 파일: `research/23_window_length_sensitivity.py`, `research/outputs/23_window_length_sensitivity.md`, `research/outputs/23_window_length_summary.csv`, `research/outputs/23_cycle_rows.csv`
 
 ## 공통 기준
 

@@ -33,7 +33,7 @@ def main(out_name: str) -> None:
     ax.set_ylim(3.4, 63.4)
 
     ax.text(0, 61, "(a)", fontweight="bold", va="center")
-    steps = ["Public CSV\n7,409 rows", "Cycles\n231", "10-step windows\n4,667", "Three models\n19 sensors, 9 blocks"]
+    steps = ["Public records\n7,409 rows", "Cycles\n231", "10-step windows\n4,667", "Three models\n19 sensors, 9 blocks"]
     widths = [19, 13, 23, 30]
     x = 0.0
     for i, (text, w) in enumerate(zip(steps, widths)):
