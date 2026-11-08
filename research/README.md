@@ -57,21 +57,21 @@
 - `EXPERIMENT_LOG.md`: 실제 실행한 실험의 시간순 기록
 - `outputs/`: 실행 결과 CSV/Markdown 저장 위치
 
-## 현재 상태
+## 11월 12일 제출 현황
 
-- 기준일: 2026-08-27
-- 완료: 데이터 감사, row-level baseline 재현, cycle_run 내부 window baseline, pre-failure baseline, 반복 split·threshold 검증, 공정조건 분리 가능성 진단, cycle_run 경계 재검증, acquisition block held-out 강건성 검증, 공통 10-step 사건 단위 기준선 검증, 고정 1D CNN/LSTM 비교, sequence model 오류 분석, 동일 19개 센서 기반 Random Forest·1D CNN·정상-only LSTM Autoencoder 비교, 최종 평가표 재집계, 사전 고정 센서 그룹 ablation, 동일 시계열 특징 기반 Logistic Regression·RBF SVM 비교, fault-context 경보 지표 정정, 직접 관련 연구 조사, 논문 형식 연구보고서 초안, 보고서 핵심 수치·본문 내부 대조 122개 항목.
-- 현재 결론: 주 연구는 supervised 구간 단위 이상탐지로 둔다. 동일 19개 센서 Random Forest의 event cycle recall/완전 정상 cycle 오경보율은 `System_Failure` 0.9770/0.0435, `ProtectiveStop` 0.9516/0.0348, `GripLost` 0.9231/0.0174였다. 다른 고장만 발생한 cycle에 대한 교차 경보율은 `ProtectiveStop` 0.0000, `GripLost` 0.0833이었다. 1D CNN은 recall을 유지했지만 완전 정상 오경보율 0.1652~0.2087과 `GripLost` 교차 경보율 0.4375를 보였다. 정상-only LSTM Autoencoder q95는 recall 0~0.0645로 기준선보다 열세였다. 동일 통계 특징의 Logistic Regression은 recall 0.9677~1.0000이었지만 완전 정상 오경보율이 0.2696~0.5304였고, RBF SVM은 recall 0.9032~0.9540과 완전 정상 오경보율 0.0174~0.0957로 타깃별 trade-off가 나타났다. 따라서 시계열 통계 특징에는 기본 모델도 활용할 수 있는 신호가 있지만, 현재 평가에서는 Random Forest가 탐지와 경보 부담을 가장 안정적으로 균형화했다. 센서 그룹 ablation에서는 관절 전류 계열의 예측 기여를 확인했으나 전류 전체가 항상 또는 유일하게 핵심이라는 주장은 하지 않는다.
-- 막힌 점: 실제 공정조건 분류는 cycle-to-condition 정답표가 없어 검증할 수 없다. 이 제약은 시계열 이상탐지 연구 진행을 막지는 않는다.
+2026년 11월 8일 기준으로 기존 연구 근거는 `research/sensor-ablation`의 커밋 `9e9a878`에 있다. 학술연구 결과보고서의 [v0.1 원본](2026-08-27_research_report_draft.md)을 함께 둔다. 이 저장소에서 11월 제출용 최종본이나 제출 완료 기록은 확인되지 않았다. 제출 목표일은 11월 12일이며, 마감 시각과 양식, 필수 첨부는 확인이 필요하다.
 
-## 다음 작업
+### 확인된 결과
 
-1. 공동연구자와 보고서의 주 결과·직접 비교·보조 분석 위계와 본문에 넣을 표를 확정한다.
-2. 깨끗한 별도 worktree에서 CPU 전체 파이프라인을 다시 실행하고 저장 결과와 대조한다.
-3. 기존 외부 PyTorch 환경에서 3개 seed의 딥러닝 학습을 다시 실행해 cycle prediction과 핵심 지표를 대조한다.
-4. 내용 확정 후 수치·용어를 보존하면서 한국어 문장을 절별로 윤문한다.
-5. 참고문헌 형식을 통일하고 제출 양식에 맞춘 PDF에서 표 잘림, 페이지 넘김, 글꼴을 확인한다.
-6. 새 모델, 추가 tuning, threshold 변경은 현재 보고서의 필수 작업에 포함하지 않는다.
+- 공개 UR3 CobotOps의 `cycle_run` 202개에서 경계를 넘지 않는 10-step window 4,035개를 만들고, 같은 19개 센서로 9개 수집 블록을 하나씩 제외해 평가했다. 주 결과는 이상이 포함된 구간의 탐지 성능이다.
+- Random Forest의 고장 cycle 재현율과 완전 정상 cycle 오경보율은 `System_Failure` 97.70%와 4.35%, `ProtectiveStop` 95.16%와 3.48%, `GripLost` 92.31%와 1.74%였다. 1D CNN은 재현율이 비슷했으나 완전 정상 오경보율이 16.52~20.87%였고, 정상 데이터로만 학습한 LSTM Autoencoder의 q95 재현율은 0~6.45%였다. [주 결과 및 경보 분해](outputs/16_fault_context_alert_analysis.md)
+- 기본 분류 모델 비교와 센서 그룹 제거 실험까지 수행했다. `GripLost`의 고장 전 분석은 평균 재현율 22.48%의 탐색 결과로, 실용적인 조기경고 성능은 확인하지 못했다. [기본 모델 비교](outputs/15_classical_model_comparison.md), [센서 그룹 비교](outputs/14_sensor_group_ablation.md), [고장 전 분석](outputs/04_pre_failure_repeated_split_results.md)
+- 8월 27일에 데이터 식별 정보, 저장 결과의 기준값, v0.1의 구조와 일부 표 및 문구를 점검한 내부 검사 122개가 통과했다. v0.2의 변경 사항은 코드, 실험 기록 및 저장 결과표와 별도로 대조했다. [내부 검사 기록](outputs/17_report_evidence_validation.md)
+
+### 빠진 근거와 초안 수정점
+
+- 원본 CSV부터 별도 작업공간에서 CPU 모델과 GPU 모델을 다시 학습해 예측 및 지표를 대조한 완료 기록은 확인되지 않았다. 최종 초안에는 제출 시점에 실제로 완료한 검증 범위를 적는다. [재현 절차 및 판정 기준](2026-08-27_reproducibility_review_plan.md)
+- 공정조건별 일반화에는 cycle별 운전조건 대응표가 필요하고, 다른 로봇으로의 일반화에는 별도 데이터가 필요하다. 두 근거 모두 현재 확보된 자료에서는 확인되지 않았다.
 
 ## 실행 순서
 
@@ -177,12 +177,8 @@ powershell -ExecutionPolicy Bypass -File research\run_report_validation.ps1
 
 ## 열린 질문
 
-- 보고서 초안의 supervised 구간 단위 이상탐지 중심 구조와 정상-only Autoencoder의 부정적 결과 서술 범위를 공동연구자와 합의해야 한다.
-- pre-failure를 `GripLost` 중심의 제한적 부가 분석으로 둘지 합의해야 한다.
 - `GripLost` pre-failure threshold 0.30을 후속 검증 후보로 유지할지 정해야 한다.
 - 공정조건 분류는 대응표를 확보하지 않는 한 연구 범위에 포함하지 않는다.
-- 최종 보고서에서는 `all_19`를 공통 기준선으로 유지하고, 센서 그룹 ablation은 예측 기여를 제한적으로 해석하는 보조 결과로 둘지 합의해야 한다.
-- 기본 모델 비교 결과를 최종 보고서 본문 표로 둘지 부록으로 둘지 공동연구자와 합의해야 한다.
 
 ## 갱신 기록
 
@@ -200,3 +196,6 @@ powershell -ExecutionPolicy Bypass -File research\run_report_validation.ps1
 - 2026-08-23: 결과 확인 전에 기본 분류 모델 비교를 사전등록하고, 동일 133개 시계열 특징에서 Logistic Regression·RBF SVM의 54회 block 평가(`15`)를 완료했다.
 - 2026-08-26: 기존 `12`·`14`·`15` cycle 결과를 재학습 없이 재집계해 완전 정상 오경보와 교차 고장 경보를 분리(`16`)하고, UR3 CobotOps 직접 활용 연구와 방법론 참고 논문을 검토했다.
 - 2026-08-27: 논문 형식 연구보고서 초안을 작성하고, 저장 결과와 본문 핵심 수치·문장 122개 항목의 내부 일치 여부를 검증했다. 전체 CPU·GPU 재실행과 최종 윤문·출력 검토는 후속 단계로 분리했다.
+- 2026-11-07: 11월 12일 제출을 기준으로 작업본, 확인된 결과, 보완할 근거를 정리했다.
+- 2026-11-08: Autoencoder 보정과 전류 계열 제거의 서술을 코드 및 저장 결과에 맞춰 수정한 v0.2를 작성했다.
+- 2026-11-08: v0.3에서 연구 동기, EDA, 평가와 결과의 순서를 정리했다. 저장 결과를 사용해 주 결과표에 건수와 분모를 넣고 window 성능표와 모델 비교 그림을 추가했다. 최종 윤문과 자체 검토는 후속 단계로 둔다.
