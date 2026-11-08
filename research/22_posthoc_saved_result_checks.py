@@ -118,6 +118,20 @@ def ae_movement(torch: pd.DataFrame, windows: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def block_false_alarms(models: dict[str, pd.DataFrame], normal: set[int], blocks: pd.Series) -> pd.DataFrame:
+    """Highest false alarm rate among the fully normal cycles of any one block, the denominator of Table 2."""
+    rows = []
+    for name, predictions in models.items():
+        scores = cycle_scores(predictions)
+        for target in TARGET_COLS:
+            s = scores[scores.target.eq(target) & scores.cycle_run.isin(normal)]
+            by_block = (s.alert > 0.5).groupby(s.cycle_run.map(blocks)).agg(["sum", "size"])
+            rate = by_block["sum"] / by_block["size"]
+            top = rate.idxmax()
+            rows.append({"model": name, "target": target, "max_rate": rate.max(), "block": top, "false_alarms": int(by_block.loc[top, "sum"]), "normal_cycles": int(by_block.loc[top, "size"])})
+    return pd.DataFrame(rows)
+
+
 def main() -> None:
     df = load_model_data()
     df["block"] = (df["cycle"].astype(int) - 1) // 25 + 1
@@ -137,6 +151,10 @@ def main() -> None:
         cycles=("system_failure", "size"), normal=("system_failure", lambda s: int(s.eq(0).sum())),
         system_failure=("system_failure", "sum"), protective_stop=("protective_stop", "sum"), grip_lost=("grip_lost", "sum"),
     ).reset_index()
+    cycle_ids = df.groupby("cycle_run")["cycle"].first().astype(int).loc[base.index]
+    members = {b: cycle_ids[base.block.eq(b)] for b in blocks.block}
+    blocks["absent_ids"] = [" ".join(map(str, sorted(set(range((b - 1) * 25 + 1, b * 25 + 1)) - set(m)))) for b, m in members.items()]
+    blocks["repeated_ids"] = [" ".join(map(str, sorted(m[m.duplicated()]))) for m in members.values()]
 
     raw_blocks = df.groupby("block")["cycle_run"].nunique().rename("raw_cycle_runs").reset_index()
     in_blocks = df[df.block.isin(BLOCKS)]
@@ -146,7 +164,7 @@ def main() -> None:
                 "target": target, "windows": len(g), "cycles": g.cycle_run.nunique(), "spliced_windows": int(g.spliced.sum()),
                 "spliced_positive_windows": int((g.spliced & g.window_label.eq(1)).sum()), "windows_with_60s_gap": int(g.gap_60s.sum()),
                 "positive_windows_with_positive_last_step": int((g.window_label.eq(1) & g.last_step_label.eq(1)).sum()), "positive_windows": int(g.window_label.sum()),
-                "rows_missing_label_in_blocks": int(in_blocks.ProtectiveStop.isna().sum()), "normal_cycles_with_missing_labels": len(normal_with_missing),
+                "rows_missing_label_total": int(df.ProtectiveStop.isna().sum()), "rows_missing_label_in_blocks": int(in_blocks.ProtectiveStop.isna().sum()), "normal_cycles_with_missing_labels": len(normal_with_missing),
             }
             for target, g in windows.groupby("target", sort=False)
         ]
@@ -180,6 +198,7 @@ def main() -> None:
     tables = {
         "row_window_prevalence": prevalence, "raw_block_counts": raw_blocks, "block_composition": blocks, "data_gaps": data_gaps,
         "same_false_alarm": same_false_alarm(rf, cnn, normal),
+        "block_false_alarm": block_false_alarms({"random_forest": rf, "1d_cnn": cnn}, normal, base.block),
         "missing_sensitivity": missing_sensitivity({"random_forest": rf, "1d_cnn": cnn}, windows, normal, normal_with_missing),
         "ae_movement": ae_movement(torch, windows), "pre_failure_baseline": pre_failure,
     }

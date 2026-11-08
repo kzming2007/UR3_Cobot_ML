@@ -62,20 +62,20 @@
 
 ## 11월 12일 제출 현황
 
-2026년 11월 8일 기준 최신 작업본은 [v0.7](2026-11-08_research_report_v0.7.md)이며 `research/timestamp-quote-fix` 브랜치에 있다. `main`과 `research/sensor-ablation`에는 Timestamp 수정 전 결과(`cycle_run` 202개)가 남아 있고, 수정 전후 차이는 [비교 문서](2026-11-08_timestamp_fix_comparison.md)에 있다. 이 저장소에서 제출 완료 기록은 확인되지 않았다. 마감은 11월 12일 17:00이고 공지에 정해진 양식이나 분량은 없다.
+2026년 11월 8일 기준 최신 작업본은 [v0.8](2026-11-08_research_report_v0.8.md)이며 `research/timestamp-quote-fix` 브랜치에 있다. `main`과 `research/sensor-ablation`에는 Timestamp 수정 전 결과(`cycle_run` 202개)가 남아 있고, 수정 전후 차이는 [비교 문서](2026-11-08_timestamp_fix_comparison.md)에 있다. 이 저장소에서 제출 완료 기록은 확인되지 않았다. 마감은 11월 12일 17:00이고 공지에 정해진 양식이나 분량은 없다.
 
 ### 확인된 결과
 
 - 공개 UR3 CobotOps의 `cycle_run` 231개에서 경계를 넘지 않는 10-step window 4,667개를 만들고, 같은 19개 센서로 9개 수집 블록을 하나씩 제외해 평가했다. 주 결과는 이상이 포함된 구간의 탐지 성능이다.
 - Random Forest의 고장 cycle 재현율과 완전 정상 cycle 오경보율은 `System_Failure` 100.00%와 3.94%, `ProtectiveStop` 97.37%와 1.57%, `GripLost` 93.75%와 1.57%였다. 1D CNN은 재현율이 비슷했으나 완전 정상 오경보율이 13.39~21.26%였고, 정상 데이터로만 학습한 LSTM Autoencoder의 q95 재현율은 0~6.58%였다. [주 결과 및 경보 분해](outputs/16_fault_context_alert_analysis.md)
 - 기본 분류 모델 비교와 센서 그룹 제거 실험까지 수행했다. `GripLost`의 고장 전 분석은 평균 재현율 28.14%의 탐색 결과로, 실용적인 조기경고 성능은 확인하지 못했다. [기본 모델 비교](outputs/15_classical_model_comparison.md), [센서 그룹 비교](outputs/14_sensor_group_ablation.md), [고장 전 분석](outputs/04_pre_failure_repeated_split_results.md)
-- 같은 구간과 라벨에서 입력만 바꾼 사후 비교(`21`)와 저장 결과의 사후 점검(`22`), 구간 길이 민감도(`23`)를 추가했다. 사전 문서에 없던 분석이며 주 결과를 대체하지 않는다. [사후 RF 비교](outputs/21_rf_control_checks.md), [사후 점검](outputs/22_posthoc_saved_results.md), [구간 길이 민감도](outputs/23_window_length_sensitivity.md)
-- `17`은 v0.7 본문과 표의 수치를 저장 결과에서 다시 만들어 대조한다. 검사 항목이 모두 통과했다. [내부 검사 기록](outputs/17_report_evidence_validation.md)
+- 같은 구간과 라벨로 평가한 사후 입력 비교(`21`)와 저장 결과의 사후 점검(`22`), 구간 길이 민감도(`23`)를 추가했다. 사전 문서에 없던 분석이며 주 결과를 대체하지 않는다. [사후 RF 비교](outputs/21_rf_control_checks.md), [사후 점검](outputs/22_posthoc_saved_results.md), [구간 길이 민감도](outputs/23_window_length_sensitivity.md)
+- `17`은 v0.8 본문과 표의 수치를 저장 결과에서 다시 만들어 대조한다. 검사 항목이 모두 통과했다. [내부 검사 기록](outputs/17_report_evidence_validation.md)
 
 ### 빠진 근거와 초안 수정점
 
 - 원본 CSV부터 별도 작업공간에서 CPU 모델과 GPU 모델을 다시 학습해 예측 및 지표를 대조한 완료 기록은 확인되지 않았다. 최종 초안에는 제출 시점에 실제로 완료한 검증 범위를 적는다. [재현 절차 및 판정 기준](2026-08-27_reproducibility_review_plan.md)
-- v0.7의 커밋 해시는 제출 커밋이 정해진 뒤 적는다.
+- v0.8 본문의 저장소 주소는 `submission-2026-11-12` 태그를 가리키며, 이 태그는 제출할 때 만든다.
 - 공정조건별 일반화에는 cycle별 운전조건 대응표가 필요하고, 다른 로봇으로의 일반화에는 별도 데이터가 필요하다. 두 근거 모두 현재 확보된 자료에서는 확인되지 않았다.
 
 ## 실행 순서
@@ -132,7 +132,7 @@ powershell -ExecutionPolicy Bypass -File research\run_report_validation.ps1
 
 ## 현재 연구상 주의점
 
-이 절의 수치 중 다시 확인하지 않은 값은 Timestamp 수정 전일 수 있다. 최신 수치는 v0.7과 `outputs/`를 기준으로 한다.
+이 절의 수치 중 다시 확인하지 않은 값은 Timestamp 수정 전일 수 있다. 최신 수치는 v0.8과 `outputs/`를 기준으로 한다.
 
 - 논문에서 말하는 `workload`, `movement speed`, `gripping force`는 공개 CSV의 직접 컬럼이 아니다.
 - 원본 `cycle` ID 224, 225, 226, 227, 229, 230, 231, 232, 233은 시간상 떨어진 두 시행 구간에 재등장한다. 현재 `02`-`05`는 `cycle_run` 기준으로 수정·재실행됐다.
@@ -195,6 +195,7 @@ powershell -ExecutionPolicy Bypass -File research\run_report_validation.ps1
 ## 갱신 기록
 
 - 2026-11-08: Timestamp 따옴표 수정 후 재실행 결과와 사후 점검(`21`, `22`, `23`)을 반영하고, `17`을 v0.7 기준으로 바꾸었다.
+- 2026-11-08: v0.8에서 블록별 오경보 최댓값을 완전 정상 기준으로 바로잡고, 길이별 같은 오경보 비교(`23`)를 추가했다.
 - 2026-07-10: 프로젝트 기준 문서로 지정하고, `03_pre_failure_window_baseline.py`까지 반영한 현재 상태를 정리했다.
 - 2026-07-22: 반복 split 검증(`04`)과 threshold 민감도 검증(`05`) 결과를 반영했다.
 - 2026-08-10: 공정조건 분리 가능성 진단(`06`)과 raw `cycle` ID 재등장 문제를 반영했다.

@@ -23,3 +23,19 @@ Check: one 10-step CNN fold rerun through this path differs from experiment 12 b
 | 5 | GripLost | 1d_cnn_19_raw | 5822 | 0.0809 | 231 | 48 | 48 | 88 | 127 | 44 | 56 |
 | 10 | GripLost | 1d_cnn_19_raw | 4667 | 0.1146 | 231 | 48 | 48 | 27 | 127 | 22 | 56 |
 | 20 | GripLost | 1d_cnn_19_raw | 2365 | 0.1759 | 230 | 46 | 48 | 6 | 126 | 16 | 56 |
+
+## Same false alarm count
+
+The 1D CNN threshold is moved on test scores to the Random Forest's false alarm count at 0.50. One exploratory point, not an operating threshold. `23_false_alarm_curve.csv` gives other counts.
+
+| window_size | target | fault_cycles | rf_detected | rf_false_alarms | cnn_detected | cnn_false_alarms | cnn_detected_at_cut | cnn_false_alarms_at_cut |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 5 | System_Failure | 104 | 103 | 5 | 103 | 56 | 96 | 5 |
+| 5 | ProtectiveStop | 76 | 72 | 7 | 74 | 25 | 71 | 7 |
+| 5 | GripLost | 48 | 46 | 2 | 48 | 88 | 29 | 2 |
+| 10 | System_Failure | 104 | 104 | 5 | 104 | 23 | 101 | 5 |
+| 10 | ProtectiveStop | 76 | 74 | 2 | 73 | 17 | 68 | 2 |
+| 10 | GripLost | 48 | 45 | 2 | 48 | 27 | 37 | 2 |
+| 20 | System_Failure | 104 | 102 | 9 | 82 | 7 | 85 | 9 |
+| 20 | ProtectiveStop | 76 | 70 | 5 | 65 | 12 | 64 | 5 |
+| 20 | GripLost | 48 | 43 | 1 | 46 | 6 | 9 | 1 |

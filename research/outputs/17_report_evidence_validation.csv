@@ -63,6 +63,7 @@ text_last_step_share,22,"통합 고장 23.0%, 보호 정지 11.3%, 파지 상실
 text_spliced,22,"4,667개 중 307개 구간",True
 text_gap,22,60초 이상 간격을 포함한 구간도 3개,True
 text_missing_rows,22,함께 빠진 45행,True
+text_missing_total,22,결측 54행 중 나머지 9행,True
 text_same_fa,22,"1D CNN의 탐지는 101/104, 68/76, 37/48로 랜덤 포레스트의 104/104, 74/76, 45/48",True
 text_cycle_auc,22,"랜덤 포레스트 0.9976, 0.9988, 0.9965, 1D CNN 0.9951, 0.9747, 0.9788",True
 text_mcnemar,22,"수는 3과 21, 2와 17, 1과 26",True
@@ -96,6 +97,11 @@ text_5_to_10,23,탐지 변화는 2건 이내였고 오경보는 같거나 줄었
 text_10_to_20,23,여섯 경우 모두 탐지가 2~22건 줄었다,True
 text_windows_per_cycle,23,"평균 25.2, 20.2, 10.3개",True
 text_cycle_rows,23,행 수 중앙값은 24개이고 30행 이상인 사이클은 20.3%,True
+text_same_fa_sf_ps,23,"통합 고장 96, 101, 85건, 보호 정지 71, 68, 64건으로 랜덤 포레스트의 103, 104, 102건, 72, 74, 70건보다 적었다",True
+text_same_fa_gl,23,"5, 10스텝에서 29, 37건으로 46, 45건보다 적었지만",True
+text_same_fa_gl_20,23,"오경보 1건에서는 1D CNN 9건과 랜덤 포레스트 43건이었고, 2건에서는 44건으로 같았으며, 3건에서는 46건과 45건이었다",True
+text_positive_rates,23,"양성 구간 비율은 통합 고장 17.7%와 44.7%, 보호 정지 9.8%와 30.1%, 파지 상실 8.1%와 17.6%",True
+table7_note_ids,22,"Blocks 3 and 8 lack cycle IDs 74 and 187. Blocks 9 and 10 add the second runs of IDs 224–225 and 226–233 (except 228), and block 10 lacks ID 244.",True
 table7_block_1,22,| 1 | 25 | 18 | 7 | 2 | 5 |,True
 table7_block_2,22,| 2 | 25 | 20 | 5 | 2 | 3 |,True
 table7_block_3,22,| 3 | 24 | 18 | 6 | 3 | 5 |,True
@@ -107,8 +113,10 @@ table7_block_9,22,| 9 | 27 | 6 | 21 | 18 | 6 |,True
 table7_block_10,22,| 10 | 31 | 7 | 24 | 23 | 6 |,True
 table7_total,22,| Total | 231 | 127 | 104 | 76 | 48 |,True
 text_excluded_blocks,22,6번(4개)과 11번(14개),True
-text_rf_max_block_fa,12,"최댓값은 랜덤 포레스트 11.1%, 9.5%, 9.5%",True
-text_cnn_max_block_fa,12,"1D CNN 71.4%, 50.0%, 66.7%",True
+text_rf_max_block_fa,22,"최댓값은 랜덤 포레스트 11.1%, 11.1%, 9.1%",True
+text_cnn_max_block_fa,22,"1D CNN 71.4%, 57.1%, 72.7%",True
+text_temp_detect,16,보호 정지 탐지는 74/76으로 같고 온도만으로는 10/76,True
+text_temp_fa,16,완전 정상 오경보가 2/127에서 7/127로,True
 text_cycles,10,최종 비교에 들어간 231개,True
 text_windows,10,"구간은 모두 4,667개",True
 text_fault_cycles,16,"통합 고장 104개, 보호 정지 76개, 파지 상실 48개",True

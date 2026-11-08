@@ -238,6 +238,7 @@ def build(source: Path, out: Path) -> None:
         else:
             add_text(doc, block, "Normal")
 
+    set_columns(doc.add_section(WD_SECTION.CONTINUOUS), 1)  # the break balances the two columns of the last page
     compat = doc.settings.element.find(qn("w:compat"))
     if compat is None:
         compat = OxmlElement("w:compat")

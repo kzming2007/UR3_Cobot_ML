@@ -31,25 +31,25 @@ Post-hoc and descriptive. No model was trained.
 
 ## block_composition
 
-| block | cycles | normal | system_failure | protective_stop | grip_lost |
-| --- | --- | --- | --- | --- | --- |
-| 1 | 25 | 18 | 7 | 2 | 5 |
-| 2 | 25 | 20 | 5 | 2 | 3 |
-| 3 | 24 | 18 | 6 | 3 | 5 |
-| 4 | 25 | 12 | 13 | 5 | 9 |
-| 5 | 25 | 19 | 6 | 5 | 1 |
-| 7 | 25 | 16 | 9 | 8 | 4 |
-| 8 | 24 | 11 | 13 | 10 | 9 |
-| 9 | 27 | 6 | 21 | 18 | 6 |
-| 10 | 31 | 7 | 24 | 23 | 6 |
+| block | cycles | normal | system_failure | protective_stop | grip_lost | absent_ids | repeated_ids |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 25 | 18 | 7 | 2 | 5 |  |  |
+| 2 | 25 | 20 | 5 | 2 | 3 |  |  |
+| 3 | 24 | 18 | 6 | 3 | 5 | 74 |  |
+| 4 | 25 | 12 | 13 | 5 | 9 |  |  |
+| 5 | 25 | 19 | 6 | 5 | 1 |  |  |
+| 7 | 25 | 16 | 9 | 8 | 4 |  |  |
+| 8 | 24 | 11 | 13 | 10 | 9 | 187 |  |
+| 9 | 27 | 6 | 21 | 18 | 6 |  | 224 225 |
+| 10 | 31 | 7 | 24 | 23 | 6 | 244 | 226 227 229 230 231 232 233 |
 
 ## data_gaps
 
-| target | windows | cycles | spliced_windows | spliced_positive_windows | windows_with_60s_gap | positive_windows_with_positive_last_step | positive_windows | rows_missing_label_in_blocks | normal_cycles_with_missing_labels |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| System_Failure | 4667 | 231 | 307 | 93 | 3 | 267 | 1163 | 45 | 15 |
-| ProtectiveStop | 4667 | 231 | 307 | 32 | 3 | 74 | 653 | 45 | 15 |
-| GripLost | 4667 | 231 | 307 | 66 | 3 | 196 | 535 | 45 | 15 |
+| target | windows | cycles | spliced_windows | spliced_positive_windows | windows_with_60s_gap | positive_windows_with_positive_last_step | positive_windows | rows_missing_label_total | rows_missing_label_in_blocks | normal_cycles_with_missing_labels |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| System_Failure | 4667 | 231 | 307 | 93 | 3 | 267 | 1163 | 54 | 45 | 15 |
+| ProtectiveStop | 4667 | 231 | 307 | 32 | 3 | 74 | 653 | 54 | 45 | 15 |
+| GripLost | 4667 | 231 | 307 | 66 | 3 | 196 | 535 | 54 | 45 | 15 |
 
 ## same_false_alarm
 
@@ -58,6 +58,17 @@ Post-hoc and descriptive. No model was trained.
 | System_Failure | 104 | 104 | 5 | 104 | 23 | 0.7028 | 5 | 101 | 0.9976 | 0.9951 | 3 | 21 | 0.0003 |
 | ProtectiveStop | 76 | 74 | 2 | 73 | 17 | 0.7465 | 2 | 68 | 0.9988 | 0.9747 | 2 | 17 | 0.0007 |
 | GripLost | 48 | 45 | 2 | 48 | 27 | 0.7421 | 2 | 37 | 0.9965 | 0.9788 | 1 | 26 | 0.0 |
+
+## block_false_alarm
+
+| model | target | max_rate | block | false_alarms | normal_cycles |
+| --- | --- | --- | --- | --- | --- |
+| random_forest | System_Failure | 0.1111 | 1 | 2 | 18 |
+| random_forest | ProtectiveStop | 0.1111 | 3 | 2 | 18 |
+| random_forest | GripLost | 0.0909 | 8 | 1 | 11 |
+| 1d_cnn | System_Failure | 0.7143 | 10 | 5 | 7 |
+| 1d_cnn | ProtectiveStop | 0.5714 | 10 | 4 | 7 |
+| 1d_cnn | GripLost | 0.7273 | 8 | 8 | 11 |
 
 ## missing_sensitivity
 

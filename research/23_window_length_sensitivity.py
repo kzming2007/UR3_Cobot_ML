@@ -159,6 +159,16 @@ def summarize_rows(predictions, length, normal, any_fault):
     return rows
 
 
+def false_alarm_curve(posthoc, rf, cnn, normal, length, levels=range(11)):
+    """Fault cycles each model detects at the lowest threshold that keeps at most k false alarms on fully normal cycles."""
+    rows, rf_scores, cnn_scores = [], posthoc.cycle_scores(rf), posthoc.cycle_scores(cnn)
+    for target in TARGETS:
+        a, b = rf_scores[rf_scores.target.eq(target)].set_index("cycle_run"), cnn_scores[cnn_scores.target.eq(target)].set_index("cycle_run")
+        top_a, top_b = (np.sort(s.loc[sorted(normal)].alert.to_numpy())[::-1] for s in (a, b))
+        rows += [{"window_size": length, "target": target, "false_alarms": k, "rf_detected": int((a.detect > top_a[k]).sum()), "cnn_detected": int((b.detect > top_b[k]).sum())} for k in levels]
+    return rows
+
+
 def run_summary() -> None:
     import pandas as pd
 
@@ -179,7 +189,8 @@ def run_summary() -> None:
     decisions_same = bool(both.prediction.eq(both.prediction_saved).all())
     print("10-step CNN check fold: windows", len(both), "largest score difference", largest, "same decisions", decisions_same)
 
-    rows = []
+    posthoc = load("22_posthoc_saved_result_checks.py", "posthoc_23")
+    rows, same, curve = [], [], []
     for length, predictions in [
         (5, pd.concat([rf[rf.window_size.eq(5)], cnn[cnn.window_size.eq(5)]])),
         (10, pd.concat([saved_rf, saved_cnn])),
@@ -188,8 +199,15 @@ def run_summary() -> None:
         sf = predictions[predictions.target.eq("System_Failure") & predictions.model.eq("rf_19_raw_window")]
         flags = sf.groupby("cycle_run")["label"].max()
         rows += summarize_rows(predictions[["target", "model", "seed", "cycle_run", "label", "prediction"]], length, set(flags[flags.eq(0)].index), set(flags[flags.eq(1)].index))
+        normal = set(flags[flags.eq(0)].index)
+        rf_part, cnn_part = predictions[predictions.model.eq("rf_19_raw_window")], predictions[predictions.model.eq("1d_cnn_19_raw")]
+        same.append(posthoc.same_false_alarm(rf_part, cnn_part, normal).assign(window_size=length))
+        curve += false_alarm_curve(posthoc, rf_part, cnn_part, normal, length)
     summary = pd.DataFrame(rows).sort_values(["target", "model", "window_size"], key=lambda s: s.map({t: i for i, t in enumerate(TARGETS)}) if s.name == "target" else s, ascending=[True, False, True])
     summary.to_csv(OUTPUT_DIR / "23_window_length_summary.csv", index=False, encoding="utf-8-sig")
+    same_table = pd.concat(same)
+    same_table.to_csv(OUTPUT_DIR / "23_same_false_alarm.csv", index=False, encoding="utf-8-sig")
+    pd.DataFrame(curve).to_csv(OUTPUT_DIR / "23_false_alarm_curve.csv", index=False, encoding="utf-8-sig")
     with np.load(CACHE / "window_5" / "System_Failure.npz") as arrays:
         rows = pd.Series(arrays["cycle_run"]).value_counts() + 4  # a cycle of n rows gives n - 4 five-step windows
     pd.DataFrame([{"cycles": len(rows), "median_rows": rows.median(), "share_30_or_more": (rows >= 30).mean()}]).to_csv(OUTPUT_DIR / "23_cycle_rows.csv", index=False, encoding="utf-8-sig")
@@ -199,6 +217,9 @@ def run_summary() -> None:
             "Post-hoc, not preregistered. Same 19 sensors, nine held-out blocks and rules as experiment 12; only the window length changes. 10-step rows are the saved results of experiment 12.",
             f"Check: one 10-step CNN fold rerun through this path differs from experiment 12 by at most {largest:.2e} in score, same decisions: {decisions_same}.", "",
             markdown_table(summary.round(4)), "",
+            "## Same false alarm count", "",
+            "The 1D CNN threshold is moved on test scores to the Random Forest's false alarm count at 0.50. One exploratory point, not an operating threshold. `23_false_alarm_curve.csv` gives other counts.", "",
+            markdown_table(same_table[["window_size", "target", "fault_cycles", "rf_detected", "rf_false_alarms", "cnn_detected", "cnn_false_alarms", "cnn_detected_at_cut", "cnn_false_alarms_at_cut"]].round(4)), "",
         ]
     )
     (OUTPUT_DIR / "23_window_length_sensitivity.md").write_text(text, encoding="utf-8")

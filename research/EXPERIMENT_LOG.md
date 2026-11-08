@@ -237,7 +237,7 @@
 
 ### 2026-11-08 - 21 입력 통제 비교와 Random Forest 시드 (사후)
 
-- 질문: 행과 구간의 비교(표 1)는 평가 단위와 라벨이 달라 시계열 맥락의 효과로 읽을 수 없다. 같은 구간과 라벨에서 입력만 바꾸면 어떤가? Random Forest 결과는 시드에 얼마나 흔들리는가?
+- 질문: 행과 구간의 비교(표 1)는 평가 단위와 라벨이 달라 시계열 맥락의 효과로 읽을 수 없다. 같은 구간과 라벨로 평가하며 입력을 바꾸면 어떤가? Random Forest 결과는 시드에 얼마나 흔들리는가?
 - 사전 고정: 없다. v0.6 검토 뒤 결과를 알고 추가한 사후 분석이며, 사전등록 문서의 Random Forest 시드 42 주 결과를 바꾸지 않는다.
 - 공통 조건: 4,667개 10-step window와 window 라벨, 9개 block, SMOTE, 300 trees, `score > 0.50`.
 - 입력: `rf_last_step_19`는 window의 마지막 행 19개 값, `rf_row_max_19`는 행 라벨로 학습한 뒤 window의 10개 행 점수 중 최댓값, `rf_19_raw_window`는 기존 133개 통계. 마지막 행은 처음 계획한 조건이었으나 양성 window 중 마지막 행도 양성인 비율이 23.0%, 11.3%, 36.6%라 입력이 고장 행을 보지 못하는 경우가 많아, `rf_row_max_19`를 같은 실행에 추가했다.
@@ -264,6 +264,15 @@
 - 해석: Random Forest는 길이에 비교적 안정적이었고, 1D CNN의 오경보와 탐지는 길이에 크게 의존했다. 10-step에서 본 오경보 차이를 1D CNN의 고유한 한계로 일반화하지 않는다. 5에서 10-step으로 늘리면 여섯 경우 모두 탐지 변화가 2건 이내이고 오경보가 같거나 줄었으며, 10에서 20-step으로 늘리면 여섯 경우 모두 탐지가 2~22건 줄었다. 세 길이 중에서는 10-step이 절충점이다.
 - 한계: 같은 시험 block에서 세 길이만 본 사후 비교이므로 최적 길이로 단정하지 않는다. 1D CNN 구조를 길이마다 다시 맞추지 않았다. 길이마다 양성 비율이 달라 구간 지표는 비교하지 않는다. cycle당 구간이 평균 25.2, 20.2, 10.3개로 줄어 경보 기회도 줄어든다. cycle 행 수 중앙값은 24개이고 30행 이상인 cycle은 20.3%다.
 - 관련 파일: `research/23_window_length_sensitivity.py`, `research/outputs/23_window_length_sensitivity.md`, `research/outputs/23_window_length_summary.csv`, `research/outputs/23_cycle_rows.csv`
+
+### 2026-11-08 - v0.8 정합성 수정과 길이별 같은 오경보 비교
+
+- 정정: 블록별 오경보 최댓값 중 `ProtectiveStop`과 `GripLost`는 완전 정상이 아니라 해당 고장이 없는 cycle을 분모로 계산되어 있었다. `22`에서 완전 정상 기준으로 다시 계산해 Random Forest 11.1%, 11.1%, 9.1%, 1D CNN 71.4%, 57.1%, 72.7%로 바꾸었다. `12_matched_consensus_summary.csv`의 기존 열은 정의가 다르므로 보고서에 쓰지 않는다.
+- 표현: 행 최댓값 모델은 행 라벨로 학습해 학습 목표도 다르므로, 표 6을 입력만 바꾼 비교로 쓰지 않는다.
+- 확인: `04`의 설정(5/10, 10/3, 5/3)은 2026-07-09 `03` 단일 split에서 고른 뒤 코드에 고정한 값이다. 현재 저장된 `03` best는 10/3, 10/5, 5/3이지만 설정을 다시 고르지 않는다.
+- 사후 추가: `23`의 예측으로 1D CNN 임계값을 Random Forest의 0.50 기준 오경보 수에 맞춘 탐지를 계산했다. 재학습은 없다. 5, 10, 20-step에서 1D CNN과 Random Forest는 `System_Failure` 96, 101, 85와 103, 104, 102, `ProtectiveStop` 71, 68, 64와 72, 74, 70, `GripLost` 29, 37, 9와 46, 45, 43이다.
+- 한계: 시험 점수로 맞춘 값이다. 20-step `GripLost`는 오경보 수 1, 2, 3건에서 Random Forest 43, 44, 45, 1D CNN 9, 44, 46으로 순서가 바뀌고, 5-step `ProtectiveStop`은 오경보 0~4건에서 1D CNN 탐지가 더 많다. 전체 곡선의 우열을 뜻하지 않는다.
+- 관련 파일: `research/outputs/22_block_false_alarm.csv`, `research/outputs/23_same_false_alarm.csv`, `research/outputs/23_false_alarm_curve.csv`
 
 ## 공통 기준
 

@@ -12,7 +12,7 @@ import pandas as pd
 from common import DATASET_PATH, OUTPUT_DIR, REPO_ROOT, ensure_output_dir, markdown_table
 
 
-REPORT_PATH = REPO_ROOT / "research" / "2026-11-08_research_report_v0.7.md"
+REPORT_PATH = REPO_ROOT / "research" / "2026-11-08_research_report_v0.8.md"
 CSV_SHA256 = "C789CDA10ACB354A7C1689F617D94A5F39A93FD8CB6C004AD16D36CEA55A74A3"
 XLSX_SHA256 = "F0F10917DE9056908A82CEC1AA459DDF9DA2D2DB70D269B128F99241C8796091"
 XLSX_PATH = REPO_ROOT / "dataset" / "dataset_02052023.xlsx"
@@ -106,6 +106,8 @@ def expected_snippets() -> dict[str, str]:
     need["22|text_spliced"] = f"{gaps.loc['GripLost', 'windows']:,}개 중 {gaps.loc['GripLost', 'spliced_windows']}개 구간"
     need["22|text_gap"] = f"60초 이상 간격을 포함한 구간도 {gaps.loc['GripLost', 'windows_with_60s_gap']}개"
     need["22|text_missing_rows"] = f"함께 빠진 {gaps.loc['GripLost', 'rows_missing_label_in_blocks']}행"
+    missing_total = gaps.loc["GripLost", "rows_missing_label_total"]
+    need["22|text_missing_total"] = f"결측 {missing_total}행 중 나머지 {missing_total - gaps.loc['GripLost', 'rows_missing_label_in_blocks']}행"
 
     same = read("22_same_false_alarm.csv").set_index("target")
     need["22|text_same_fa"] = "1D CNN의 탐지는 " + ", ".join(f"{same.loc[t, 'cnn_detected_at_cut']}/{same.loc[t, 'fault_cycles']}" for t in order) + "로 랜덤 포레스트의 " + ", ".join(f"{same.loc[t, 'rf_detected']}/{same.loc[t, 'fault_cycles']}" for t in order)
@@ -162,17 +164,35 @@ def expected_snippets() -> dict[str, str]:
     cycle_rows = read("23_cycle_rows.csv").iloc[0]
     need["23|text_cycle_rows"] = f"행 수 중앙값은 {cycle_rows.median_rows:.0f}개이고 30행 이상인 사이클은 {100 * cycle_rows.share_30_or_more:.1f}%"
 
+    same23, curve23 = read("23_same_false_alarm.csv"), read("23_false_alarm_curve.csv")
+    series = lambda t, col, widths=(5, 10, 20): ", ".join(str(int(same23[(same23.target == t) & (same23.window_size == w)][col].iloc[0])) for w in widths)  # noqa: E731
+    need["23|text_same_fa_sf_ps"] = f"통합 고장 {series('System_Failure', 'cnn_detected_at_cut')}건, 보호 정지 {series('ProtectiveStop', 'cnn_detected_at_cut')}건으로 랜덤 포레스트의 {series('System_Failure', 'rf_detected')}건, {series('ProtectiveStop', 'rf_detected')}건보다 적었다"
+    need["23|text_same_fa_gl"] = f"5, 10스텝에서 {series('GripLost', 'cnn_detected_at_cut', (5, 10))}건으로 {series('GripLost', 'rf_detected', (5, 10))}건보다 적었지만"
+    point = lambda k: curve23[(curve23.window_size == 20) & (curve23.target == "GripLost") & (curve23.false_alarms == k)].iloc[0]  # noqa: E731
+    p1, p2, p3 = point(1), point(2), point(3)
+    need["23|text_same_fa_gl_20"] = (
+        f"오경보 {series('GripLost', 'rf_false_alarms', (20,))}건에서는 1D CNN {p1.cnn_detected}건과 랜덤 포레스트 {p1.rf_detected}건이었고, "
+        f"2건에서는 {p2.cnn_detected}건으로 {'같았으며' if p2.cnn_detected == p2.rf_detected else '달랐으며'}, 3건에서는 {p3.cnn_detected}건과 {p3.rf_detected}건이었다"
+    )
+    need["23|text_positive_rates"] = "양성 구간 비율은 " + ", ".join(f"{ko} {100 * cell(t, RF_LONG, 5).positive_rate:.1f}%와 {100 * cell(t, RF_LONG, 20).positive_rate:.1f}%" for t, _, ko in TARGETS)
+
     blocks = read("22_block_composition.csv")
+    ids = pd.read_csv(OUTPUT_DIR / "22_block_composition.csv", encoding="utf-8-sig", dtype=str).set_index("block")
+    ids_match = ids.absent_ids.dropna().to_dict() == {"3": "74", "8": "187", "10": "244"} and ids.repeated_ids.dropna().to_dict() == {"9": "224 225", "10": "226 227 229 230 231 232 233"}
+    need["22|table7_note_ids"] = "Blocks 3 and 8 lack cycle IDs 74 and 187. Blocks 9 and 10 add the second runs of IDs 224–225 and 226–233 (except 228), and block 10 lacks ID 244." if ids_match else "cycle IDs in the Table 7 note no longer match the data"
     raw = read("22_raw_block_counts.csv").set_index("block").raw_cycle_runs
     for b in blocks.itertuples():
         need[f"22|table7_block_{b.block}"] = f"| {b.block} | {b.cycles} | {b.normal} | {b.system_failure} | {b.protective_stop} | {b.grip_lost} |"
     need["22|table7_total"] = f"| Total | {blocks.cycles.sum()} | {blocks.normal.sum()} | {blocks.system_failure.sum()} | {blocks.protective_stop.sum()} | {blocks.grip_lost.sum()} |"
     need["22|text_excluded_blocks"] = f"6번({raw[6]}개)과 11번({raw[11]}개)"
 
-    consensus = read("12_matched_consensus_summary.csv")
-    c12 = lambda m, t: consensus[(consensus.model_variant == m) & (consensus.target == t)].iloc[0]  # noqa: E731
-    need["12|text_rf_max_block_fa"] = "최댓값은 랜덤 포레스트 " + ", ".join(f"{100 * c12('rf_19_raw_window', t).normal_cycle_false_alarm_rate_max_block:.1f}%" for t in order)
-    need["12|text_cnn_max_block_fa"] = "1D CNN " + ", ".join(f"{100 * c12('1d_cnn_19_raw', t).normal_cycle_false_alarm_rate_max_block:.1f}%" for t in order)
+    block_fa = read("22_block_false_alarm.csv")
+    max_rate = lambda m: ", ".join(f"{100 * block_fa[(block_fa.model == m) & (block_fa.target == t)].max_rate.iloc[0]:.1f}%" for t in order)  # noqa: E731
+    need["22|text_rf_max_block_fa"] = "최댓값은 랜덤 포레스트 " + max_rate("random_forest")
+    need["22|text_cnn_max_block_fa"] = "1D CNN " + max_rate("1d_cnn")
+    keep_t, only_t, all_t = (row("14_sensor_ablation", v, "ProtectiveStop") for v in ("drop_temperature", "temperature_only", "all_19"))
+    need["16|text_temp_detect"] = f"보호 정지 탐지는 {keep_t.detected_event_cycles}/{keep_t.event_cycles}으로 {'같고' if keep_t.detected_event_cycles == all_t.detected_event_cycles else '달랐고'} 온도만으로는 {only_t.detected_event_cycles}/{only_t.event_cycles}"
+    need["16|text_temp_fa"] = f"완전 정상 오경보가 {all_t.true_normal_false_alarm_cycles}/{all_t.true_normal_cycles}에서 {keep_t.true_normal_false_alarm_cycles}/{keep_t.true_normal_cycles}로"
 
     manifest = json.loads((REPO_ROOT / "research" / ".sequence_cache" / "10_sequence_manifest.json").read_text(encoding="utf-8"))["targets"][0]
     need["10|text_cycles"] = f"최종 비교에 들어간 {manifest['cycle_runs']}개"

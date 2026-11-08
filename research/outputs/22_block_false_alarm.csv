@@ -1,0 +1,7 @@
+﻿model,target,max_rate,block,false_alarms,normal_cycles
+random_forest,System_Failure,0.1111111111111111,1,2,18
+random_forest,ProtectiveStop,0.1111111111111111,3,2,18
+random_forest,GripLost,0.09090909090909091,8,1,11
+1d_cnn,System_Failure,0.7142857142857143,10,5,7
+1d_cnn,ProtectiveStop,0.5714285714285714,10,4,7
+1d_cnn,GripLost,0.7272727272727273,8,8,11

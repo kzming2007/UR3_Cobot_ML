@@ -1,4 +1,4 @@
-﻿target,windows,cycles,spliced_windows,spliced_positive_windows,windows_with_60s_gap,positive_windows_with_positive_last_step,positive_windows,rows_missing_label_in_blocks,normal_cycles_with_missing_labels
-System_Failure,4667,231,307,93,3,267,1163,45,15
-ProtectiveStop,4667,231,307,32,3,74,653,45,15
-GripLost,4667,231,307,66,3,196,535,45,15
+﻿target,windows,cycles,spliced_windows,spliced_positive_windows,windows_with_60s_gap,positive_windows_with_positive_last_step,positive_windows,rows_missing_label_total,rows_missing_label_in_blocks,normal_cycles_with_missing_labels
+System_Failure,4667,231,307,93,3,267,1163,54,45,15
+ProtectiveStop,4667,231,307,32,3,74,653,54,45,15
+GripLost,4667,231,307,66,3,196,535,54,45,15
