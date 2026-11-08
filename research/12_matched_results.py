@@ -402,7 +402,7 @@ def format_report(
             "",
             "## 해석 제한",
             "",
-            "- Window 4,035개는 겹치므로 독립 표본 수가 아니다. Cycle-level n은 202개다.",
+            "- Window 4,667개는 겹치므로 독립 표본 수가 아니다. Cycle-level n은 202개다.",
             "- Wilson interval은 cycle 비율의 불확실성을 나타내지만 block/session 상관을 제거하지 않는다.",
             "- 9개 block은 실제 공정조건 정답이 아니라 수집 구간 proxy다.",
             "- 동일 데이터의 기존 결과를 이미 확인했으므로 독립 외부 검증이 아니라 사전 고정한 내부 후속 비교다.",
@@ -417,10 +417,10 @@ def validate(predictions: pd.DataFrame, consensus: pd.DataFrame, model_summary: 
         ["target", "model_variant", "seed", "test_block", "cycle_run", "window_start_step"]
     ).any():
         raise AssertionError("Duplicate prediction keys.")
-    if not predictions.groupby(["target", "model_variant", "seed"]).size().eq(4035).all():
-        raise AssertionError("Each target/model/seed must contain 4,035 held-out predictions.")
-    if not consensus.groupby(["target", "model_variant"]).size().eq(202).all():
-        raise AssertionError("Each target/model consensus must contain 202 cycles.")
+    if not predictions.groupby(["target", "model_variant", "seed"]).size().eq(4667).all():
+        raise AssertionError("Each target/model/seed must contain 4,667 held-out predictions.")
+    if not consensus.groupby(["target", "model_variant"]).size().eq(231).all():
+        raise AssertionError("Each target/model consensus must contain 231 cycles.")
     if not model_summary.groupby("target")["model_variant"].nunique().eq(5).all():
         raise AssertionError("Each target must contain all five model variants.")
 

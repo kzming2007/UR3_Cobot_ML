@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-07-08T16:26:25",
-  "dataset_path": "C:\\Users\\PC-001\\Desktop\\ML 프로젝트\\UR3_Cobot_ML\\dataset\\ur3_cobotops.csv",
+  "generated_at": "2026-11-08T14:01:53",
+  "dataset_path": "C:\\Users\\PC-001\\Desktop\\ML 프로젝트\\UR3_Cobot_ML_tsfix\\dataset\\ur3_cobotops.csv",
   "shape": {
     "rows": 7409,
     "columns": 34

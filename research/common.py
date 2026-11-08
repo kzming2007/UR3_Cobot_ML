@@ -31,6 +31,8 @@ def load_raw_data(path: Path = DATASET_PATH) -> pd.DataFrame:
     df = pd.read_csv(path, encoding="utf-8")
     df.columns = df.columns.str.strip()
     df = df.rename(columns={"Temperature_T0": "Temperature_J0", "cycle ": "cycle"})
+    # 863 rows store Timestamp as """...Z"""; leftover quotes made to_datetime(errors="coerce") drop them.
+    df["Timestamp"] = df["Timestamp"].str.strip('"')
     return df
 
 

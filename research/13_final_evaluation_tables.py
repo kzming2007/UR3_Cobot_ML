@@ -75,7 +75,7 @@ def window_seed_metrics(predictions: pd.DataFrame) -> pd.DataFrame:
     for (target, variant, seed), group in predictions.groupby(
         ["target", "model_variant", "seed"], sort=False
     ):
-        if len(group) != 4035 or group["test_block"].nunique() != 9:
+        if len(group) != 4667 or group["test_block"].nunique() != 9:
             raise AssertionError(f"Incomplete held-out predictions: {target}, {variant}, {seed}")
         row: dict[str, float | int | str] = {
             "target": target,
@@ -117,8 +117,8 @@ def cycle_consensus_metrics() -> pd.DataFrame:
     cycles = cycles[cycles["model_variant"].isin(PRIMARY_VARIANTS)].copy()
     rows = []
     for (target, variant), group in cycles.groupby(["target", "model_variant"], sort=False):
-        if len(group) != 202:
-            raise AssertionError(f"Expected 202 cycles for {target}, {variant}.")
+        if len(group) != 231:
+            raise AssertionError(f"Expected 231 cycles for {target}, {variant}.")
         y_true = group["true_event_cycle"].astype(int)
         event_aware_prediction = np.where(
             y_true.eq(1),

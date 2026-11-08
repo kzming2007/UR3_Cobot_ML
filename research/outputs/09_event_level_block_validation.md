@@ -19,12 +19,12 @@
 
 | target | feature_set | valid_test_blocks | event_cycle_count_total | event_cycle_recall_micro | event_cycle_recall_min | normal_cycle_count_total | normal_cycle_false_alarm_rate_micro | normal_cycle_false_alarm_rate_max | false_positive_windows_per_normal_cycle_micro | window_positive_f1_mean | window_pr_auc_mean |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| System_Failure | all_sensors | 9 | 87 | 1.0 | 1.0 | 115 | 0.0522 | 0.1667 | 0.113 | 0.7451 | 0.8243 |
-| System_Failure | no_temperature | 9 | 87 | 1.0 | 1.0 | 115 | 0.0783 | 0.1765 | 0.1739 | 0.7839 | 0.8718 |
-| ProtectiveStop | all_sensors | 9 | 62 | 0.9516 | 0.5 | 140 | 0.0429 | 0.1429 | 0.1 | 0.762 | 0.795 |
-| ProtectiveStop | no_temperature | 9 | 62 | 0.9516 | 0.5 | 140 | 0.0929 | 0.2727 | 0.1643 | 0.7543 | 0.8068 |
-| GripLost | all_sensors | 9 | 39 | 0.9487 | 0.6667 | 163 | 0.0429 | 0.2 | 0.0552 | 0.6741 | 0.821 |
-| GripLost | no_temperature | 9 | 39 | 0.9487 | 0.6667 | 163 | 0.0798 | 0.2 | 0.227 | 0.7128 | 0.818 |
+| System_Failure | all_sensors | 9 | 104 | 1.0 | 1.0 | 127 | 0.0472 | 0.1111 | 0.0551 | 0.7616 | 0.8557 |
+| System_Failure | no_temperature | 9 | 104 | 1.0 | 1.0 | 127 | 0.0787 | 0.2222 | 0.1181 | 0.7997 | 0.8691 |
+| ProtectiveStop | all_sensors | 9 | 76 | 0.9737 | 0.5 | 155 | 0.0129 | 0.0476 | 0.0129 | 0.7745 | 0.8217 |
+| ProtectiveStop | no_temperature | 9 | 76 | 0.9605 | 0.5 | 155 | 0.0774 | 0.2609 | 0.129 | 0.7587 | 0.8296 |
+| GripLost | all_sensors | 9 | 48 | 0.9583 | 0.6667 | 183 | 0.0273 | 0.0667 | 0.0328 | 0.6985 | 0.8268 |
+| GripLost | no_temperature | 9 | 48 | 0.9375 | 0.6667 | 183 | 0.0656 | 0.16 | 0.1366 | 0.733 | 0.8178 |
 
 ## 해석 기준
 

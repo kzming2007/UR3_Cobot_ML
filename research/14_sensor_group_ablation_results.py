@@ -357,14 +357,14 @@ def validate(
     summary: pd.DataFrame,
     paired: pd.DataFrame,
 ) -> None:
-    if len(predictions) != 121050 or len(runs) != 270:
+    if len(predictions) != 140010 or len(runs) != 270:
         raise AssertionError("Unexpected prediction or run count.")
     if predictions.duplicated(
         ["target", "variant", "test_block", "cycle_run", "window_start_step"]
     ).any():
         raise AssertionError("Duplicate prediction keys.")
-    if not predictions.groupby(["target", "variant"]).size().eq(4035).all():
-        raise AssertionError("Each target/variant must have 4,035 predictions.")
+    if not predictions.groupby(["target", "variant"]).size().eq(4667).all():
+        raise AssertionError("Each target/variant must have 4,667 predictions.")
     if not predictions.groupby(["target", "variant"])["test_block"].nunique().eq(9).all():
         raise AssertionError("Each target/variant must have nine test blocks.")
     if not np.isfinite(predictions["score"]).all():
@@ -377,12 +377,12 @@ def validate(
         raise AssertionError("all_19 did not match experiment 12 in every fold.")
     if len(windows) != 30 or len(summary) != 30 or len(blocks) != 270:
         raise AssertionError("Unexpected summary dimensions.")
-    if not cycles.groupby(["target", "variant"]).size().eq(202).all():
-        raise AssertionError("Each target/variant must contain 202 cycles.")
+    if not cycles.groupby(["target", "variant"]).size().eq(231).all():
+        raise AssertionError("Each target/variant must contain 231 cycles.")
     if len(paired) != 54:
         raise AssertionError("Expected paired errors for nine variants, three targets, two error types.")
-    if not (windows["window_tn"] + windows["window_fp"] + windows["window_fn"] + windows["window_tp"]).eq(4035).all():
-        raise AssertionError("Window confusion counts do not sum to 4,035.")
+    if not (windows["window_tn"] + windows["window_fp"] + windows["window_fn"] + windows["window_tp"]).eq(4667).all():
+        raise AssertionError("Window confusion counts do not sum to 4,667.")
 
 
 def format_report(summary: pd.DataFrame, paired: pd.DataFrame, runs: pd.DataFrame) -> str:
@@ -472,7 +472,7 @@ def format_report(summary: pd.DataFrame, paired: pd.DataFrame, runs: pd.DataFram
             "- Feature 수와 SMOTE 공간이 variant마다 달라 제거 효과를 순수한 인과 기여로 해석할 수 없다.",
             "- Tool current의 구간 탐지 성능은 고장 발생 전 유용성을 뜻하지 않는다.",
             "- Temperature 성능에는 thermal/session drift가 포함될 수 있다.",
-            "- 4,035개 window는 겹치며 독립 평가 단위는 202개 cycle이다.",
+            "- 4,667개 window는 겹치며 독립 평가 단위는 202개 cycle이다.",
             "- 9개 block은 실제 공정조건 정답이 아닌 수집 구간 proxy다.",
             "- 단일 공개 데이터와 Random Forest 고정 seed 1회의 내부 비교다.",
             "",

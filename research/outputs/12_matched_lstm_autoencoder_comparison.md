@@ -13,60 +13,60 @@
 
 | target | model_variant | seed_count | event_cycle_count | detected_event_cycle_count | event_cycle_recall | event_cycle_recall_ci95_low | event_cycle_recall_ci95_high | event_cycle_recall_min_block | normal_cycle_count | false_alarm_cycle_count | normal_cycle_false_alarm_rate | normal_cycle_false_alarm_rate_ci95_low | normal_cycle_false_alarm_rate_ci95_high | normal_cycle_false_alarm_rate_max_block |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| System_Failure | rf_19_raw_window | 1 | 87 | 85 | 0.977 | 0.92 | 0.9937 | 0.95 | 115 | 5 | 0.0435 | 0.0187 | 0.0978 | 0.1667 |
-| ProtectiveStop | rf_19_raw_window | 1 | 62 | 59 | 0.9516 | 0.8671 | 0.9834 | 0.5 | 140 | 4 | 0.0286 | 0.0112 | 0.0712 | 0.1429 |
-| GripLost | rf_19_raw_window | 1 | 39 | 36 | 0.9231 | 0.7968 | 0.9735 | 0.6667 | 163 | 6 | 0.0368 | 0.017 | 0.078 | 0.15 |
-| System_Failure | 1d_cnn_19_raw | 3 | 87 | 85 | 0.977 | 0.92 | 0.9937 | 0.8 | 115 | 22 | 0.1913 | 0.1299 | 0.2727 | 0.8333 |
-| ProtectiveStop | 1d_cnn_19_raw | 3 | 62 | 58 | 0.9355 | 0.8455 | 0.9746 | 0.5 | 140 | 27 | 0.1929 | 0.1361 | 0.2661 | 0.55 |
-| GripLost | 1d_cnn_19_raw | 3 | 39 | 36 | 0.9231 | 0.7968 | 0.9735 | 0.5 | 163 | 40 | 0.2454 | 0.1857 | 0.3168 | 0.7143 |
-| System_Failure | lstm_autoencoder_19_raw_q95 | 3 | 87 | 4 | 0.046 | 0.018 | 0.1123 | 0.0 | 115 | 15 | 0.1304 | 0.0807 | 0.2041 | 0.4 |
-| ProtectiveStop | lstm_autoencoder_19_raw_q95 | 3 | 62 | 4 | 0.0645 | 0.0254 | 0.1545 | 0.0 | 140 | 15 | 0.1071 | 0.066 | 0.1693 | 0.375 |
-| GripLost | lstm_autoencoder_19_raw_q95 | 3 | 39 | 0 | 0.0 | -0.0 | 0.0897 | 0.0 | 163 | 20 | 0.1227 | 0.0809 | 0.1819 | 0.4 |
+| System_Failure | rf_19_raw_window | 1 | 104 | 104 | 1.0 | 0.9644 | 1.0 | 1.0 | 127 | 5 | 0.0394 | 0.0169 | 0.0889 | 0.1111 |
+| ProtectiveStop | rf_19_raw_window | 1 | 76 | 74 | 0.9737 | 0.909 | 0.9928 | 0.5 | 155 | 2 | 0.0129 | 0.0035 | 0.0458 | 0.0952 |
+| GripLost | rf_19_raw_window | 1 | 48 | 45 | 0.9375 | 0.8316 | 0.9785 | 0.6667 | 183 | 5 | 0.0273 | 0.0117 | 0.0624 | 0.0952 |
+| System_Failure | 1d_cnn_19_raw | 3 | 104 | 104 | 1.0 | 0.9644 | 1.0 | 1.0 | 127 | 23 | 0.1811 | 0.1238 | 0.2571 | 0.7143 |
+| ProtectiveStop | 1d_cnn_19_raw | 3 | 76 | 73 | 0.9605 | 0.8903 | 0.9865 | 0.5 | 155 | 21 | 0.1355 | 0.0904 | 0.1982 | 0.5 |
+| GripLost | 1d_cnn_19_raw | 3 | 48 | 48 | 1.0 | 0.9259 | 1.0 | 1.0 | 183 | 49 | 0.2678 | 0.2089 | 0.3362 | 0.6667 |
+| System_Failure | lstm_autoencoder_19_raw_q95 | 3 | 104 | 5 | 0.0481 | 0.0207 | 0.1076 | 0.0 | 127 | 13 | 0.1024 | 0.0608 | 0.1673 | 0.2632 |
+| ProtectiveStop | lstm_autoencoder_19_raw_q95 | 3 | 76 | 5 | 0.0658 | 0.0284 | 0.1449 | 0.0 | 155 | 13 | 0.0839 | 0.0497 | 0.1382 | 0.25 |
+| GripLost | lstm_autoencoder_19_raw_q95 | 3 | 48 | 0 | 0.0 | 0.0 | 0.0741 | 0.0 | 183 | 19 | 0.1038 | 0.0675 | 0.1565 | 0.2857 |
 
 ## Seed 평균 window 결과
 
 | target | model_variant | seeds | event_cycle_recall_mean | normal_cycle_false_alarm_rate_mean | window_macro_f1_mean | window_positive_f1_mean | window_pr_auc_mean |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| System_Failure | rf_19_raw_window | 1 | 0.977 | 0.0435 | 0.8278 | 0.7341 | 0.8137 |
-| ProtectiveStop | rf_19_raw_window | 1 | 0.9516 | 0.0286 | 0.8755 | 0.7845 | 0.8557 |
-| GripLost | rf_19_raw_window | 1 | 0.9231 | 0.0368 | 0.7923 | 0.6195 | 0.7267 |
-| System_Failure | 1d_cnn_19_raw | 3 | 0.9464 | 0.1913 | 0.7723 | 0.6585 | 0.6879 |
-| ProtectiveStop | 1d_cnn_19_raw | 3 | 0.9355 | 0.2 | 0.8001 | 0.6678 | 0.7659 |
-| GripLost | 1d_cnn_19_raw | 3 | 0.9145 | 0.272 | 0.7127 | 0.5035 | 0.5888 |
-| System_Failure | lstm_autoencoder_19_raw_q95 | 3 | 0.046 | 0.1275 | 0.4439 | 0.0314 | 0.2228 |
-| ProtectiveStop | lstm_autoencoder_19_raw_q95 | 3 | 0.0645 | 0.1048 | 0.4857 | 0.0518 | 0.1629 |
-| GripLost | lstm_autoencoder_19_raw_q95 | 3 | 0.0 | 0.1207 | 0.4667 | 0.0 | 0.0834 |
+| System_Failure | rf_19_raw_window | 1 | 1.0 | 0.0394 | 0.8482 | 0.7702 | 0.8515 |
+| ProtectiveStop | rf_19_raw_window | 1 | 0.9737 | 0.0129 | 0.8871 | 0.8056 | 0.8706 |
+| GripLost | rf_19_raw_window | 1 | 0.9375 | 0.0273 | 0.8159 | 0.6659 | 0.7742 |
+| System_Failure | 1d_cnn_19_raw | 3 | 0.9968 | 0.2021 | 0.7888 | 0.6948 | 0.7334 |
+| ProtectiveStop | 1d_cnn_19_raw | 3 | 0.9649 | 0.1441 | 0.8021 | 0.6725 | 0.7877 |
+| GripLost | 1d_cnn_19_raw | 3 | 0.9931 | 0.2714 | 0.758 | 0.5864 | 0.6675 |
+| System_Failure | lstm_autoencoder_19_raw_q95 | 3 | 0.0449 | 0.1076 | 0.4391 | 0.0255 | 0.2237 |
+| ProtectiveStop | lstm_autoencoder_19_raw_q95 | 3 | 0.0614 | 0.0882 | 0.4821 | 0.0437 | 0.1592 |
+| GripLost | lstm_autoencoder_19_raw_q95 | 3 | 0.0 | 0.1056 | 0.4658 | 0.0 | 0.0866 |
 
 ## Autoencoder threshold 민감도
 
 | target | model_variant | seed_count | event_cycle_count | detected_event_cycle_count | event_cycle_recall | event_cycle_recall_ci95_low | event_cycle_recall_ci95_high | event_cycle_recall_min_block | normal_cycle_count | false_alarm_cycle_count | normal_cycle_false_alarm_rate | normal_cycle_false_alarm_rate_ci95_low | normal_cycle_false_alarm_rate_ci95_high | normal_cycle_false_alarm_rate_max_block |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| System_Failure | lstm_autoencoder_19_raw_q90 | 3 | 87 | 7 | 0.0805 | 0.0395 | 0.1569 | 0.0 | 115 | 24 | 0.2087 | 0.1444 | 0.2918 | 0.4667 |
-| System_Failure | lstm_autoencoder_19_raw_q95 | 3 | 87 | 4 | 0.046 | 0.018 | 0.1123 | 0.0 | 115 | 15 | 0.1304 | 0.0807 | 0.2041 | 0.4 |
-| System_Failure | lstm_autoencoder_19_raw_q97.5 | 3 | 87 | 4 | 0.046 | 0.018 | 0.1123 | 0.0 | 115 | 15 | 0.1304 | 0.0807 | 0.2041 | 0.4 |
-| ProtectiveStop | lstm_autoencoder_19_raw_q90 | 3 | 62 | 7 | 0.1129 | 0.0558 | 0.2152 | 0.0 | 140 | 24 | 0.1714 | 0.118 | 0.2424 | 0.4375 |
-| ProtectiveStop | lstm_autoencoder_19_raw_q95 | 3 | 62 | 4 | 0.0645 | 0.0254 | 0.1545 | 0.0 | 140 | 15 | 0.1071 | 0.066 | 0.1693 | 0.375 |
-| ProtectiveStop | lstm_autoencoder_19_raw_q97.5 | 3 | 62 | 4 | 0.0645 | 0.0254 | 0.1545 | 0.0 | 140 | 15 | 0.1071 | 0.066 | 0.1693 | 0.375 |
-| GripLost | lstm_autoencoder_19_raw_q90 | 3 | 39 | 0 | 0.0 | -0.0 | 0.0897 | 0.0 | 163 | 32 | 0.1963 | 0.1426 | 0.264 | 0.5 |
-| GripLost | lstm_autoencoder_19_raw_q95 | 3 | 39 | 0 | 0.0 | -0.0 | 0.0897 | 0.0 | 163 | 20 | 0.1227 | 0.0809 | 0.1819 | 0.4 |
-| GripLost | lstm_autoencoder_19_raw_q97.5 | 3 | 39 | 0 | 0.0 | -0.0 | 0.0897 | 0.0 | 163 | 20 | 0.1227 | 0.0809 | 0.1819 | 0.4 |
+| System_Failure | lstm_autoencoder_19_raw_q90 | 3 | 104 | 6 | 0.0577 | 0.0267 | 0.1202 | 0.0 | 127 | 25 | 0.1969 | 0.137 | 0.2745 | 0.4375 |
+| System_Failure | lstm_autoencoder_19_raw_q95 | 3 | 104 | 5 | 0.0481 | 0.0207 | 0.1076 | 0.0 | 127 | 13 | 0.1024 | 0.0608 | 0.1673 | 0.2632 |
+| System_Failure | lstm_autoencoder_19_raw_q97.5 | 3 | 104 | 5 | 0.0481 | 0.0207 | 0.1076 | 0.0 | 127 | 12 | 0.0945 | 0.0549 | 0.1579 | 0.2632 |
+| ProtectiveStop | lstm_autoencoder_19_raw_q90 | 3 | 76 | 6 | 0.0789 | 0.0367 | 0.1617 | 0.0 | 155 | 25 | 0.1613 | 0.1117 | 0.2273 | 0.4118 |
+| ProtectiveStop | lstm_autoencoder_19_raw_q95 | 3 | 76 | 5 | 0.0658 | 0.0284 | 0.1449 | 0.0 | 155 | 13 | 0.0839 | 0.0497 | 0.1382 | 0.25 |
+| ProtectiveStop | lstm_autoencoder_19_raw_q97.5 | 3 | 76 | 5 | 0.0658 | 0.0284 | 0.1449 | 0.0 | 155 | 12 | 0.0774 | 0.0448 | 0.1304 | 0.25 |
+| GripLost | lstm_autoencoder_19_raw_q90 | 3 | 48 | 0 | 0.0 | 0.0 | 0.0741 | 0.0 | 183 | 32 | 0.1749 | 0.1267 | 0.2364 | 0.4286 |
+| GripLost | lstm_autoencoder_19_raw_q95 | 3 | 48 | 0 | 0.0 | 0.0 | 0.0741 | 0.0 | 183 | 19 | 0.1038 | 0.0675 | 0.1565 | 0.2857 |
+| GripLost | lstm_autoencoder_19_raw_q97.5 | 3 | 48 | 0 | 0.0 | 0.0 | 0.0741 | 0.0 | 183 | 18 | 0.0984 | 0.0631 | 0.1501 | 0.2857 |
 
 ## Random Forest와 cycle 오류 겹침
 
 | target | comparison_model | error_type | eligible_cycles | rf_error_count | comparison_error_count | shared_error_count | comparison_only_error_count | rf_only_error_count |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| System_Failure | 1d_cnn_19_raw | false_alarm | 115 | 5 | 22 | 2 | 20 | 3 |
-| System_Failure | 1d_cnn_19_raw | event_miss | 87 | 2 | 2 | 0 | 2 | 2 |
-| System_Failure | lstm_autoencoder_19_raw_q95 | false_alarm | 115 | 5 | 15 | 0 | 15 | 5 |
-| System_Failure | lstm_autoencoder_19_raw_q95 | event_miss | 87 | 2 | 83 | 2 | 81 | 0 |
-| ProtectiveStop | 1d_cnn_19_raw | false_alarm | 140 | 4 | 27 | 2 | 25 | 2 |
-| ProtectiveStop | 1d_cnn_19_raw | event_miss | 62 | 3 | 4 | 2 | 2 | 1 |
-| ProtectiveStop | lstm_autoencoder_19_raw_q95 | false_alarm | 140 | 4 | 15 | 0 | 15 | 4 |
-| ProtectiveStop | lstm_autoencoder_19_raw_q95 | event_miss | 62 | 3 | 58 | 3 | 55 | 0 |
-| GripLost | 1d_cnn_19_raw | false_alarm | 163 | 6 | 40 | 3 | 37 | 3 |
-| GripLost | 1d_cnn_19_raw | event_miss | 39 | 3 | 3 | 1 | 2 | 2 |
-| GripLost | lstm_autoencoder_19_raw_q95 | false_alarm | 163 | 6 | 20 | 0 | 20 | 6 |
-| GripLost | lstm_autoencoder_19_raw_q95 | event_miss | 39 | 3 | 39 | 3 | 36 | 0 |
+| System_Failure | 1d_cnn_19_raw | false_alarm | 127 | 5 | 23 | 2 | 21 | 3 |
+| System_Failure | 1d_cnn_19_raw | event_miss | 104 | 0 | 0 | 0 | 0 | 0 |
+| System_Failure | lstm_autoencoder_19_raw_q95 | false_alarm | 127 | 5 | 13 | 1 | 12 | 4 |
+| System_Failure | lstm_autoencoder_19_raw_q95 | event_miss | 104 | 0 | 99 | 0 | 99 | 0 |
+| ProtectiveStop | 1d_cnn_19_raw | false_alarm | 155 | 2 | 21 | 0 | 21 | 2 |
+| ProtectiveStop | 1d_cnn_19_raw | event_miss | 76 | 2 | 3 | 2 | 1 | 0 |
+| ProtectiveStop | lstm_autoencoder_19_raw_q95 | false_alarm | 155 | 2 | 13 | 0 | 13 | 2 |
+| ProtectiveStop | lstm_autoencoder_19_raw_q95 | event_miss | 76 | 2 | 71 | 2 | 69 | 0 |
+| GripLost | 1d_cnn_19_raw | false_alarm | 183 | 5 | 49 | 3 | 46 | 2 |
+| GripLost | 1d_cnn_19_raw | event_miss | 48 | 3 | 0 | 0 | 0 | 3 |
+| GripLost | lstm_autoencoder_19_raw_q95 | false_alarm | 183 | 5 | 19 | 0 | 19 | 5 |
+| GripLost | lstm_autoencoder_19_raw_q95 | event_miss | 48 | 3 | 48 | 3 | 45 | 0 |
 
 ## 사전 고정 해석 규칙 적용
 
@@ -74,7 +74,7 @@
 - `System_Failure` RF 대비 LSTM Autoencoder q95: Random Forest가 recall과 오경보 기준에서 기술적으로 우세했다.
 - `ProtectiveStop` RF 대비 1D CNN: Random Forest가 recall과 오경보 기준에서 기술적으로 우세했다.
 - `ProtectiveStop` RF 대비 LSTM Autoencoder q95: Random Forest가 recall과 오경보 기준에서 기술적으로 우세했다.
-- `GripLost` RF 대비 1D CNN: Random Forest가 recall과 오경보 기준에서 기술적으로 우세했다.
+- `GripLost` RF 대비 1D CNN: Recall과 오경보가 엇갈려 단순 우위를 정할 수 없다.
 - `GripLost` RF 대비 LSTM Autoencoder q95: Random Forest가 recall과 오경보 기준에서 기술적으로 우세했다.
 - 위 우세 판단은 recall과 오경보의 방향만 본 기술적 Pareto 비교이며 통계적 유의성을 뜻하지 않는다.
 
@@ -83,13 +83,13 @@
 - Random Forest run: 27개.
 - 1D CNN run: 81개.
 - LSTM Autoencoder run: 27개.
-- Autoencoder calibration 정상 cycle 수 범위: 13-36개.
+- Autoencoder calibration 정상 cycle 수 범위: 13-38개.
 - PyTorch: 2.7.1+cu128, CUDA: 12.8, device: cuda.
-- 기록된 전체 학습 시간: 395.0초.
+- 기록된 전체 학습 시간: 526.9초.
 
 ## 해석 제한
 
-- Window 4,035개는 겹치므로 독립 표본 수가 아니다. Cycle-level n은 202개다.
+- Window 4,667개는 겹치므로 독립 표본 수가 아니다. Cycle-level n은 202개다.
 - Wilson interval은 cycle 비율의 불확실성을 나타내지만 block/session 상관을 제거하지 않는다.
 - 9개 block은 실제 공정조건 정답이 아니라 수집 구간 proxy다.
 - 동일 데이터의 기존 결과를 이미 확인했으므로 독립 외부 검증이 아니라 사전 고정한 내부 후속 비교다.

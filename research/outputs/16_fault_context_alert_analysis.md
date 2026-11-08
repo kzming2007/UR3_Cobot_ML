@@ -14,56 +14,56 @@
 
 | candidate | target | event_cycle_recall | target_negative_alert_rate | true_normal_false_alarm_rate | cross_fault_alert_rate | other_fault_only_cycles |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1d_cnn_19_raw | System_Failure | 0.977 | 0.1913 | 0.1913 |  | 0 |
-| 1d_cnn_19_raw | ProtectiveStop | 0.9355 | 0.1929 | 0.2087 | 0.12 | 25 |
-| 1d_cnn_19_raw | GripLost | 0.9231 | 0.2454 | 0.1652 | 0.4375 | 48 |
-| lstm_autoencoder_19_raw_q95 | System_Failure | 0.046 | 0.1304 | 0.1304 |  | 0 |
-| lstm_autoencoder_19_raw_q95 | ProtectiveStop | 0.0645 | 0.1071 | 0.1304 | 0.0 | 25 |
-| lstm_autoencoder_19_raw_q95 | GripLost | 0.0 | 0.1227 | 0.1304 | 0.1042 | 48 |
-| rf_19_raw_window | System_Failure | 0.977 | 0.0435 | 0.0435 |  | 0 |
-| rf_19_raw_window | ProtectiveStop | 0.9516 | 0.0286 | 0.0348 | 0.0 | 25 |
-| rf_19_raw_window | GripLost | 0.9231 | 0.0368 | 0.0174 | 0.0833 | 48 |
-| logistic_regression | System_Failure | 0.9885 | 0.5304 | 0.5304 |  | 0 |
-| logistic_regression | ProtectiveStop | 0.9677 | 0.2714 | 0.2696 | 0.28 | 25 |
-| logistic_regression | GripLost | 1.0 | 0.4908 | 0.4522 | 0.5833 | 48 |
-| rbf_svm | System_Failure | 0.954 | 0.0957 | 0.0957 |  | 0 |
-| rbf_svm | ProtectiveStop | 0.9032 | 0.0214 | 0.0174 | 0.04 | 25 |
-| rbf_svm | GripLost | 0.9487 | 0.1779 | 0.0957 | 0.375 | 48 |
+| 1d_cnn_19_raw | System_Failure | 1.0 | 0.1811 | 0.1811 |  | 0 |
+| 1d_cnn_19_raw | ProtectiveStop | 0.9605 | 0.1355 | 0.1339 | 0.1429 | 28 |
+| 1d_cnn_19_raw | GripLost | 1.0 | 0.2678 | 0.2126 | 0.3929 | 56 |
+| lstm_autoencoder_19_raw_q95 | System_Failure | 0.0481 | 0.1024 | 0.1024 |  | 0 |
+| lstm_autoencoder_19_raw_q95 | ProtectiveStop | 0.0658 | 0.0839 | 0.1024 | 0.0 | 28 |
+| lstm_autoencoder_19_raw_q95 | GripLost | 0.0 | 0.1038 | 0.1024 | 0.1071 | 56 |
+| rf_19_raw_window | System_Failure | 1.0 | 0.0394 | 0.0394 |  | 0 |
+| rf_19_raw_window | ProtectiveStop | 0.9737 | 0.0129 | 0.0157 | 0.0 | 28 |
+| rf_19_raw_window | GripLost | 0.9375 | 0.0273 | 0.0157 | 0.0536 | 56 |
+| logistic_regression | System_Failure | 0.9904 | 0.4567 | 0.4567 |  | 0 |
+| logistic_regression | ProtectiveStop | 0.9737 | 0.271 | 0.2677 | 0.2857 | 28 |
+| logistic_regression | GripLost | 1.0 | 0.541 | 0.4724 | 0.6964 | 56 |
+| rbf_svm | System_Failure | 0.9904 | 0.0787 | 0.0787 |  | 0 |
+| rbf_svm | ProtectiveStop | 0.9605 | 0.0065 | 0.0 | 0.0357 | 28 |
+| rbf_svm | GripLost | 0.9583 | 0.1585 | 0.0945 | 0.3036 | 56 |
 
 ## 센서 그룹 ablation
 
 | candidate | target | event_cycle_recall | target_negative_alert_rate | true_normal_false_alarm_rate | cross_fault_alert_rate | other_fault_only_cycles |
 | --- | --- | --- | --- | --- | --- | --- |
-| all_19 | System_Failure | 0.977 | 0.0435 | 0.0435 |  | 0 |
-| all_19 | ProtectiveStop | 0.9516 | 0.0286 | 0.0348 | 0.0 | 25 |
-| all_19 | GripLost | 0.9231 | 0.0368 | 0.0174 | 0.0833 | 48 |
-| current_family_only | System_Failure | 0.977 | 0.087 | 0.087 |  | 0 |
-| current_family_only | ProtectiveStop | 0.9355 | 0.0714 | 0.0696 | 0.08 | 25 |
-| current_family_only | GripLost | 0.9487 | 0.1227 | 0.0696 | 0.25 | 48 |
-| drop_current_family | System_Failure | 0.931 | 0.1217 | 0.1217 |  | 0 |
-| drop_current_family | ProtectiveStop | 0.9677 | 0.0786 | 0.0609 | 0.16 | 25 |
-| drop_current_family | GripLost | 0.4103 | 0.0368 | 0.0348 | 0.0417 | 48 |
-| drop_speed | System_Failure | 0.9655 | 0.0348 | 0.0348 |  | 0 |
-| drop_speed | ProtectiveStop | 0.9194 | 0.0286 | 0.0348 | 0.0 | 25 |
-| drop_speed | GripLost | 0.8205 | 0.0245 | 0.0261 | 0.0208 | 48 |
-| drop_temperature | System_Failure | 0.9885 | 0.087 | 0.087 |  | 0 |
-| drop_temperature | ProtectiveStop | 0.9516 | 0.0857 | 0.0696 | 0.16 | 25 |
-| drop_temperature | GripLost | 0.9487 | 0.0736 | 0.0348 | 0.1667 | 48 |
-| drop_tool_current | System_Failure | 1.0 | 0.0435 | 0.0435 |  | 0 |
-| drop_tool_current | ProtectiveStop | 0.9677 | 0.0286 | 0.0348 | 0.0 | 25 |
-| drop_tool_current | GripLost | 0.9231 | 0.0429 | 0.0174 | 0.1042 | 48 |
-| joint_current_only | System_Failure | 0.9885 | 0.1217 | 0.1217 |  | 0 |
-| joint_current_only | ProtectiveStop | 0.9516 | 0.0643 | 0.0609 | 0.08 | 25 |
-| joint_current_only | GripLost | 0.9487 | 0.1104 | 0.0522 | 0.25 | 48 |
-| speed_only | System_Failure | 0.977 | 0.2348 | 0.2348 |  | 0 |
-| speed_only | ProtectiveStop | 0.9839 | 0.1214 | 0.087 | 0.28 | 25 |
-| speed_only | GripLost | 0.9231 | 0.3006 | 0.2348 | 0.4583 | 48 |
-| temperature_only | System_Failure | 0.2529 | 0.0783 | 0.0783 |  | 0 |
-| temperature_only | ProtectiveStop | 0.1613 | 0.0286 | 0.0174 | 0.08 | 25 |
-| temperature_only | GripLost | 0.0256 | 0.0245 | 0.0174 | 0.0417 | 48 |
-| tool_current_only | System_Failure | 0.8046 | 0.8696 | 0.8696 |  | 0 |
-| tool_current_only | ProtectiveStop | 0.6774 | 0.6143 | 0.5913 | 0.72 | 25 |
-| tool_current_only | GripLost | 0.5641 | 0.7791 | 0.7565 | 0.8333 | 48 |
+| all_19 | System_Failure | 1.0 | 0.0394 | 0.0394 |  | 0 |
+| all_19 | ProtectiveStop | 0.9737 | 0.0129 | 0.0157 | 0.0 | 28 |
+| all_19 | GripLost | 0.9375 | 0.0273 | 0.0157 | 0.0536 | 56 |
+| current_family_only | System_Failure | 0.9808 | 0.0472 | 0.0472 |  | 0 |
+| current_family_only | ProtectiveStop | 0.9605 | 0.0581 | 0.0551 | 0.0714 | 28 |
+| current_family_only | GripLost | 0.9375 | 0.1038 | 0.0394 | 0.25 | 56 |
+| drop_current_family | System_Failure | 0.9712 | 0.0866 | 0.0866 |  | 0 |
+| drop_current_family | ProtectiveStop | 0.9868 | 0.0581 | 0.0394 | 0.1429 | 28 |
+| drop_current_family | GripLost | 0.5417 | 0.0219 | 0.0079 | 0.0536 | 56 |
+| drop_speed | System_Failure | 0.9808 | 0.0394 | 0.0394 |  | 0 |
+| drop_speed | ProtectiveStop | 0.9474 | 0.0194 | 0.0236 | 0.0 | 28 |
+| drop_speed | GripLost | 0.9167 | 0.0492 | 0.0236 | 0.1071 | 56 |
+| drop_temperature | System_Failure | 1.0 | 0.063 | 0.063 |  | 0 |
+| drop_temperature | ProtectiveStop | 0.9737 | 0.0774 | 0.0551 | 0.1786 | 28 |
+| drop_temperature | GripLost | 0.9375 | 0.0546 | 0.0315 | 0.1071 | 56 |
+| drop_tool_current | System_Failure | 1.0 | 0.0472 | 0.0472 |  | 0 |
+| drop_tool_current | ProtectiveStop | 0.9737 | 0.0323 | 0.0236 | 0.0714 | 28 |
+| drop_tool_current | GripLost | 0.9375 | 0.0328 | 0.0079 | 0.0893 | 56 |
+| joint_current_only | System_Failure | 0.9904 | 0.0551 | 0.0551 |  | 0 |
+| joint_current_only | ProtectiveStop | 0.9605 | 0.0581 | 0.0551 | 0.0714 | 28 |
+| joint_current_only | GripLost | 0.9375 | 0.1311 | 0.0787 | 0.25 | 56 |
+| speed_only | System_Failure | 0.9808 | 0.2362 | 0.2362 |  | 0 |
+| speed_only | ProtectiveStop | 0.9868 | 0.1097 | 0.0709 | 0.2857 | 28 |
+| speed_only | GripLost | 0.9583 | 0.2787 | 0.2205 | 0.4107 | 56 |
+| temperature_only | System_Failure | 0.2308 | 0.1102 | 0.1102 |  | 0 |
+| temperature_only | ProtectiveStop | 0.1316 | 0.0581 | 0.0551 | 0.0714 | 28 |
+| temperature_only | GripLost | 0.0208 | 0.0055 | 0.0 | 0.0179 | 56 |
+| tool_current_only | System_Failure | 0.7692 | 0.874 | 0.874 |  | 0 |
+| tool_current_only | ProtectiveStop | 0.7632 | 0.7032 | 0.6929 | 0.75 | 28 |
+| tool_current_only | GripLost | 0.6458 | 0.765 | 0.7323 | 0.8393 | 56 |
 
 ## 해석 제한
 

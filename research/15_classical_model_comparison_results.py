@@ -273,13 +273,13 @@ def validate(
     summary: pd.DataFrame,
     paired: pd.DataFrame,
 ) -> None:
-    if len(candidates) != 24210 or len(runs) != 54 or len(predictions) != 36315:
+    if len(candidates) != 28002 or len(runs) != 54 or len(predictions) != 42003:
         raise AssertionError("Unexpected prediction or run count.")
     keys = ["target", "model", "test_block", "cycle_run", "window_start_step"]
     if predictions.duplicated(keys).any():
         raise AssertionError("Duplicate prediction keys.")
-    if not predictions.groupby(["target", "model"]).size().eq(4035).all():
-        raise AssertionError("Each target/model must have 4,035 predictions.")
+    if not predictions.groupby(["target", "model"]).size().eq(4667).all():
+        raise AssertionError("Each target/model must have 4,667 predictions.")
     if not predictions.groupby(["target", "model"])["test_block"].nunique().eq(9).all():
         raise AssertionError("Each target/model must have nine test blocks.")
     if not np.isfinite(predictions["score"]).all():
@@ -316,13 +316,13 @@ def validate(
         raise AssertionError("Logistic Regression reached max_iter.")
     if len(windows) != 9 or len(summary) != 9 or len(blocks) != 81:
         raise AssertionError("Unexpected summary dimensions.")
-    if not cycles.groupby(["target", "model"]).size().eq(202).all():
-        raise AssertionError("Each target/model must contain 202 cycles.")
+    if not cycles.groupby(["target", "model"]).size().eq(231).all():
+        raise AssertionError("Each target/model must contain 231 cycles.")
     if len(paired) != 12:
         raise AssertionError("Expected two models, three targets and two paired error types.")
     confusion_total = windows[["window_tn", "window_fp", "window_fn", "window_tp"]].sum(axis=1)
-    if not confusion_total.eq(4035).all():
-        raise AssertionError("Window confusion counts do not sum to 4,035.")
+    if not confusion_total.eq(4667).all():
+        raise AssertionError("Window confusion counts do not sum to 4,667.")
 
 
 def format_report(summary: pd.DataFrame, paired: pd.DataFrame, runs: pd.DataFrame) -> str:

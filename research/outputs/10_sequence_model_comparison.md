@@ -14,21 +14,21 @@
 
 | target | model | seeds | event_cycle_recall_mean | event_cycle_recall_min_block_mean | normal_cycle_false_alarm_rate_mean | normal_cycle_false_alarm_rate_max_block_mean | window_macro_f1_mean | window_positive_f1_mean | window_pr_auc_mean |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| System_Failure | 1d_cnn | 3 | 0.9732 | 0.8833 | 0.1594 | 0.6984 | 0.8069 | 0.7097 | 0.7265 |
-| System_Failure | lstm | 3 | 0.9617 | 0.7333 | 0.2058 | 0.746 | 0.7827 | 0.6749 | 0.7124 |
-| ProtectiveStop | 1d_cnn | 3 | 0.9355 | 0.5 | 0.2024 | 0.7102 | 0.8065 | 0.6769 | 0.7791 |
-| ProtectiveStop | lstm | 3 | 0.9086 | 0.3333 | 0.2119 | 0.5231 | 0.8178 | 0.6953 | 0.7044 |
-| GripLost | 1d_cnn | 3 | 0.9487 | 0.2222 | 0.3252 | 0.7571 | 0.7366 | 0.5451 | 0.6183 |
-| GripLost | lstm | 3 | 0.9487 | 0.7222 | 0.3763 | 0.8333 | 0.7278 | 0.5302 | 0.6169 |
-| System_Failure | rf_window_features | 1 | 1.0 | 1.0 | 0.0522 | 0.1667 | 0.8265 | 0.7326 | 0.8115 |
-| ProtectiveStop | rf_window_features | 1 | 0.9516 | 0.5 | 0.0429 | 0.1429 | 0.8763 | 0.7861 | 0.8455 |
-| GripLost | rf_window_features | 1 | 0.9487 | 0.6667 | 0.0429 | 0.2 | 0.7998 | 0.6328 | 0.7441 |
+| System_Failure | 1d_cnn | 3 | 0.9872 | 0.9524 | 0.1575 | 0.5635 | 0.8257 | 0.7417 | 0.7762 |
+| System_Failure | lstm | 3 | 0.984 | 0.9109 | 0.1732 | 0.6667 | 0.7939 | 0.6988 | 0.742 |
+| ProtectiveStop | 1d_cnn | 3 | 0.943 | 0.6852 | 0.1333 | 0.5417 | 0.8148 | 0.692 | 0.8024 |
+| ProtectiveStop | lstm | 3 | 0.9254 | 0.3889 | 0.2172 | 0.631 | 0.8022 | 0.6712 | 0.7103 |
+| GripLost | 1d_cnn | 3 | 0.9236 | 0.5556 | 0.2823 | 0.6978 | 0.7496 | 0.5706 | 0.6582 |
+| GripLost | lstm | 3 | 0.9514 | 0.7037 | 0.3515 | 0.8444 | 0.7443 | 0.5608 | 0.6484 |
+| System_Failure | rf_window_features | 1 | 1.0 | 1.0 | 0.0472 | 0.1111 | 0.8449 | 0.7654 | 0.8513 |
+| ProtectiveStop | rf_window_features | 1 | 0.9737 | 0.5 | 0.0129 | 0.0476 | 0.8906 | 0.8117 | 0.8644 |
+| GripLost | rf_window_features | 1 | 0.9583 | 0.6667 | 0.0273 | 0.0667 | 0.8275 | 0.6868 | 0.7857 |
 
 ## 실행 범위
 
 - Deep learning 학습 run: 162개.
 - PyTorch: 2.7.1+cu128, CUDA: 12.8, device: cuda.
-- 총 학습 시간: 486.7초.
+- 총 학습 시간: 511.2초.
 
 ## 결론
 
