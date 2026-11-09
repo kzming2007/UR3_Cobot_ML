@@ -152,8 +152,10 @@ text_cnn_cap,25,1D CNN은 81회 중 1회만 상한에 닿아,True
 text_ae_400_auc,25,"구간 ROC-AUC는 0.8053, 0.8969, 0.6070",True
 text_ae_400_counts,25,"탐지는 46/104, 40/76, 8/48, 완전 정상 오경보는 11/127, 교차 경보는 보호 정지 5/28, 파지 상실 30/56",True
 text_ae_400_answer,25,"탐지는 46/104, 40/76, 8/48로 늘었지만",True
-text_ae_400_abstract,25,"detected 46 of 104, 40 of 76, and 8 of 48 fault cycles, still fewer",True
-text_speed_abstract,16,joint speed alone detected 46 with 28 false alarms on fully normal cycles,True
+text_ae_400_abstract,25,a post hoc rerun with 400 epochs improved detection but stayed below the Random Forest,True
+text_speed_abstract,16,joint speed alone detected 46 with 28 false alarms,True
+text_gl_abstract,16,"the Random Forest and 1D CNN detected 45 and 48 of 48 fault cycles, with false alarms on 2 and 27 of 127 fully normal cycles",True
+text_drop_abstract,16,Grip Lost from 45 to 26 of 48,True
 text_rf_for_ae,16,"랜덤 포레스트(104/104, 74/76, 45/48, 오경보 5/127, 2/127, 2/127)",True
 no_preregistration_claim,report,"prespecified, not preregistered",True
 references_in_citation_order,report,"[1, 2, 3, 4, 5, 6, 7, 8, 9]",True

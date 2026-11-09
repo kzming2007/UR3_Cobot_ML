@@ -272,9 +272,14 @@ def expected_snippets() -> dict[str, str]:
     ae_detected = ", ".join(f"{longer.loc[t, 'detected']}/{longer.loc[t, 'fault_cycles']}" for t in order)
     need["25|text_ae_400_counts"] = f"탐지는 {ae_detected}, 완전 정상 오경보는 {longer.false_alarms.iloc[0]}/127, 교차 경보는 보호 정지 {longer.loc['ProtectiveStop', 'cross_alerts']}/28, 파지 상실 {longer.loc['GripLost', 'cross_alerts']}/56"
     need["25|text_ae_400_answer"] = f"탐지는 {ae_detected}로 늘었지만"
-    need["25|text_ae_400_abstract"] = "detected " + ", ".join(f"{longer.loc[t, 'detected']} of {longer.loc[t, 'fault_cycles']}" for t in order[:2]) + f", and {longer.loc[order[2], 'detected']} of {longer.loc[order[2], 'fault_cycles']} fault cycles, still fewer"
+    assert all(capped.loc[t, "detected"] < longer.loc[t, "detected"] for t in order)
+    need["25|text_ae_400_abstract"] = "a post hoc rerun with 400 epochs improved detection but stayed below the Random Forest"
     speed_gl = row("14_sensor_ablation", "speed_only", "GripLost")
-    need["16|text_speed_abstract"] = f"joint speed alone detected {speed_gl.detected_event_cycles} with {speed_gl.true_normal_false_alarm_cycles} false alarms on fully normal cycles"
+    need["16|text_speed_abstract"] = f"joint speed alone detected {speed_gl.detected_event_cycles} with {speed_gl.true_normal_false_alarm_cycles} false alarms"
+    rf_gl, cnn_gl = row("12_matched_models", "rf_19_raw_window", "GripLost"), row("12_matched_models", "1d_cnn_19_raw", "GripLost")
+    drop_gl = row("14_sensor_ablation", "drop_current_family", "GripLost")
+    need["16|text_gl_abstract"] = f"the Random Forest and 1D CNN detected {rf_gl.detected_event_cycles} and {cnn_gl.detected_event_cycles} of {rf_gl.event_cycles} fault cycles, with false alarms on {rf_gl.true_normal_false_alarm_cycles} and {cnn_gl.true_normal_false_alarm_cycles} of {rf_gl.true_normal_cycles} fully normal cycles"
+    need["16|text_drop_abstract"] = f"Grip Lost from {rf_gl.detected_event_cycles} to {drop_gl.detected_event_cycles} of {rf_gl.event_cycles}"
     need["16|text_rf_for_ae"] = "랜덤 포레스트(" + ", ".join(f"{r.detected_event_cycles}/{r.event_cycles}" for r in rf_rows) + ", 오경보 " + ", ".join(f"{r.true_normal_false_alarm_cycles}/127" for r in rf_rows) + ")"
     return need
 
