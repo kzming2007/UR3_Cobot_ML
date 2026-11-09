@@ -12,7 +12,7 @@ import pandas as pd
 from common import DATASET_PATH, OUTPUT_DIR, REPO_ROOT, ensure_output_dir, markdown_table
 
 
-REPORT_PATH = REPO_ROOT / "research" / "2026-11-08_research_report_v0.8.md"
+REPORT_PATH = REPO_ROOT / "research" / "2026-11-09_research_report_v0.9.md"
 CSV_SHA256 = "C789CDA10ACB354A7C1689F617D94A5F39A93FD8CB6C004AD16D36CEA55A74A3"
 XLSX_SHA256 = "F0F10917DE9056908A82CEC1AA459DDF9DA2D2DB70D269B128F99241C8796091"
 XLSX_PATH = REPO_ROOT / "dataset" / "dataset_02052023.xlsx"
@@ -125,11 +125,8 @@ def expected_snippets() -> dict[str, str]:
         )
 
     ae = read("22_ae_movement.csv").set_index("target")
-    sf, ps, gl = ae.loc["System_Failure"], ae.loc["ProtectiveStop"], ae.loc["GripLost"]
+    sf = ae.loc["System_Failure"]
     need["22|text_ae_spearman"] = f"Spearman 상관은 전류 {sf.spearman_current_std:.2f}, 속도 {sf.spearman_speed_std:.2f}"
-    need["22|text_ae_scores"] = f"점수 중앙값은 {sf.median_score_low_speed:.2f}, 나머지는 {sf.median_score_rest:.2f}"
-    need["22|text_ae_ps"] = f"속도 변동 중앙값이 {ps.speed_std_positive:.2f}(음성 {ps.speed_std_negative:.2f})으로 거의 멈춘 상태에 가까웠고 {100 * ps.positive_share_in_low_speed:.0f}%"
-    need["22|text_ae_gl"] = f"속도 변동이 음성과 같았지만({gl.speed_std_positive:.2f}) 전류 변동이 {gl.current_std_positive:.2f}로 음성({gl.current_std_negative:.2f})"
 
     pre = read("22_pre_failure_baseline.csv").set_index("target")
     need["22|text_pre_f1"] = "통합 고장 {:.4f}, 보호 정지 {:.4f}, 파지 상실 {:.4f}".format(*(pre.loc[t, "positive_f1"] for t in order))
@@ -218,6 +215,65 @@ def expected_snippets() -> dict[str, str]:
     need["13|text_ae_roc"] = f"ROC-AUC는 {aer.min():.2f}~{aer.max():.2f}"
     tool = [row("14_sensor_ablation", "tool_current_only", t).true_normal_false_alarm_rate for t in order]
     need["16|text_tool_only"] = f"{int(100 * min(tool))}~{int(100 * max(tool))}%"
+
+    recall_or_precision = lambda col, m: ", ".join(f"{100 * w13[(w13.target == t) & (w13.model_variant == m)][col].iloc[0]:.1f}%" for t in order)  # noqa: E731
+    need["13|text_window_recall"] = f"구간 재현율은 랜덤 포레스트 {recall_or_precision('positive_recall_mean', 'rf_19_raw_window')}, 1D CNN {recall_or_precision('positive_recall_mean', '1d_cnn_19_raw')}이고"
+    need["13|text_window_precision"] = f"구간 정밀도는 랜덤 포레스트 {recall_or_precision('positive_precision_mean', 'rf_19_raw_window')}, 1D CNN {recall_or_precision('positive_precision_mean', '1d_cnn_19_raw')}이다"
+    audit = read("03_pre_failure_window_summary.csv")
+    audit = audit[(audit.target == "ProtectiveStop") & (audit.window_size == 10) & (audit.prediction_horizon == 3)].iloc[0]
+    need["03|text_ps_pre_cycles"] = f"보호 정지가 있는 사이클 {audit.cycle_runs_with_event}개 중 최초 양성 이전에 10스텝 구간을 만들 수 있는 사이클은 {audit.cycle_runs_with_pre_event_window}개뿐"
+
+    rec = read("25_recording_time.csv").iloc[0]
+    assert rec.dates == 1 and rec.rows_without_time == 0 and rec.nonpositive_gaps == 0 and rec.gap_cycle == rec.gap_previous_cycle
+    need["25|text_one_day"] = f"기록은 모두 {rec.date} 하루의 것이고 블록이 바뀌는 지점의 시간 간격은 최대 {rec.largest_block_boundary_gap_seconds:.1f}초"
+    need["25|text_gap"] = f"사이클 {rec.gap_cycle} 안의 {rec.largest_gap_hours:.1f}시간 한 번이고 그 밖의 간격은 최대 {rec.second_gap_seconds:.0f}초"
+    need["25|text_temperature"] = f"1번 블록 {rec.temperature_first_block:.1f}도에서 10번 블록 {rec.temperature_last_block:.1f}도"
+    need["25|text_cycle_id"] = f"사이클 번호의 최댓값은 {rec.largest_cycle_id}이다"
+
+    forward = read("25_forward_split.csv")
+    split = lambda name: [forward[(forward.inputs == name) & (forward.target == t)].iloc[0] for t in order]  # noqa: E731
+    full, cool = split("all sensors"), split("no temperature")
+    counts = lambda rows, a, b: ", ".join(f"{r[a]}/{r[b]}" for r in rows)  # noqa: E731
+    assert all(r.false_alarms == 0 for r in full)
+    need["25|text_forward"] = f"공백 앞의 사이클 {full[0].train_cycles}개로 학습"
+    need["25|text_forward_detect"] = f"0.50 기준의 탐지는 {counts(full, 'detected', 'fault_cycles')}로 크게 줄었고 완전 정상 오경보는 0/{full[0].normal_cycles}이었다"
+    need["25|text_forward_abstract"] = f"detected {full[0].detected} of {full[0].fault_cycles}, {full[1].detected} of {full[1].fault_cycles}, and {full[2].detected} of {full[2].fault_cycles} fault cycles with no false alarms on {full[0].normal_cycles} normal cycles"
+    need["25|text_forward_auc"] = "사이클 AUC는 " + ", ".join(f"{r.cycle_auc:.4f}" for r in full)
+    need["25|text_forward_no_temperature"] = f"탐지는 {counts(cool, 'detected', 'fault_cycles')}, 완전 정상 오경보는 {counts(cool, 'false_alarms', 'normal_cycles')}이었다"
+    need["25|text_forward_train"] = f"보호 정지 {full[1].train_fault_cycles}개, 파지 상실 {full[2].train_fault_cycles}개"
+
+    length = read("25_cycle_length.csv").set_index("target").astype(object)
+    ps_len, sf_len, gl_len = (length.loc[t] for t in ("ProtectiveStop", "System_Failure", "GripLost"))
+    assert ps_len.train_cut_detected == ps_len.detected and ps_len.train_cut_false_alarms == ps_len.false_alarms and ps_len.rf_alerts_before_fault == 0
+    need["25|text_length_rows"] = f"행 수 중앙값은 {ps_len.median_rows_fault:.1f}개로 완전 정상의 {ps_len.median_rows_normal:.0f}개"
+    need["25|text_length_rule"] = f"{ps_len.cut}행 이상을 경보로 하면 탐지 {ps_len.detected}/{ps_len.fault_cycles}, 완전 정상 오경보 {ps_len.false_alarms}/{ps_len.normal_cycles}, 교차 경보 {ps_len.cross_alerts}/{ps_len.other_fault_cycles}이었다(사이클 AUC {ps_len.cycle_auc:.4f})"
+    need["25|text_length_others"] = f"통합 고장은 {sf_len.detected}/{sf_len.fault_cycles}, 파지 상실은 {gl_len.detected}/{gl_len.fault_cycles}"
+    need["25|text_length_delay"] = f"중앙값 {ps_len.rf_median_alert_rows_after_fault:.0f}행 뒤였고 {ps_len.rf_alert_cycles}개 사이클"
+
+    folds = read("25_same_folds.csv")
+    fold_chain = lambda level: ", ".join(f"{ko} {folds[(folds.target == t) & (folds.level == level)].random_macro_f1.iloc[0]:.4f}→{folds[(folds.target == t) & (folds.level == level)].cycle_macro_f1.iloc[0]:.4f}" for t, _, ko in TARGETS)  # noqa: E731
+    assert (folds.cycle_macro_f1 < folds.random_macro_f1).all()
+    need["25|text_same_folds"] = f"행 입력의 {fold_chain('rows')}, 구간 통계의 {fold_chain('windows')}로 모두 낮아졌다"
+
+    fit, by_epochs = read("25_autoencoder_fit.csv"), read("25_autoencoder.csv")
+    capped, longer = (by_epochs[by_epochs.epochs == e].set_index("target").loc[order].astype(object) for e in ("at most 40", "400"))
+    rf_rows = [row("12_matched_models", "rf_19_raw_window", t) for t in order]
+    for t, rf_row in zip(order, rf_rows):
+        saved = row("12_matched_models", "lstm_autoencoder_19_raw_q95", t)
+        assert capped.loc[t, "detected"] == saved.detected_event_cycles and capped.loc[t, "false_alarms"] == saved.true_normal_false_alarm_cycles  # the summary reproduces Table 2
+        assert round(capped.loc[t, "window_roc_auc"], 4) == round(w13[(w13.target == t) & (w13.model_variant == "lstm_autoencoder_19_raw_q95")].roc_auc_mean.iloc[0], 4)
+        assert longer.loc[t, "detected"] < rf_row.detected_event_cycles and longer.loc[t, "false_alarms"] > rf_row.true_normal_false_alarm_cycles
+    assert (fit.saved_loss_min > fit.window_mean_loss).all() and longer.false_alarms.nunique() == 1
+    example = fit[fit.test_block == 2].iloc[0]
+    need["25|text_ae_cap"] = f"{fit.ae_runs.sum()}회 학습 중 {fit.ae_runs_at_cap.sum()}회가 상한에 닿았고"
+    need["25|text_ae_example"] = f"(예: {example.saved_loss_min:.4f}과 {example.window_mean_loss:.4f})"
+    need["25|text_cnn_cap"] = f"1D CNN은 {fit.cnn_runs.sum()}회 중 {fit.cnn_runs_at_cap.sum()}회만 상한에 닿아"
+    need["25|text_ae_400_auc"] = "구간 ROC-AUC는 " + ", ".join(f"{longer.loc[t, 'window_roc_auc']:.4f}" for t in order)
+    ae_detected = ", ".join(f"{longer.loc[t, 'detected']}/{longer.loc[t, 'fault_cycles']}" for t in order)
+    need["25|text_ae_400_counts"] = f"탐지는 {ae_detected}, 완전 정상 오경보는 {longer.false_alarms.iloc[0]}/127, 교차 경보는 보호 정지 {longer.loc['ProtectiveStop', 'cross_alerts']}/28, 파지 상실 {longer.loc['GripLost', 'cross_alerts']}/56"
+    need["25|text_ae_400_answer"] = f"탐지는 {ae_detected}로 늘었지만"
+    need["25|text_ae_400_abstract"] = "detected " + ", ".join(f"{longer.loc[t, 'detected']} of {longer.loc[t, 'fault_cycles']}" for t in order[:2]) + f", and {longer.loc[order[2], 'detected']} of {longer.loc[order[2], 'fault_cycles']} fault cycles, still fewer"
+    need["16|text_rf_for_ae"] = "랜덤 포레스트(" + ", ".join(f"{r.detected_event_cycles}/{r.event_cycles}" for r in rf_rows) + ", 오경보 " + ", ".join(f"{r.true_normal_false_alarm_cycles}/127" for r in rf_rows) + ")"
     return need
 
 

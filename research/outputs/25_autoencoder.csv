@@ -1,0 +1,7 @@
+﻿epochs,target,detected,fault_cycles,false_alarms,normal_cycles,cross_alerts,other_fault_cycles,window_roc_auc
+at most 40,System_Failure,5,104,13,127,0,0,0.4201597879048438
+400,System_Failure,46,104,11,127,0,0,0.8053078756326144
+at most 40,ProtectiveStop,5,76,13,127,0,28,0.45986444076665817
+400,ProtectiveStop,40,76,11,127,5,28,0.8968645473359831
+at most 40,GripLost,0,48,13,127,6,56,0.3933581227589244
+400,GripLost,8,48,11,127,30,56,0.6069662206379508

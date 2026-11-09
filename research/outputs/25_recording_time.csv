@@ -1,0 +1,2 @@
+﻿dates,date,rows_without_time,nonpositive_gaps,largest_gap_hours,gap_row,gap_cycle,gap_previous_cycle,second_gap_seconds,largest_block_boundary_gap_seconds,temperature_first_block,temperature_last_block,largest_cycle_id
+1,2022-10-26,0,0,5.226145833333334,2869,105,105,31.15,2.01,32.10716261061947,41.88304749846532,264

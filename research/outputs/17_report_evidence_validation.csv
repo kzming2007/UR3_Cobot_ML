@@ -72,9 +72,6 @@ text_without_missing_cnn,22,"1D CNN 19/112, 13/112, 23/112",True
 text_no_splice_random_forest,22,"랜덤 포레스트는 102/104와 4/127, 72/76과 2/127, 42/48과 2/127",True
 text_no_splice_1d_cnn,22,"1D CNN은 101/104와 23/127, 70/76과 16/127, 45/48과 27/127",True
 text_ae_spearman,22,"Spearman 상관은 전류 0.79, 속도 0.48",True
-text_ae_scores,22,"점수 중앙값은 0.21, 나머지는 0.65",True
-text_ae_ps,22,속도 변동 중앙값이 0.10(음성 0.29)으로 거의 멈춘 상태에 가까웠고 63%,True
-text_ae_gl,22,속도 변동이 음성과 같았지만(0.26) 전류 변동이 0.29로 음성(0.47),True
 text_pre_f1,22,"통합 고장 0.1178, 보호 정지 0.1344, 파지 상실 0.3758",True
 text_pre_rates,22,"양성 비율은 7.62%, 1.06%, 1.86%",True
 text_pre_baseline,22,"F1은 0.1416, 0.0209, 0.0365",True
@@ -131,4 +128,30 @@ text_split_ProtectiveStop,01,보호 정지는 0.7921→0.8428,True
 text_split_GripLost,01,파지 상실 0.7988→0.7623,True
 text_ae_roc,13,ROC-AUC는 0.39~0.46,True
 text_tool_only,16,69~87%,True
+text_window_recall,13,"구간 재현율은 랜덤 포레스트 75.2%, 79.9%, 53.6%, 1D CNN 77.3%, 82.8%, 74.2%이고",True
+text_window_precision,13,"구간 정밀도는 랜덤 포레스트 78.9%, 81.2%, 87.8%, 1D CNN 63.1%, 56.6%, 48.5%이다",True
+text_ps_pre_cycles,03,보호 정지가 있는 사이클 85개 중 최초 양성 이전에 10스텝 구간을 만들 수 있는 사이클은 6개뿐,True
+text_one_day,25,기록은 모두 2022-10-26 하루의 것이고 블록이 바뀌는 지점의 시간 간격은 최대 2.0초,True
+text_gap,25,사이클 105 안의 5.2시간 한 번이고 그 밖의 간격은 최대 31초,True
+text_temperature,25,1번 블록 32.1도에서 10번 블록 41.9도,True
+text_cycle_id,25,사이클 번호의 최댓값은 264이다,True
+text_forward,25,공백 앞의 사이클 103개로 학습,True
+text_forward_detect,25,"0.50 기준의 탐지는 53/71, 7/63, 0/25로 크게 줄었고 완전 정상 오경보는 0/56이었다",True
+text_forward_abstract,25,"detected 53 of 71, 7 of 63, and 0 of 25 fault cycles with no false alarms on 56 normal cycles",True
+text_forward_auc,25,"사이클 AUC는 0.9935, 0.9984, 0.9832",True
+text_forward_no_temperature,25,"탐지는 70/71, 55/63, 22/25, 완전 정상 오경보는 2/56, 0/56, 5/56이었다",True
+text_forward_train,25,"보호 정지 13개, 파지 상실 22개",True
+text_length_rows,25,행 수 중앙값은 32.5개로 완전 정상의 24개,True
+text_length_rule,25,"27행 이상을 경보로 하면 탐지 76/76, 완전 정상 오경보 1/127, 교차 경보 6/28이었다(사이클 AUC 0.9938)",True
+text_length_others,25,"통합 고장은 82/104, 파지 상실은 26/48",True
+text_length_delay,25,중앙값 5행 뒤였고 74개 사이클,True
+text_same_folds,25,"행 입력의 통합 고장 0.7870→0.7239, 보호 정지 0.8169→0.7648, 파지 상실 0.7562→0.6843, 구간 통계의 통합 고장 0.9459→0.8500, 보호 정지 0.9609→0.8918, 파지 상실 0.9405→0.8157로 모두 낮아졌다",True
+text_ae_cap,25,27회 학습 중 16회가 상한에 닿았고,True
+text_ae_example,25,(예: 0.7571과 0.6942),True
+text_cnn_cap,25,1D CNN은 81회 중 1회만 상한에 닿아,True
+text_ae_400_auc,25,"구간 ROC-AUC는 0.8053, 0.8969, 0.6070",True
+text_ae_400_counts,25,"탐지는 46/104, 40/76, 8/48, 완전 정상 오경보는 11/127, 교차 경보는 보호 정지 5/28, 파지 상실 30/56",True
+text_ae_400_answer,25,"탐지는 46/104, 40/76, 8/48로 늘었지만",True
+text_ae_400_abstract,25,"detected 46 of 104, 40 of 76, and 8 of 48 fault cycles, still fewer",True
+text_rf_for_ae,16,"랜덤 포레스트(104/104, 74/76, 45/48, 오경보 5/127, 2/127, 2/127)",True
 references_in_citation_order,report,"[1, 2, 3, 4, 5, 6, 7, 8, 9]",True

@@ -65,9 +65,9 @@ UR3_Cobot_ML/
 
 ## 🔬 Research Extension
 
-후속 연구에서는 비연속적으로 재등장하는 cycle ID를 `cycle_run`으로 분리하고, cycle 경계를 넘지 않는 시계열 window와 9개 acquisition block held-out 평가를 적용했습니다. 동일한 10-step×19-sensor 입력에서 통계 feature 기반 `SMOTE + Random Forest`, 1D CNN, 정상-only LSTM Autoencoder를 비교했습니다.
+후속 연구에서는 비연속적으로 재등장하는 cycle ID를 `cycle_run`으로 분리하고, cycle 경계를 넘지 않는 시계열 window와 cycle 번호를 25개씩 묶은 9개 block의 held-out 평가를 적용했습니다. 동일한 10-step×19-sensor 입력에서 통계 feature 기반 `SMOTE + Random Forest`, 1D CNN, 정상-only LSTM Autoencoder를 비교했습니다.
 
-Random Forest의 event cycle recall은 `System_Failure` 1.0000, `ProtectiveStop` 0.9737, `GripLost` 0.9375였고 완전 정상 cycle 오경보율은 0.0157-0.0394였습니다. `ProtectiveStop`과 `GripLost`의 다른 고장 cycle 교차 경보율은 각각 0.0000과 0.0536이었습니다. 1D CNN은 recall은 유사했지만 완전 정상 오경보율이 0.1339-0.2126으로 증가했고 `GripLost` 교차 경보율도 0.3929였습니다. LSTM Autoencoder는 q95에서 event recall이 0-0.0658에 그쳐 현재 데이터에서는 Random Forest보다 불리했습니다.
+Random Forest의 event cycle recall은 `System_Failure` 1.0000, `ProtectiveStop` 0.9737, `GripLost` 0.9375였고 완전 정상 cycle 오경보율은 0.0157-0.0394였습니다. `ProtectiveStop`과 `GripLost`의 다른 고장 cycle 교차 경보율은 각각 0.0000과 0.0536이었습니다. 1D CNN은 recall은 유사했지만 완전 정상 오경보율이 0.1339-0.2126으로 증가했고 `GripLost` 교차 경보율도 0.3929였습니다. LSTM Autoencoder는 사전 조건인 최대 40 epoch과 q95에서 event recall이 0-0.0658에 그쳤습니다. 이 조건은 학습이 부족했고, 400 epoch로 다시 학습한 사후 점검에서는 event recall이 0.1667-0.5263으로 올랐지만 Random Forest보다 낮았습니다. 이 값들은 block 평가 조건의 결과이며, 긴 기록 공백 전후로 나눈 사후 점검에서 Random Forest의 0.50 기준 event recall은 `System_Failure` 0.7465, `ProtectiveStop` 0.1111, `GripLost` 0으로 낮아졌습니다.
 
 이 결과는 이상이 이미 포함된 구간의 탐지이며 조기 고장 예측을 뜻하지 않습니다. First positive 이전만 사용한 별도 실험에서는 `GripLost`의 약한 사전 신호 가능성만 확인됐습니다.
 

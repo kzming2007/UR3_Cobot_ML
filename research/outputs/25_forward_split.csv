@@ -1,0 +1,7 @@
+﻿inputs,target,train_cycles,train_fault_cycles,detected,fault_cycles,false_alarms,normal_cycles,cycle_auc
+all sensors,System_Failure,103,32,53,71,0,56,0.9934607645875252
+all sensors,ProtectiveStop,103,13,7,63,0,56,0.9984410430839002
+all sensors,GripLost,103,22,0,25,0,56,0.9832142857142857
+no temperature,System_Failure,103,32,70,71,2,56,0.9969818913480886
+no temperature,ProtectiveStop,103,13,55,63,0,56,1.0
+no temperature,GripLost,103,22,22,25,5,56,0.9921428571428571
