@@ -11,6 +11,7 @@ from docx.enum.section import WD_SECTION
 from docx.enum.style import WD_STYLE_TYPE
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH as AL, WD_LINE_SPACING
+from docx.opc.constants import RELATIONSHIP_TYPE as RT
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Pt, RGBColor
@@ -35,6 +36,7 @@ STYLES = {
     "Table Text": (EN, 7, False, AL.LEFT, 9, 0, 0, 0),
     "Table Note": (EN, 6.5, False, AL.JUSTIFY, 8, 0, 2, 8),
     "Reference": (EN, 8, False, AL.LEFT, 10, 0, 0, 0),
+    "Link": (EN, 7, False, AL.LEFT, 9, 0, 0, 2),  # small enough to keep the repository address on one line
 }
 # Column widths in points (each table fills the column) and the number of left-aligned text columns.
 TABLES = {
@@ -112,6 +114,17 @@ def add_text(doc, text: str, style: str):
         if part:
             para.add_run(part).bold = True if i % 2 else None
     return para
+
+
+def add_link(doc, url: str) -> None:
+    para = doc.add_paragraph(style="Link")
+    link = OxmlElement("w:hyperlink")
+    link.set(qn("r:id"), para.part.relate_to(url, RT.HYPERLINK, is_external=True))
+    run = para.add_run(url)
+    run.underline = True
+    run.font.color.rgb = RGBColor(0x05, 0x63, 0xC1)
+    link.append(run._r)
+    para._p.append(link)
 
 
 def border(cell, *edges: str) -> None:
@@ -233,6 +246,8 @@ def build(source: Path, out: Path) -> None:
         elif block.startswith("|"):
             add_table(doc, block, table_number)
             after_table = True
+        elif block.startswith("https://"):
+            add_link(doc, block)
         elif re.match(r"\[\d+\] ", block):
             add_text(doc, block, "Reference")
         else:

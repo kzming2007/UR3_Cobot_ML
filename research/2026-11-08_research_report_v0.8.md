@@ -295,7 +295,9 @@ LSTM 오토인코더의 낮은 탐지는 임계값만의 문제로 보이지 않
 
 **데이터와 코드.** 공개 자료는 참고문헌 [2]에서 받을 수 있다. 저장소에 보관한 dataset_02052023.xlsx의 SHA-256 앞 16자리는 F0F10917DE905690, 분석에 쓴 ur3_cobotops.csv는 C789CDA10ACB354A이다. CPU 환경은 Python 3.12.3, NumPy 2.4.3, pandas 3.0.3, scikit-learn 1.8.0, imbalanced-learn 0.14.1이고, 딥러닝 환경은 PyTorch 2.7.1+cu128, CUDA 12.8, NVIDIA GeForce RTX 3060 Ti이다. 시드는 랜덤 포레스트 42, 딥러닝 42, 43, 44이고, 랜덤 포레스트의 43, 44는 사후 점검에만 썼다.
 
-github.com/kzming2007/UR3_Cobot_ML/tree/submission-2026-11-12/research에 코드와 결과표가 있으며, 표와 그림의 값은 이 결과표에서 가져왔다.
+코드와 결과표는 아래 주소에 있으며, 표와 그림의 값은 이 결과표에서 가져왔다.
+
+https://github.com/kzming2007/UR3_Cobot_ML/tree/submission-2026-11-12/research
 
 **연구 참여.** 신청서 기준 책임연구자 남궁도현, 공동연구자 김택명.
 
