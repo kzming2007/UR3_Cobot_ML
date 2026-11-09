@@ -12,7 +12,7 @@ Department of Artificial Intelligence, The Catholic University of Korea
 
 Abstract
 
-An earlier course project classified the fault state of a UR3 collaborative robot from single time points in the public UR3 CobotOps sensor records. Random row splits can place neighboring observations from one cycle in both training and evaluation, and single time points ignore the order of sensor values. We asked whether temporal context and deep learning improve detection when whole cycles and approximate 25-cycle blocks are held out. The records were divided into 231 cycles and 4,667 overlapping 10-step windows. Using the same 19 sensors and nine held-out blocks, we compared a Random Forest on window statistics, a 1D CNN on raw sequences, and an LSTM Autoencoder trained on normal data. For Grip Lost, the Random Forest detected 45 of 48 fault cycles and the 1D CNN 48 of 48, but the 1D CNN alarmed on 27 of 127 fully normal cycles against 2 of 127. Under a preregistered cap of 40 epochs that left it underfit, the Autoencoder's recall was 0 to 6.58% across three targets at its main threshold; a post-hoc rerun with 400 epochs detected 46 of 104, 40 of 76, and 8 of 48 fault cycles, still fewer than the Random Forest. Removing the current sensors lowered Random Forest detection of Grip Lost from 45 to 26 of 48. In a post-hoc comparison evaluated on the same windows, labels, and blocks, window statistics detected more fault cycles than a row-level model that scored each window by its highest row (Grip Lost 45 against 39 of 48), with similar or fewer false alarms. Raw-sequence deep learning added no benefit over the window statistics at 10 steps in this block evaluation. In a post-hoc check at 5 and 20 steps, the 1D CNN's false alarms on fully normal cycles varied widely for Grip Lost (88 of 127 and 6 of 126), while the Random Forest's stayed low (2 of 127 and 1 of 126). The blocks are not independent sessions: when the Random Forest was trained on records before the one long recording gap and tested after it, its 0.50 threshold detected 53 of 71, 7 of 63, and 0 of 25 fault cycles with no false alarms on 56 normal cycles, so the detection rates above hold only under block evaluation. The results come from one robot's public data and describe detection of fault-containing windows, not early warning.
+An earlier course project classified the fault state of a UR3 collaborative robot from single time points in the public UR3 CobotOps sensor records. Random row splits can place neighboring observations from one cycle in both training and evaluation, and single time points ignore the order of sensor values. We asked whether temporal context and deep learning improve detection when whole cycles and blocks of about 25 cycles are held out. The final comparison used 231 cycles and 4,667 overlapping 10-step windows. Using the same 19 sensors and nine held-out blocks, we compared a Random Forest on window statistics, a 1D CNN on raw sequences, and an LSTM Autoencoder trained on normal data. For Grip Lost, the Random Forest detected 45 of 48 fault cycles and the 1D CNN 48 of 48, but the 1D CNN raised false alarms on 27 of 127 fully normal cycles, against 2 of 127 for the Random Forest. Under a prespecified cap of 40 epochs that left it underfit, the Autoencoder's recall was 0 to 6.58% across the three targets (System Failure, Protective Stop, Grip Lost) at its main threshold; a post hoc rerun with 400 epochs detected 46 of 104, 40 of 76, and 8 of 48 fault cycles, still fewer than the Random Forest. Removing the joint and tool current sensors lowered Random Forest detection of Grip Lost from 45 to 26 of 48, though joint speed alone detected 46 with 28 false alarms on fully normal cycles. In a post hoc comparison evaluated on the same windows, labels, and blocks, the Random Forest on window statistics detected more fault cycles than a row-level Random Forest that scored each window by its highest row score (Grip Lost 45 against 39 of 48), with similar or fewer false alarms. Raw-sequence deep learning showed no added benefit over the window statistics at 10 steps in this block evaluation. In a post hoc check at 5 and 20 steps, the 1D CNN's false alarms on fully normal cycles varied widely for Grip Lost (88 of 127 and 6 of 126), while the Random Forest's stayed low (2 of 127 and 1 of 126). The blocks are not independent sessions. When the Random Forest was trained on records before the one long recording gap and tested after it, it detected 53 of 71, 7 of 63, and 0 of 25 fault cycles at its 0.50 threshold, with no false alarms on 56 fully normal cycles, so the detection rates above are block-evaluation values; the 1D CNN was not tested on this split. The results come from one robot's public data and describe detection of fault-containing windows, not early warning.
 
 Key words: UR3 CobotOps, Multivariate time series, Anomaly detection, Cycle-aware split, Random Forest, 1D CNN, LSTM Autoencoder
 
@@ -39,7 +39,7 @@ Shen 등은 70/15/15의 시간순 분할에서 Transformer와 ODE를 결합한 �
 ![Study design](figures/2026-11-08_v0.7_study_design.png)
 
 그림 1. 연구 설계. (a) 공개 기록에서 모델 비교까지의 처리 (b) 시험 블록이 1번일 때 모델별 블록 역할의 예. 다른 블록을 시험용으로 둘 때도 같은 구조를 따른다
-Fig. 1. Study design. (a) From public records to model comparison (b) Example of block roles by model when block 1 is the test block. The same structure applies when another block is held out
+Fig. 1. Study design. (a) From public records to model comparison; (b) example of block roles by model when block 1 is the test block. The same structure applies when another block is held out.
 
 연구계획서와 달라진 점은 다음과 같다. 행 단위 기준 모델은 랜덤 포레스트로만 재현했고, 로지스틱 회귀와 RBF SVM은 구간 통계 특징에서 비교하였다. 재구성 오차 기반 모델은 계획서의 LSTM/GRU 오토인코더 중 LSTM을 사용하였다. 랜덤 분할과 사이클 분할의 비교는 탐색 단계에서 한 번 수행하였다. 사이클 분할에서 랜덤 포레스트의 Macro F1은 통합 고장 0.8013→0.7901, 파지 상실 0.7988→0.7623으로 낮아졌지만 보호 정지는 0.7921→0.8428로 높아졌다. 이 비교는 분할마다 시험 행이 달라 방향을 말할 수 없으므로, 같은 데이터의 5겹 비교를 III장 7절에 따로 제시한다. 이후의 주 비교는 25사이클 블록 단위로 분할하였고, 고장 전 예측 부가 분석만 사이클 단위 반복 분할을 사용하였다(8절). 오탐·미탐 사례 분석은 개별 사례 대신 완전 정상 오경보와 교차 고장 경보의 건수로 정리하였다. 구간 수준의 혼동 행렬은 계산했으나 본문에는 사이클 단위 지표를 우선 제시하고, 구간 재현율과 정밀도는 III장 2절에 적는다.
 
@@ -102,7 +102,7 @@ LSTM [8] 오토인코더는 정상 구간을 복원하도록 학습하고 복원
 표 1. 탐지 대상별 구간 설정의 초기 탐색 결과
 Table 1. Initial search results for window settings by target
 
-| Target | Row Macro F1 | Best window | Window Macro F1 | Row PR-AUC | Window PR‑AUC | Row positive % | Window positive % |
+| Target | Row Macro F1 | Best window | Window Macro F1 | Row PR-AUC | Window PR-AUC | Row positive % | Window positive % |
 |---|---|---|---|---|---|---|---|
 | System Failure | 0.7901 | 20-step | 0.8860 | 0.6430 | 0.8927 | 7.0 | 44.9 |
 | Protective Stop | 0.8428 | 5-step | 0.8776 | 0.7409 | 0.8796 | 3.8 | 10.2 |
@@ -117,7 +117,7 @@ Best window has the highest PR-AUC on the same test split. Row models use one 80
 표 2. 주 모델별 고장 사이클 탐지와 경보 건수
 Table 2. Fault-cycle detection and alert counts by main model
 
-| Target | Model | Detected / fault cycles | False alarms / normal cycles | Alerts / other-fault cycles |
+| Target | Model | Detected / fault cycles | False alarms / fully normal cycles | Cross-fault alerts / other-fault cycles |
 |---|---|---|---|---|
 | System Failure | Random Forest | 104/104 (100.00%) | 5/127 (3.94%) | n/a |
 |  | 1D CNN | 104/104 (100.00%) | 23/127 (18.11%) | n/a |
@@ -129,7 +129,7 @@ Table 2. Fault-cycle detection and alert counts by main model
 |  | 1D CNN | 48/48 (100.00%) | 27/127 (21.26%) | 22/56 (39.29%) |
 |  | LSTM AE q95 | 0/48 (0.00%) | 13/127 (10.24%) | 6/56 (10.71%) |
 
-Normal cycles have no fault of any type. System Failure is the union of the two faults, so it has no other-fault category. AE, Autoencoder, trained under the preregistered cap of 40 epochs (see Discussion); q95, main threshold defined in Methods 5; n/a, not applicable.
+Fully normal cycles have no fault label in any evaluated window. System Failure is the union of the two faults, so it has no other-fault category. AE, Autoencoder, trained under the prespecified cap of 40 epochs (see Section IV); q95, main threshold defined in Section II.5; n/a, not applicable.
 
 몇 건 차이의 탐지 수는 우열로 해석하지 않는다. 파지 상실 탐지율의 Wilson 95% 구간은 랜덤 포레스트 83.2~97.9%, 1D CNN 92.6~100.0%로 겹친다. 반면 완전 정상 오경보율의 구간은 0.4~5.6%와 15.0~29.2%로 겹치지 않았다. 이 구간은 같은 블록 안 사이클 사이의 상관을 반영하지 않으므로 실제 불확실성은 더 클 수 있다. LSTM 오토인코더의 q95 탐지는 세 탐지 대상에서 5/104, 5/76, 0/48로 매우 적었다. 이 값은 사전에 정한 에폭 상한의 결과이며 해석은 IV장에서 다룬다.
 
@@ -138,7 +138,7 @@ Normal cycles have no fault of any type. System Failure is the union of the two 
 ![Detection versus false alarms](figures/2026-11-08_v0.6_detection_vs_false_alarm.png)
 
 그림 2. 고장 사이클 재현율과 완전 정상 사이클 오경보율. 왼쪽 위에 가까울수록 오경보가 적고 재현율이 높다. 값은 표 2와 같고, 교차 고장 경보는 표 2에 제시하였다
-Fig. 2. Fault-cycle recall and false-alarm rate on fully normal cycles. Points nearer the upper left have fewer false alarms and higher recall. Values match Table 2, which also lists cross-fault alerts
+Fig. 2. Fault-cycle recall and false-alarm rate on fully normal cycles. Points nearer the upper left have fewer false alarms and higher recall. Values match Table 2, which also lists cross-fault alerts.
 
 구간 수준의 보조 지표에서도 세 탐지 대상 모두 랜덤 포레스트가 가장 높았다(표 3). 파지 상실에서 랜덤 포레스트와 1D CNN의 Macro F1은 0.8159와 0.7580, PR-AUC는 0.7742와 0.6675, ROC-AUC는 0.9267과 0.9089였다. Macro F1은 각 모델의 고정 판정 기준으로, PR-AUC와 ROC-AUC는 판정 전 점수로 계산하였다. 표 2의 사이클 결과와는 평가 단위와 집계 방식이 다르다.
 
@@ -157,7 +157,7 @@ Table 3. Window-level supporting metrics of the main models
 |  | 1D CNN | 0.7580 | 0.6675 | 0.9089 |
 |  | LSTM AE q95 | 0.4658 | 0.0866 | 0.3934 |
 
-Predictions for the 4,667 windows from the nine test blocks are pooled per seed. Random Forest uses one fixed seed; the deep models are means over three seeds. The autoencoder was trained under the preregistered cap of 40 epochs.
+Predictions for the 4,667 windows from the nine test blocks are pooled per seed. The Random Forest uses one fixed seed; deep-model values are means over three seeds. The Autoencoder was trained under the prespecified cap of 40 epochs.
 
 ### 3. 고전 모델 통제 비교
 
@@ -166,7 +166,7 @@ Predictions for the 4,667 windows from the nine test blocks are pooled per seed.
 표 4. 같은 통계 특징에서의 고전 모델 비교
 Table 4. Classical models on the same window statistics
 
-| Target | Model | Fault recall | True-normal false-alarm rate | Cross-fault alert rate |
+| Target | Model | Fault recall | False-alarm rate on fully normal cycles | Cross-fault alert rate |
 |---|---|---|---|---|
 | System Failure | Random Forest | 100.00% | 3.94% | n/a |
 |  | Logistic Regression | 99.04% | 45.67% | n/a |
@@ -204,7 +204,7 @@ Table 5. Random Forest detection and alert counts by sensor-group condition
 | Drop joint temperature | 13 | 104 | 8 | 74 | 7 | 5 | 45 | 4 | 6 |
 | Drop tool current | 18 | 104 | 6 | 74 | 3 | 2 | 45 | 1 | 5 |
 
-n, number of sensors; SF, System Failure; PS, Protective Stop; GL, Grip Lost; Det., detected fault cycles; FA, false alarms on fully normal cycles; Cross, alerts on cycles with only the other fault (PS, Grip Lost only; GL, Protective Stop only). Shaded columns are detections; the others are alerts. Current family is joint current plus tool current. Ten conditions were fixed before results.
+n, number of sensors; SF, System Failure; PS, Protective Stop; GL, Grip Lost; Det., detected fault cycles; FA, false alarms on fully normal cycles; Cross, alerts on cycles with only the other fault (PS, Grip Lost only; GL, Protective Stop only). Shaded columns are detections; the others are alerts. Current family is joint current plus tool current. The ten conditions were fixed before the results were seen.
 
 ### 5. 고장 전 예측 부가 분석
 
@@ -223,7 +223,7 @@ n, number of sensors; SF, System Failure; PS, Protective Stop; GL, Grip Lost; De
 표 6. 같은 구간과 라벨로 평가한 랜덤 포레스트 입력 비교(사후)
 Table 6. Random Forest inputs evaluated on the same windows and labels (post hoc)
 
-| Target | Input | Detected | False alarms | Cross alerts | Macro F1 | PR-AUC |
+| Target | Input | Detected | False alarms | Cross-fault alerts | Macro F1 | PR-AUC |
 |---|---|---|---|---|---|---|
 | System Failure | Last step | 92/104 | 21/127 | n/a | 0.7132 | 0.5889 |
 |  | Row maximum | 98/104 | 11/127 | n/a | 0.8317 | 0.8053 |
@@ -235,7 +235,7 @@ Table 6. Random Forest inputs evaluated on the same windows and labels (post hoc
 |  | Row maximum | 39/48 | 6/127 | 2/56 | 0.7699 | 0.6473 |
 |  | Window statistics | 45/48 | 2/127 | 3/56 | 0.8159 | 0.7742 |
 
-Seed 42. Last step, the last row of a window; Row maximum, a row-level model whose window score is the highest of its ten rows; Window statistics, the main Random Forest. Macro F1 and PR-AUC are window level. n/a, not applicable.
+Seed 42. Last step, the last row of a window; Row maximum, a row-level model whose window score is the highest of its ten row scores; Window statistics, the main Random Forest. Macro F1 and PR-AUC are window level. n/a, not applicable.
 
 **랜덤 포레스트 시드.** 시드 43, 44를 더해 세 시드 중 둘 이상 합의로 집계해도 탐지는 104/104, 74/76, 45/48로 같았다. 완전 정상 오경보는 4/127, 2/127, 1/127, 교차 경보는 보호 정지 1/28, 파지 상실 3/56으로 시드 42와 최대 1건 달랐다. 표 2~5는 사전에 정한 대로 시드 42 결과를 유지한다.
 
@@ -259,7 +259,7 @@ Table 7. Cycle composition of the 25-cycle blocks
 | 10 | 31 | 7 | 24 | 23 | 6 |
 | Total | 231 | 127 | 104 | 76 | 48 |
 
-Blocks group cycle numbers by 25; they are neither recording sessions nor process conditions. Blocks 6 and 11 are excluded for having fewer than 20 cycles. Blocks 3 and 8 lack cycle IDs 74 and 187. Blocks 9 and 10 add the second runs of IDs 224–225 and 226–233 (except 228), and block 10 lacks ID 244.
+Blocks group cycle IDs by 25; they are neither recording sessions nor process conditions. Blocks 6 and 11 are excluded for having fewer than 20 cycles. Blocks 3 and 8 lack cycle IDs 74 and 187. Blocks 9 and 10 add the second runs of IDs 224–225 and 226–233 (except 228), and block 10 lacks ID 244.
 
 **시간순 점검.** 블록 평가는 시험 블록의 앞뒤 기록을 모두 학습에 쓴다. 그래서 5.2시간 공백 앞의 사이클 103개로 학습하고 공백 뒤의 사이클로 평가해 보았다(공백이 든 사이클 제외, 랜덤 포레스트 시드 42). 0.50 기준의 탐지는 53/71, 7/63, 0/25로 크게 줄었고 완전 정상 오경보는 0/56이었다. 점수의 순위는 남아 사이클 AUC는 0.9935, 0.9984, 0.9832였지만, 0.50 기준은 유지되지 않았다. 온도를 빼고 같은 분할로 다시 학습하면 탐지는 70/71, 55/63, 22/25, 완전 정상 오경보는 2/56, 0/56, 5/56이었다. 앞쪽 학습 자료에 고장 사이클이 적었고(보호 정지 13개, 파지 상실 22개) 공백 뒤로 온도가 높아진 점이 함께 작용했을 수 있으나, 분할이 하나뿐이어서 원인을 가를 수는 없다. 따라서 표 2의 탐지율은 블록 평가 조건의 값이다. 이 점검은 랜덤 포레스트만 대상으로 하였으므로, 시간순 조건에서 1D CNN과의 순서는 말하지 않는다.
 
@@ -281,7 +281,7 @@ Table 8. Fault-cycle detection and false alarms of the main models by window len
 | Grip Lost | Random Forest | 46/48, 2/127 | 45/48, 2/127 | 43/48, 1/126 |
 |  | 1D CNN | 48/48, 88/127 | 48/48, 27/127 | 46/48, 6/126 |
 
-Each cell gives detected fault cycles, then false alarms on fully normal cycles. 10-step values match Table 2. At 20 steps one fully normal cycle has too few rows, leaving 230 cycles. Random Forest seed 42; 1D CNN 2 of 3 seeds.
+Each cell gives detected fault cycles, then false alarms on fully normal cycles. 10-step values match Table 2. At 20 steps one fully normal cycle has too few rows, leaving 230 cycles. Random Forest seed 42; 1D CNN, at least 2 of 3 seeds agreeing.
 
 **구간 길이별 같은 오경보 비교.** 0.50의 의미는 길이마다 같지 않다. 5스텝과 20스텝의 양성 구간 비율은 통합 고장 17.7%와 44.7%, 보호 정지 9.8%와 30.1%, 파지 상실 8.1%와 17.6%이다. 그래서 1D CNN의 임계값을 시험 점수에서 움직여 랜덤 포레스트의 0.50 기준 오경보 수에 맞추어 보았다. 5, 10, 20스텝에서 1D CNN의 탐지는 통합 고장 96, 101, 85건, 보호 정지 71, 68, 64건으로 랜덤 포레스트의 103, 104, 102건, 72, 74, 70건보다 적었다. 파지 상실은 5, 10스텝에서 29, 37건으로 46, 45건보다 적었지만 20스텝은 맞추는 오경보 수에 따라 달라졌다. 오경보 1건에서는 1D CNN 9건과 랜덤 포레스트 43건이었고, 2건에서는 44건으로 같았으며, 3건에서는 46건과 45건이었다. 시험 점수로 한 지점에서 맞춘 값이므로 운용 기준이 아니라 탐색 근거로만 해석한다.
 

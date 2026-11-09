@@ -137,7 +137,7 @@ text_temperature,25,1번 블록 32.1도에서 10번 블록 41.9도,True
 text_cycle_id,25,사이클 번호의 최댓값은 264이다,True
 text_forward,25,공백 앞의 사이클 103개로 학습,True
 text_forward_detect,25,"0.50 기준의 탐지는 53/71, 7/63, 0/25로 크게 줄었고 완전 정상 오경보는 0/56이었다",True
-text_forward_abstract,25,"detected 53 of 71, 7 of 63, and 0 of 25 fault cycles with no false alarms on 56 normal cycles",True
+text_forward_abstract,25,"it detected 53 of 71, 7 of 63, and 0 of 25 fault cycles at its 0.50 threshold, with no false alarms on 56 fully normal cycles",True
 text_forward_auc,25,"사이클 AUC는 0.9935, 0.9984, 0.9832",True
 text_forward_no_temperature,25,"탐지는 70/71, 55/63, 22/25, 완전 정상 오경보는 2/56, 0/56, 5/56이었다",True
 text_forward_train,25,"보호 정지 13개, 파지 상실 22개",True
@@ -153,5 +153,7 @@ text_ae_400_auc,25,"구간 ROC-AUC는 0.8053, 0.8969, 0.6070",True
 text_ae_400_counts,25,"탐지는 46/104, 40/76, 8/48, 완전 정상 오경보는 11/127, 교차 경보는 보호 정지 5/28, 파지 상실 30/56",True
 text_ae_400_answer,25,"탐지는 46/104, 40/76, 8/48로 늘었지만",True
 text_ae_400_abstract,25,"detected 46 of 104, 40 of 76, and 8 of 48 fault cycles, still fewer",True
+text_speed_abstract,16,joint speed alone detected 46 with 28 false alarms on fully normal cycles,True
 text_rf_for_ae,16,"랜덤 포레스트(104/104, 74/76, 45/48, 오경보 5/127, 2/127, 2/127)",True
+no_preregistration_claim,report,"prespecified, not preregistered",True
 references_in_citation_order,report,"[1, 2, 3, 4, 5, 6, 7, 8, 9]",True

@@ -237,7 +237,7 @@ def expected_snippets() -> dict[str, str]:
     assert all(r.false_alarms == 0 for r in full)
     need["25|text_forward"] = f"공백 앞의 사이클 {full[0].train_cycles}개로 학습"
     need["25|text_forward_detect"] = f"0.50 기준의 탐지는 {counts(full, 'detected', 'fault_cycles')}로 크게 줄었고 완전 정상 오경보는 0/{full[0].normal_cycles}이었다"
-    need["25|text_forward_abstract"] = f"detected {full[0].detected} of {full[0].fault_cycles}, {full[1].detected} of {full[1].fault_cycles}, and {full[2].detected} of {full[2].fault_cycles} fault cycles with no false alarms on {full[0].normal_cycles} normal cycles"
+    need["25|text_forward_abstract"] = f"it detected {full[0].detected} of {full[0].fault_cycles}, {full[1].detected} of {full[1].fault_cycles}, and {full[2].detected} of {full[2].fault_cycles} fault cycles at its 0.50 threshold, with no false alarms on {full[0].normal_cycles} fully normal cycles"
     need["25|text_forward_auc"] = "사이클 AUC는 " + ", ".join(f"{r.cycle_auc:.4f}" for r in full)
     need["25|text_forward_no_temperature"] = f"탐지는 {counts(cool, 'detected', 'fault_cycles')}, 완전 정상 오경보는 {counts(cool, 'false_alarms', 'normal_cycles')}이었다"
     need["25|text_forward_train"] = f"보호 정지 {full[1].train_fault_cycles}개, 파지 상실 {full[2].train_fault_cycles}개"
@@ -273,6 +273,8 @@ def expected_snippets() -> dict[str, str]:
     need["25|text_ae_400_counts"] = f"탐지는 {ae_detected}, 완전 정상 오경보는 {longer.false_alarms.iloc[0]}/127, 교차 경보는 보호 정지 {longer.loc['ProtectiveStop', 'cross_alerts']}/28, 파지 상실 {longer.loc['GripLost', 'cross_alerts']}/56"
     need["25|text_ae_400_answer"] = f"탐지는 {ae_detected}로 늘었지만"
     need["25|text_ae_400_abstract"] = "detected " + ", ".join(f"{longer.loc[t, 'detected']} of {longer.loc[t, 'fault_cycles']}" for t in order[:2]) + f", and {longer.loc[order[2], 'detected']} of {longer.loc[order[2], 'fault_cycles']} fault cycles, still fewer"
+    speed_gl = row("14_sensor_ablation", "speed_only", "GripLost")
+    need["16|text_speed_abstract"] = f"joint speed alone detected {speed_gl.detected_event_cycles} with {speed_gl.true_normal_false_alarm_cycles} false alarms on fully normal cycles"
     need["16|text_rf_for_ae"] = "랜덤 포레스트(" + ", ".join(f"{r.detected_event_cycles}/{r.event_cycles}" for r in rf_rows) + ", 오경보 " + ", ".join(f"{r.true_normal_false_alarm_cycles}/127" for r in rf_rows) + ")"
     return need
 
@@ -295,6 +297,7 @@ def main() -> None:
     for group in re.findall(r"\[(\d+(?:,\d+)*)\]", report.split("## I.")[1].split("## References")[0]):
         cited += [int(n) for n in group.split(",") if int(n) not in cited]
     listed = [int(n) for n in re.findall(r"^\[(\d+)\] ", report, flags=re.M)]
+    rows.append({"check_id": "no_preregistration_claim", "source": "report", "expected": "prespecified, not preregistered", "passed": "preregister" not in report.lower()})
     rows.append({"check_id": "references_in_citation_order", "source": "report", "expected": str(listed), "passed": cited == listed})
 
     frame = pd.DataFrame(rows)

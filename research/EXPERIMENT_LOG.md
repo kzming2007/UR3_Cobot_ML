@@ -287,6 +287,14 @@
 - 문장 수정: 참고문헌 원문과 대조해 [1]의 25회 반복(시험 시나리오 기준), SMOTE-ENN과 K겹 언급, [5]의 RUL 정의 서술을 고쳤다. `수집 블록` 표현을 `25사이클 블록`으로 바꾸고, Timestamp 수정과 재실행, 계획서 질문 수, 구간 재현율과 정밀도, 파지 상실의 전류 해석, 보호 정지의 고장 전 사이클 6/85를 본문에 적었다.
 - 관련 파일: `research/24_autoencoder_fixed_epochs.py`, `research/25_posthoc_generalization_checks.py`, `research/outputs/24_ae_fixed_epoch_runs.csv`, `research/outputs/24_ae_fixed_epoch_scores.csv`, `research/outputs/25_*.csv`, `research/outputs/25_posthoc_generalization_checks.md`
 
+### 2026-11-09 - 주 비교 재실행과 영문 정리
+
+- 질문: 공개 태그만으로 표 2, 3의 주 비교가 재현되는가?
+- 실행: `submission-2026-11-12`(91b277e)를 GitHub에서 새로 받은 별도 폴더에서 `10_prepare_sequence_data`, `12_matched_rf_baseline`(27회), `12_matched_torch_models`(1D CNN 81회, 오토인코더 27회), `12_matched_results`, `13`, `16`을 차례로 실행했다.
+- 결과: 구간 캐시 3개가 저장본과 같고, Random Forest 14,001행과 딥러닝 168,012행의 점수 차이 최댓값이 0.0, 판정이 다른 행은 0, 고른 에폭도 같다. 표 2, 3의 원천 값도 같다. Git에서 바뀐 파일은 실행 시간이 적힌 run 파일 2개와 비교 문서 1개뿐이다.
+- 한계: 같은 PC와 같은 환경의 재실행이며 다른 하드웨어의 재현은 아니다. 센서 제거, 고전 모델, 사후 분석은 다시 학습하지 않았다.
+- 문서: 영문 초록과 표 머리글, 표 주석, 캡션의 표현을 고쳤다. 외부 사전등록으로 읽힐 수 있는 표현을 `prespecified`로 바꾸고, 표의 숫자와 국문 본문은 그대로 두었다.
+
 ## 공통 기준
 
 - 재현에 필요한 경로, 스크립트 버전, 주요 파라미터를 남긴다.
