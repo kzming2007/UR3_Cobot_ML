@@ -150,8 +150,8 @@ def expected_snippets() -> dict[str, str]:
     need["23|text_rf_detect_range"] = "탐지가 " + ", ".join(span(t, RF_LONG, "detected") for t in order)
     need["23|text_rf_fa_range"] = "오경보가 " + ", ".join(span(t, RF_LONG, "false_alarms") for t in order)
     need["23|text_cnn_fa_chain"] = "오경보가 " + ", ".join(chain(t, CNN_LONG, "false_alarms") for t in order)
-    need["23|text_cnn_detect_chain"] = "탐지도 " + ", ".join(chain(t, CNN_LONG, "detected") for t in order)
-    need["23|text_gl_cross"] = "교차 경보는 랜덤 포레스트 " + ", ".join(str(int(cell("GripLost", RF_LONG, w).cross_alerts)) for w in (5, 10, 20)) + "건, 1D CNN " + ", ".join(str(int(cell("GripLost", CNN_LONG, w).cross_alerts)) for w in (5, 10, 20)) + "건"
+    need["23|text_cnn_detect_chain"] = "탐지도 20스텝에서 " + ", ".join(chain(t, CNN_LONG, "detected") for t in order)
+    need["23|text_gl_cross"] = "교차 경보는 5, 10, 20스텝 순으로 랜덤 포레스트 " + ", ".join(str(int(cell("GripLost", RF_LONG, w).cross_alerts)) for w in (5, 10, 20)) + "건, 1D CNN " + ", ".join(str(int(cell("GripLost", CNN_LONG, w).cross_alerts)) for w in (5, 10, 20)) + "건"
 
     change = lambda a, b, col: [int(cell(t, m, b)[col]) - int(cell(t, m, a)[col]) for t in order for m in (RF_LONG, CNN_LONG)]  # noqa: E731
     det_5_10, fa_5_10, det_10_20 = change(5, 10, "detected"), change(5, 10, "false_alarms"), change(10, 20, "detected")
@@ -168,8 +168,8 @@ def expected_snippets() -> dict[str, str]:
     point = lambda k: curve23[(curve23.window_size == 20) & (curve23.target == "GripLost") & (curve23.false_alarms == k)].iloc[0]  # noqa: E731
     p1, p2, p3 = point(1), point(2), point(3)
     need["23|text_same_fa_gl_20"] = (
-        f"오경보 {series('GripLost', 'rf_false_alarms', (20,))}건에서는 1D CNN {p1.cnn_detected}건과 랜덤 포레스트 {p1.rf_detected}건이었고, "
-        f"2건에서는 {p2.cnn_detected}건으로 {'같았으며' if p2.cnn_detected == p2.rf_detected else '달랐으며'}, 3건에서는 {p3.cnn_detected}건과 {p3.rf_detected}건이었다"
+        f"오경보 {series('GripLost', 'rf_false_alarms', (20,))}건에 맞추면 1D CNN {p1.cnn_detected}건과 랜덤 포레스트 {p1.rf_detected}건이었다. "
+        f"두 모델의 임계값을 함께 움직여 오경보를 2건으로 맞추면 {'둘 다 ' + str(p2.cnn_detected) + '건' if p2.cnn_detected == p2.rf_detected else '서로 달랐고'}, 3건으로 맞추면 {p3.cnn_detected}건과 {p3.rf_detected}건이었다"
     )
     need["23|text_positive_rates"] = "양성 구간 비율은 " + ", ".join(f"{ko} {100 * cell(t, RF_LONG, 5).positive_rate:.1f}%와 {100 * cell(t, RF_LONG, 20).positive_rate:.1f}%" for t, _, ko in TARGETS)
 
@@ -237,7 +237,7 @@ def expected_snippets() -> dict[str, str]:
     assert all(r.false_alarms == 0 for r in full)
     need["25|text_forward"] = f"공백 앞의 사이클 {full[0].train_cycles}개로 학습"
     need["25|text_forward_detect"] = f"0.50 기준의 탐지는 {counts(full, 'detected', 'fault_cycles')}로 크게 줄었고 완전 정상 오경보는 0/{full[0].normal_cycles}이었다"
-    need["25|text_forward_abstract"] = f"it detected {full[0].detected} of {full[0].fault_cycles}, {full[1].detected} of {full[1].fault_cycles}, and {full[2].detected} of {full[2].fault_cycles} fault cycles at its 0.50 threshold, with no false alarms on {full[0].normal_cycles} fully normal cycles"
+    need["25|text_forward_abstract"] = f"it detected {full[0].detected} of {full[0].fault_cycles}, {full[1].detected} of {full[1].fault_cycles}, and {full[2].detected} of {full[2].fault_cycles} fault cycles (System Failure, Protective Stop, Grip Lost) at its 0.50 threshold, with no false alarms on {full[0].normal_cycles} fully normal cycles"
     need["25|text_forward_auc"] = "사이클 AUC는 " + ", ".join(f"{r.cycle_auc:.4f}" for r in full)
     need["25|text_forward_no_temperature"] = f"탐지는 {counts(cool, 'detected', 'fault_cycles')}, 완전 정상 오경보는 {counts(cool, 'false_alarms', 'normal_cycles')}이었다"
     need["25|text_forward_train"] = f"보호 정지 {full[1].train_fault_cycles}개, 파지 상실 {full[2].train_fault_cycles}개"
@@ -273,13 +273,26 @@ def expected_snippets() -> dict[str, str]:
     need["25|text_ae_400_counts"] = f"탐지는 {ae_detected}, 완전 정상 오경보는 {longer.false_alarms.iloc[0]}/127, 교차 경보는 보호 정지 {longer.loc['ProtectiveStop', 'cross_alerts']}/28, 파지 상실 {longer.loc['GripLost', 'cross_alerts']}/56"
     need["25|text_ae_400_answer"] = f"탐지는 {ae_detected}로 늘었지만"
     assert all(capped.loc[t, "detected"] < longer.loc[t, "detected"] for t in order)
-    need["25|text_ae_400_abstract"] = "a post hoc rerun with 400 epochs improved detection but stayed below the Random Forest"
+    need["25|text_ae_400_abstract"] = "a post hoc rerun with 400 epochs improved its detection, which stayed below that of the Random Forest"
     speed_gl = row("14_sensor_ablation", "speed_only", "GripLost")
     need["16|text_speed_abstract"] = f"joint speed alone detected {speed_gl.detected_event_cycles} with {speed_gl.true_normal_false_alarm_cycles} false alarms"
     rf_gl, cnn_gl = row("12_matched_models", "rf_19_raw_window", "GripLost"), row("12_matched_models", "1d_cnn_19_raw", "GripLost")
     drop_gl = row("14_sensor_ablation", "drop_current_family", "GripLost")
     need["16|text_gl_abstract"] = f"the Random Forest and 1D CNN detected {rf_gl.detected_event_cycles} and {cnn_gl.detected_event_cycles} of {rf_gl.event_cycles} fault cycles, with false alarms on {rf_gl.true_normal_false_alarm_cycles} and {cnn_gl.true_normal_false_alarm_cycles} of {rf_gl.true_normal_cycles} fully normal cycles"
     need["16|text_drop_abstract"] = f"Grip Lost from {rf_gl.detected_event_cycles} to {drop_gl.detected_event_cycles} of {rf_gl.event_cycles}"
+    length = read("25_cycle_length.csv")
+    ps_len = length[length.target == "ProtectiveStop"].iloc[0]
+    need["25|text_length_conclusion"] = f"보호 정지는 사이클의 행 수만으로도 {ps_len.detected}/{ps_len.fault_cycles}을 탐지할 수 있어"
+    need["03|text_ps_all_blocks"] = f"제외한 6번, 11번 블록까지 포함한 전체 자료에서 보호 정지가 있는 사이클 {audit.cycle_runs_with_event}개"
+    gl_rf, gl_cnn = row("12_matched_models", "rf_19_raw_window", "GripLost"), row("12_matched_models", "1d_cnn_19_raw", "GripLost")
+    negatives = gl_rf.true_normal_cycles + gl_rf.other_fault_only_cycles
+    need["16|text_prereg_false_alarm"] = (
+        f"파지 상실에서 랜덤 포레스트 {gl_rf.true_normal_false_alarm_cycles + gl_rf.cross_fault_alert_cycles}/{negatives}, "
+        f"1D CNN {gl_cnn.true_normal_false_alarm_cycles + gl_cnn.cross_fault_alert_cycles}/{negatives}"
+    )
+    runs = read("12_matched_torch_runs.csv")
+    early = runs[runs.model.str.contains("auto", case=False) & (runs.best_epoch < 40)].best_epoch
+    need["12|text_ae_early_stop"] = f"나머지 {len(early)}회는 검증 손실이 {early.min()}~{early.max()}에폭에서 가장 낮았고"
     need["16|text_rf_for_ae"] = "랜덤 포레스트(" + ", ".join(f"{r.detected_event_cycles}/{r.event_cycles}" for r in rf_rows) + ", 오경보 " + ", ".join(f"{r.true_normal_false_alarm_cycles}/127" for r in rf_rows) + ")"
     return need
 

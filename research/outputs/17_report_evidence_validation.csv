@@ -88,15 +88,15 @@ table8_1d_cnn_19_raw_GripLost,23,"|  | 1D CNN | 48/48, 88/127 | 48/48, 27/127 | 
 text_rf_detect_range,23,"탐지가 102~104건, 70~74건, 43~46건",True
 text_rf_fa_range,23,"오경보가 5~9건, 2~7건, 1~2건",True
 text_cnn_fa_chain,23,"오경보가 56→23→7건, 25→17→12건, 88→27→6건",True
-text_cnn_detect_chain,23,"탐지도 103→104→82건, 74→73→65건, 48→48→46건",True
-text_gl_cross,23,"교차 경보는 랜덤 포레스트 1, 3, 11건, 1D CNN 44, 22, 16건",True
+text_cnn_detect_chain,23,"탐지도 20스텝에서 103→104→82건, 74→73→65건, 48→48→46건",True
+text_gl_cross,23,"교차 경보는 5, 10, 20스텝 순으로 랜덤 포레스트 1, 3, 11건, 1D CNN 44, 22, 16건",True
 text_5_to_10,23,탐지 변화는 2건 이내였고 오경보는 같거나 줄었다,True
 text_10_to_20,23,여섯 경우 모두 탐지가 2~22건 줄었다,True
 text_windows_per_cycle,23,"평균 25.2, 20.2, 10.3개",True
 text_cycle_rows,23,행 수 중앙값은 24개이고 30행 이상인 사이클은 20.3%,True
 text_same_fa_sf_ps,23,"통합 고장 96, 101, 85건, 보호 정지 71, 68, 64건으로 랜덤 포레스트의 103, 104, 102건, 72, 74, 70건보다 적었다",True
 text_same_fa_gl,23,"5, 10스텝에서 29, 37건으로 46, 45건보다 적었지만",True
-text_same_fa_gl_20,23,"오경보 1건에서는 1D CNN 9건과 랜덤 포레스트 43건이었고, 2건에서는 44건으로 같았으며, 3건에서는 46건과 45건이었다",True
+text_same_fa_gl_20,23,"오경보 1건에 맞추면 1D CNN 9건과 랜덤 포레스트 43건이었다. 두 모델의 임계값을 함께 움직여 오경보를 2건으로 맞추면 둘 다 44건, 3건으로 맞추면 46건과 45건이었다",True
 text_positive_rates,23,"양성 구간 비율은 통합 고장 17.7%와 44.7%, 보호 정지 9.8%와 30.1%, 파지 상실 8.1%와 17.6%",True
 table7_note_ids,22,"Blocks 3 and 8 lack cycle IDs 74 and 187. Blocks 9 and 10 add the second runs of IDs 224–225 and 226–233 (except 228), and block 10 lacks ID 244.",True
 table7_block_1,22,| 1 | 25 | 18 | 7 | 2 | 5 |,True
@@ -137,7 +137,7 @@ text_temperature,25,1번 블록 32.1도에서 10번 블록 41.9도,True
 text_cycle_id,25,사이클 번호의 최댓값은 264이다,True
 text_forward,25,공백 앞의 사이클 103개로 학습,True
 text_forward_detect,25,"0.50 기준의 탐지는 53/71, 7/63, 0/25로 크게 줄었고 완전 정상 오경보는 0/56이었다",True
-text_forward_abstract,25,"it detected 53 of 71, 7 of 63, and 0 of 25 fault cycles at its 0.50 threshold, with no false alarms on 56 fully normal cycles",True
+text_forward_abstract,25,"it detected 53 of 71, 7 of 63, and 0 of 25 fault cycles (System Failure, Protective Stop, Grip Lost) at its 0.50 threshold, with no false alarms on 56 fully normal cycles",True
 text_forward_auc,25,"사이클 AUC는 0.9935, 0.9984, 0.9832",True
 text_forward_no_temperature,25,"탐지는 70/71, 55/63, 22/25, 완전 정상 오경보는 2/56, 0/56, 5/56이었다",True
 text_forward_train,25,"보호 정지 13개, 파지 상실 22개",True
@@ -152,10 +152,14 @@ text_cnn_cap,25,1D CNN은 81회 중 1회만 상한에 닿아,True
 text_ae_400_auc,25,"구간 ROC-AUC는 0.8053, 0.8969, 0.6070",True
 text_ae_400_counts,25,"탐지는 46/104, 40/76, 8/48, 완전 정상 오경보는 11/127, 교차 경보는 보호 정지 5/28, 파지 상실 30/56",True
 text_ae_400_answer,25,"탐지는 46/104, 40/76, 8/48로 늘었지만",True
-text_ae_400_abstract,25,a post hoc rerun with 400 epochs improved detection but stayed below the Random Forest,True
+text_ae_400_abstract,25,"a post hoc rerun with 400 epochs improved its detection, which stayed below that of the Random Forest",True
 text_speed_abstract,16,joint speed alone detected 46 with 28 false alarms,True
 text_gl_abstract,16,"the Random Forest and 1D CNN detected 45 and 48 of 48 fault cycles, with false alarms on 2 and 27 of 127 fully normal cycles",True
 text_drop_abstract,16,Grip Lost from 45 to 26 of 48,True
+text_length_conclusion,25,보호 정지는 사이클의 행 수만으로도 76/76을 탐지할 수 있어,True
+text_ps_all_blocks,03,"제외한 6번, 11번 블록까지 포함한 전체 자료에서 보호 정지가 있는 사이클 85개",True
+text_prereg_false_alarm,16,"파지 상실에서 랜덤 포레스트 5/183, 1D CNN 49/183",True
+text_ae_early_stop,12,나머지 11회는 검증 손실이 8~18에폭에서 가장 낮았고,True
 text_rf_for_ae,16,"랜덤 포레스트(104/104, 74/76, 45/48, 오경보 5/127, 2/127, 2/127)",True
 no_preregistration_claim,report,"prespecified, not preregistered",True
 references_in_citation_order,report,"[1, 2, 3, 4, 5, 6, 7, 8, 9]",True
