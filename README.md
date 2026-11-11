@@ -75,7 +75,7 @@ Random Forest의 event cycle recall은 `System_Failure` 1.0000, `ProtectiveStop`
 
 같은 133개 시계열 통계 특징으로 기본 분류 모델도 비교했습니다. Logistic Regression은 event recall 0.9737-1.0000을 보였지만 완전 정상 cycle 오경보율이 0.2677-0.4724로 높았습니다. RBF SVM은 타깃별 trade-off가 남았고, Random Forest가 세 타깃에서 높은 탐지율과 낮은 경보 부담을 가장 안정적으로 함께 유지했습니다.
 
-최종 결과보고서는 [PDF](research/2026_학술연구장학_결과보고서_남궁도현_김택명.pdf)로 볼 수 있습니다. 기존 프로젝트와 연구 확장의 차이는 [연구 종합 문서](research/2026-08-23_project_to_research_synthesis.md)에 정리했으며, 이 문서의 수치는 2026년 8월 기준으로 Timestamp 수정 전 값입니다. 재현 명령과 현재 상태는 [연구 README](research/README.md), 동일 센서 비교 결과는 [최종 비교 결과](research/outputs/12_matched_lstm_autoencoder_comparison.md), 센서별 해석 근거는 [센서 그룹 ablation 결과](research/outputs/14_sensor_group_ablation.md), 기본 모델 통제 결과는 [기본 분류 모델 비교](research/outputs/15_classical_model_comparison.md), 정정한 경보 지표는 [fault-context 분석](research/outputs/16_fault_context_alert_analysis.md)에서 확인할 수 있습니다.
+최종 결과보고서는 [PDF](research/2026_학술연구장학_결과보고서_남궁도현_김택명.pdf)로 볼 수 있습니다. 기존 프로젝트와 연구 확장의 차이는 [연구 종합 문서](research/2026-08-23_project_to_research_synthesis.md)에 정리했으며, 이 문서의 수치는 2026년 8월 기준으로 Timestamp 수정 전 값입니다. 재현 명령과 폴더 구성은 [연구 README](research/README.md), 동일 센서 비교 결과는 [최종 비교 결과](research/outputs/12_matched_lstm_autoencoder_comparison.md), 센서별 해석 근거는 [센서 그룹 ablation 결과](research/outputs/14_sensor_group_ablation.md), 기본 모델 통제 결과는 [기본 분류 모델 비교](research/outputs/15_classical_model_comparison.md), 정정한 경보 지표는 [fault-context 분석](research/outputs/16_fault_context_alert_analysis.md)에서 확인할 수 있습니다.
 
 <br>
 
